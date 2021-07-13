@@ -259,18 +259,18 @@ const { Realtime } = require('leancloud-realtime/es-latest');
 
 
 ```存储服务
-<script src="//cdn.jsdelivr.net/npm/leancloud-storage@{{jssdkversion}}/dist/av-min.js"></script>
+<script src="//code.bdstatic.com/npm/leancloud-storage@{{jssdkversion}}/dist/av-min.js"></script>
 ```
 ```存储服务（LiveQuery)
-<script src="//cdn.jsdelivr.net/npm/leancloud-storage@{{jssdkversion}}/dist/av-live-query-min.js"></script>
+<script src="//code.bdstatic.com/npm/leancloud-storage@{{jssdkversion}}/dist/av-live-query-min.js"></script>
 ```
 ```即时通讯
-<script src="//cdn.jsdelivr.net/npm/leancloud-realtime@{{jsimsdkversion}}/dist/im-browser.min.js"></script>
+<script src="//code.bdstatic.com/npm/leancloud-realtime@{{jsimsdkversion}}/dist/im-browser.min.js"></script>
 ```
 ```即时通讯（含富媒体消息）
-<script src="//cdn.jsdelivr.net/npm/leancloud-storage@{{jssdkversion}}/dist/av-min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/leancloud-realtime@{{jsimsdkversion}}/dist/im-browser.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/leancloud-realtime-plugin-typed-messages@3.1.0/dist/typed-messages.min.js"></script>
+<script src="//code.bdstatic.com/npm/leancloud-storage@{{jssdkversion}}/dist/av-min.js"></script>
+<script src="//code.bdstatic.com/npm/leancloud-realtime@{{jsimsdkversion}}/dist/im-browser.min.js"></script>
+<script src="//code.bdstatic.com/npm/leancloud-realtime-plugin-typed-messages@3.1.0/dist/typed-messages.min.js"></script>
 ```
 
 通过这种方式引入的 SDK 可以通过全局变量 `AV` 获得引用：
@@ -293,7 +293,7 @@ const { Realtime, TextMessage, TypedMessagesPlugin, ImageMessage } = AV;
 如果想要试用以最新版本 ECMAScript 为编译目标的即时通讯 SDK 版本（参见 [npm](#npm) 章节的说明），可以这样加载文件：
 
 ```html
-<script src="//cdn.jsdelivr.net/npm/leancloud-realtime@{{jsimsdkversion}}/dist/es-latest/im.js"></script>
+<script src="//code.bdstatic.com/npm/leancloud-realtime@{{jsimsdkversion}}/dist/es-latest/im.js"></script>
 ```
 {{ docs.langSpecEnd('即时通讯') }}
 
@@ -312,7 +312,7 @@ Node.js 中 SDK 的安装与引用也是通过包管理工具 npm，请参考 [n
 
 ### 微信 / QQ 小程序
 
-{{ docs.note('QQ 小程序兼容微信小程序的 API，因此两者使用同一个 SDK，安装与使用方法也是一样的。不过 QQ 小程序使用的 Adapters 与微信小程序不同，请前往 [QQ 小程序 Adapters 下载页](https://cdn.jsdelivr.net/npm/@leancloud/platform-adapters-qqapp/lib/) 下载。')}}
+{{ docs.note('QQ 小程序兼容微信小程序的 API，因此两者使用同一个 SDK，安装与使用方法也是一样的。不过 QQ 小程序使用的 Adapters 与微信小程序不同，请前往 [QQ 小程序 Adapters 下载页](https://code.bdstatic.com/npm/@leancloud/platform-adapters-qqapp/lib/) 下载。')}}
 
 #### 手动导入文件
 
@@ -333,10 +333,10 @@ Node.js 中 SDK 的安装与引用也是通过包管理工具 npm，请参考 [n
 
 前往 [即时通讯 SDK 下载页](https://releases.leanapp.cn/#/leancloud/js-realtime-sdk/releases)，下载最新版本的 `im.min.js`，移动到 `libs` 目录，并将文件重命名为 `leancloud-realtime.js`。
 
-下载 [`typed-messages.min.js`](https://cdn.jsdelivr.net/npm/leancloud-realtime-plugin-typed-messages@3/dist/typed-messages.min.js)，移动到 `libs` 目录。必须保证<strong>三个文件在同一目录中</strong>。
+下载 [`typed-messages.min.js`](https://code.bdstatic.com/npm/leancloud-realtime-plugin-typed-messages@3/dist/typed-messages.min.js)，移动到 `libs` 目录。必须保证<strong>三个文件在同一目录中</strong>。
 {{ docs.langSpecEnd('即时通讯（含富媒体消息）') }}
 
-前往 [微信小程序 Adapters 下载页](https://cdn.jsdelivr.net/npm/@leancloud/platform-adapters-weapp/lib/)，下载最新版本的 `index.js`，移动到 `libs` 目录，并将文件重命名为 `leancloud-adapters-weapp.js`。
+前往 [微信小程序 Adapters 下载页](https://code.bdstatic.com/npm/@leancloud/platform-adapters-weapp/lib/)，下载最新版本的 `index.js`，移动到 `libs` 目录，并将文件重命名为 `leancloud-adapters-weapp.js`。
 
 在 `app.js` 中引用 SDK，并设置 Adapters ：
 
@@ -522,10 +522,10 @@ setAdapters(adapters);    // 为即时通讯 SDK 设置 adapters
 
 前往 [即时通讯 SDK 下载页](https://releases.leanapp.cn/#/leancloud/js-realtime-sdk/releases)，下载最新版本的 `im.min.js`，移动到 `libs` 目录，并将文件重命名为 `leancloud-realtime.js`。
 
-下载 [`typed-messages.min.js`](https://cdn.jsdelivr.net/npm/leancloud-realtime-plugin-typed-messages@3/dist/typed-messages.min.js)，移动到 `libs` 目录。必须保证<strong>三个文件在同一目录中</strong>。
+下载 [`typed-messages.min.js`](https://code.bdstatic.com/npm/leancloud-realtime-plugin-typed-messages@3/dist/typed-messages.min.js)，移动到 `libs` 目录。必须保证<strong>三个文件在同一目录中</strong>。
 {{ docs.langSpecEnd('即时通讯（含富媒体消息）') }}
 
-前往 [字节跳动小程序 Adapters 下载页](https://cdn.jsdelivr.net/npm/@leancloud/platform-adapters-toutiao/lib/)，下载最新版本的 `index.js`，移动到 `libs` 目录，并将文件重命名为 `leancloud-adapters-toutiao.js`。
+前往 [字节跳动小程序 Adapters 下载页](https://code.bdstatic.com/npm/@leancloud/platform-adapters-toutiao/lib/)，下载最新版本的 `index.js`，移动到 `libs` 目录，并将文件重命名为 `leancloud-adapters-toutiao.js`。
 
 在 `app.js` 中引用 SDK，并设置 Adapters ：
 
@@ -804,13 +804,13 @@ setAdapters(adapters);
 对于不支持使用 npm 管理依赖的运行环境，SDK 同时也提供了预编译好的 UMD 类型文件：
 
 ```存储服务
-https://cdn.jsdelivr.net/npm/leancloud-storage@{{jssdkversion}}/dist/av-core-min.js
+https://code.bdstatic.com/npm/leancloud-storage@{{jssdkversion}}/dist/av-core-min.js
 ```
 ```存储服务（LiveQuery)
-https://cdn.jsdelivr.net/npm/leancloud-storage@{{jssdkversion}}/dist/av-live-query-core-min.js
+https://code.bdstatic.com/npm/leancloud-storage@{{jssdkversion}}/dist/av-live-query-core-min.js
 ```
 ```即时通讯
-https://cdn.jsdelivr.net/npm/leancloud-realtime@{{jsimsdkversion}}/dist/im.min.js
+https://code.bdstatic.com/npm/leancloud-realtime@{{jsimsdkversion}}/dist/im.min.js
 ```
 ```即时通讯（含富媒体消息）
 // 不支持该方式
