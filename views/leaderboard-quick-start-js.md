@@ -16,7 +16,7 @@
   </head>
   <body>
     <!-- 引入存储 SDK -->
-    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@{{jssdkversion}}/dist/av-min.js"></script>
+    <script src="//code.bdstatic.com/npm/leancloud-storage@{{jssdkversion}}/dist/av-min.js"></script>
   </body>
 </html>
 ```

@@ -850,7 +850,7 @@ AV.Captcha.request({ width: 80, height: 30 });
   <br />
   <button id="verify">发送验证码</button>
   <!-- 引入 LeanCloud SDK -->
-  <script src="//cdn.jsdelivr.net/npm/leancloud-storage@{{jssdkversion}}/dist/av-min.js"></script>
+  <script src="//code.bdstatic.com/npm/leancloud-storage@{{jssdkversion}}/dist/av-min.js"></script>
   <script>
     var appId = '{{appid}}';  // 你的 appId
     var appKey = '{{appkey}}'; // 你的 appKey
