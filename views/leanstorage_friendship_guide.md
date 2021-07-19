@@ -184,7 +184,7 @@ try {
 
 #### 查询我关注的人
 
-我们使用 `FollowerQuery` 和 `FolloweeQuery` 对关注关系进行查询。`FollowerQuery` 和 `FolloweeQuery` 返回的 `AVQuery` 对象可以像普通的 `AVQuery` 对象那样使用，它们本质上都是查询数据管理平台中的 `_Follower` 和 `_Followee`表，你可以添加 order、skip、limit 以及其他 where 条件等信息。
+我们使用 `FollowerQuery` 和 `FolloweeQuery` 对关注关系进行查询。`FollowerQuery` 和 `FolloweeQuery` 返回的 `Query` 对象可以像普通的 `Query` 对象那样使用，它们本质上都是查询数据管理平台中的 `_Follower` 和 `_Followee`表，你可以添加 order、skip、limit 以及其他 where 条件等信息。
 
 ```javascript
 var query = AV.User.current().followeeQuery();
@@ -568,6 +568,17 @@ try {
 }
 ```
 
+```objc
+[LCFriendship requestWithUserId:@"user_object_id" callback:^(BOOL succeeded, NSError * _Nullable error) {
+    if (succeeded) {
+        // 好友请求发送成功
+    } else {
+        // 好友请求发送失败
+        NSLog(@"%@", error);
+    }
+}];
+```
+
 发送申请成功后，我们可以发现 `_FriendshipRequest` 新增了一条数据，并且其 `status` 字段的值为 `pending`，表示这是一个正在进行中的好友申请。
 
 在发起好友请求时，可以提前为朋友设置一些属性。属性字段可以任意指定自己需要的 key 和 value，例如分组为「sport」：
@@ -607,6 +618,20 @@ Dictionary<string, object> attrs = new Dictionary<string, object> {
   { "group", "sport" }
 };
 await LCFriendship.Request("user_object_id", attrs);
+```
+
+```objc
+NSDictionary *attributes = @{
+    @"group" : @"sport",
+};
+[LCFriendship requestWithUserId:@"user_object_id" attributes:attributes callback:^(BOOL succeeded, NSError * _Nullable error) {
+    if (succeeded) {
+        // 好友请求发送成功
+    } else {
+        // 好友请求发送失败
+        NSLog(@"%@", error);
+    }
+}];
 ```
 
 如果在申请好友时增加了属性，在申请发送成功后，`_Followee` 表中也会增加一条数据，代表着发起申请的 A 的好友为 B，其 `user` 列为用户 A，`followee` 列为用户 B， `friendStatus` 列的值为 `false`，代表着 B 没有接受过 A 的好友申请。属性值会被存储到相应的列中，例如上方的代码会在 `_Followee` 表中新增 `group` 列，其值为 `sport`。
@@ -652,6 +677,13 @@ LCQuery<LCFriendshipRequest> query = new LCQuery<LCFriendshipRequest>("_Friendsh
   .WhereEqualTo("friend", user)
   .WhereEqualTo("status", "pending");
 ReadOnlyCollection<LCFriendshipRequest> requests = await query.Find();
+```
+
+```objc
+LCQuery *query = [LCFriendshipRequest query];
+[query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+    // handle result
+}];
 ```
 
 #### 接受好友申请
@@ -714,6 +746,20 @@ foreach (LCFriendshipRequest request in requests) {
   // 接受
   await LCFriendship.AcceptRequest(request);
 }
+```
+
+```objc
+LCQuery *query = [LCFriendshipRequest query];
+[query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+    if (!error) {
+        for (LCFriendshipRequest *request in objects) {
+            // 接受
+            [LCFriendship acceptRequest:request callback:^(BOOL succeeded, NSError * _Nullable error) {
+                // handle result
+            }];
+        }
+    }
+}];
 ```
 
 B 在接受 A 的好友请求时，同样可以添加属性，这些属性会被存储到 `_Followee` 表的相应的列中，例如下方的代码会向 B 的数据中的 `group` 列中存入值 `music`。
@@ -779,6 +825,23 @@ foreach (LCFriendshipRequest request in requests) {
 }
 ```
 
+```objc
+LCQuery *query = [LCFriendshipRequest query];
+[query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+    if (!error) {
+        for (LCFriendshipRequest *request in objects) {
+            // 接受
+            NSDictionary *attributes = @{
+                @"group" : @"sport",
+            };
+            [LCFriendship acceptRequest:request attributes:attributes callback:^(BOOL succeeded, NSError * _Nullable error) {
+                // handle result
+            }];
+        }
+    }
+}];
+```
+
 #### 拒绝好友申请
 
 拒绝好友请求后，`_FriendshipRequest` 表中该条申请数据的 `status` 的值会被更新为 `declined`。
@@ -835,6 +898,20 @@ foreach (LCFriendshipRequest request in requests) {
 }
 ```
 
+```objc
+LCQuery *query = [LCFriendshipRequest query];
+[query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+    if (!error) {
+        for (LCFriendshipRequest *request in objects) {
+            // 拒绝
+            [LCFriendship declineRequest:request callback:^(BOOL succeeded, NSError * _Nullable error) {
+                // handle result
+            }];
+        }
+    }
+}];
+```
+
 注意，当用户 B 拒绝 A 的好友申请后，**用户 A 无法再次发起好友申请**。如果两人重新希望成为好友，用户 B 需要找到之前被拒绝的好友申请，改为接受：
 
 ```javascript
@@ -887,9 +964,24 @@ foreach (LCFriendshipRequest request in requests) {
 }
 ```
 
+```objc
+LCQuery *query = [LCFriendshipRequest query];
+[query whereKey:@"status" equalTo:@"declined"];
+[query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+    if (!error) {
+        for (LCFriendshipRequest *request in objects) {
+            // 接受
+            [LCFriendship acceptRequest:request callback:^(BOOL succeeded, NSError * _Nullable error) {
+                // handle result
+            }];
+        }
+    }
+}];
+```
+
 #### 查询好友列表
 
-直接使用 `AVQuery` 查询好友列表，设定 `friendStatus=true` 即可以查询双向好友。同时还可以使用 skip、limit、include 等，非常方便。
+直接使用 `Query` 查询好友列表，设定 `friendStatus=true` 即可以查询双向好友。同时还可以使用 skip、limit、include 等，非常方便。
 
 ```javascript
 const query = new AV.Query('_Followee');
@@ -922,6 +1014,14 @@ LCQuery<LCObject> query = new LCQuery<LCObject>("_Followee")
   .WhereEqualTo("user", user)
   .WhereEqualTo("friendStatus", true);
 ReadOnlyCollection<LCObject> friends = await query.Find();
+```
+
+```objc
+LCQuery *query = [[LCUser currentUser] followeeObjectsQuery];
+[query whereKey:@"friendStatus" equalTo:@(true)];
+[query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+    // handle result
+}];
 ```
 
 #### 修改好友属性
@@ -966,6 +1066,19 @@ followee.Unset("nickname");
 await followee.Save();
 ```
 
+```objc
+LCObject *followee = [LCObject objectWithClassName:@"_Followee" objectId:@"followee objectId"];
+// 添加新属性
+followee[@"remark"] = @"丐帮帮主";
+// 更新已有属性
+followee[@"group"] = @"friend";
+// 删除已有属性
+[followee removeObjectForKey:@"nickname"];
+[followee saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+    // handle result
+}];
+```
+
 #### 删除好友
 
 当 A 不再希望和 B 是朋友，可以删除好友。注意：删除好友只会删掉 `_Followee` 表中用户 A 的好友数据，而用户 B 的好友数据依然保留。也就是说 A 不再视 B 为好友，而在 B 的好友列表中依然有 A。
@@ -990,6 +1103,12 @@ currentUser.unfollowInBackground(targetUserObjectId).subscribe(new Observer<JSON
 
 ```cs
 await user1.Unfollow("Tom's objectId");
+```
+
+```objc
+[[LCUser currentUser] unfollow:@"Tom's objectId" andCallback:^(BOOL succeeded, NSError * _Nullable error) {
+    // handle result
+}];
 ```
 
 ### REST API
