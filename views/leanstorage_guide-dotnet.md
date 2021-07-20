@@ -1566,6 +1566,18 @@ Team ID 用于获取 `access_token`。登录 Apple 开发者平台，在右上�
 
 在控制台填写完成所有信息后，使用以下代码登录。
 
+```cs
+Dictionary<string, object> appleAuthData = new Dictionary<string, object> {
+  // 必须
+  { "uid", "USER IDENTIFIER" },
+
+  // 可选
+  { "identity_token", "IDENTITY TOKEN" },
+  { "code", "AUTHORIZATION CODE" }
+};
+TDSUser currentUser = await TDSUser.LoginWithAuthData(appleAuthData, "lc_apple");
+```
+
 #### 鉴权数据的保存
 
 `_User` class 中的 `authData` 是一个以平台名为键名，鉴权信息为键值的 JSON 对象。
