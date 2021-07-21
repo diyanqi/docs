@@ -761,7 +761,7 @@ curl -X POST \
 
 可以使用该接口删除该 object 的成绩以及在榜单中的排名（仅删除当前排行榜的成绩，不能删除历史版本的成绩）。只能使用 master key 来删除某个 object 的成绩：
 
-```
+```sh
 curl -X DELETE \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{masterkey}},master" \
@@ -771,7 +771,7 @@ curl -X DELETE \
 
 成功返回空对象：
 
-```
+```json
 {}
 ```
 
@@ -913,7 +913,7 @@ curl -X POST \
 
 可以使用该接口删除该 entity 的成绩以及在榜单中的排名（仅删除当前排行榜的成绩，不能删除历史版本的成绩）。只能使用 master key 来删除某个 entity 的成绩：
 
-```
+```sh
 curl -X DELETE \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{masterkey}},master" \
@@ -923,7 +923,7 @@ curl -X DELETE \
 
 成功返回空对象：
 
-```
+```json
 {}
 ```
 
@@ -942,7 +942,8 @@ curl -X GET \
   -G \
   --data-urlencode 'startPosition=0' \
   --data-urlencode 'maxResultsCount=20' \
-  --data-urlencode 'includeUser=username,avatar_url' \
+  --data-urlencode 'selectUserKeys=username,avatar' \
+  --data-urlencode 'includeUser=avatar' \
   --data-urlencode 'includeStatistics=wins' \
   --data-urlencode 'version=1' \
   https://{{host}}/1.1/leaderboard/leaderboards/user/<statisticName>/ranks
@@ -952,9 +953,11 @@ curl -X GET \
 | --------- | ---- | ---------------------------------------- |
 | startPosition  | 可选  | 排行头部起始位置，默认为 0。 |
 | maxResultsCount | 可选   | 最大返回数量，默认为 20。 |
-| includeUser | 可选   |  返回用户在 `_User` 表的其他字段，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，查询该信息需要提供 masterKey。 |
+| selectUserKeys | 可选   |  返回用户在 `_User` 表的其他字段，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，查询该信息需要提供 masterKey，否则会忽略该参数。 |
+| includeUser | 可选   |  返回用户在 `_User` 表的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，查询该信息需要提供 masterKey，否则会忽略该参数。 |
 | includeStatistics | 可选   |  返回该用户在其他排行榜中的成绩，如果传入了不存在的排行榜名称，将会返回错误。 |
 | version | 可选   | 返回指定 version 的排行结果，默认返回当前版本的数据。可查询的历史版本请参考 [历史数据](leaderboard.html#历史数据)。|
+| count  | 可选  | 值为 1 时返回该排行榜中的成员数量，默认为 0。 |
 
 
 返回 JSON 对象：
@@ -963,26 +966,28 @@ curl -X GET \
 {
   "results": [
     {
-      "user": {
-        "objectId": "5ab9f63910b03545c0f529df",
-        "__type": "Pointer",
-        "username": "Superman",
-        "avatar_url": "http://example.com/avatar.png",
-        "className": "_User"
-      },
+      "statisticName": "world",
+      "statisticValue": 91,
       "rank": 0,
-      "statisticName": "wins",
-      "statisticValue": 42,
-      "statistics": [{
-        "statisticName": "world",
-        "statisticValue": null,
-        "version": null,
-      }]
-    }, {
-      "user": {},
-      "rank": 1,
-    } ...
-  ]
+      "user": {
+        "__type": "Pointer",
+        "className": "_User",
+        "updatedAt": "2021-07-21T03:08:10.487Z",
+        "username": "zw1stza3fy701rvgxqwiikex7",
+        "createdAt": "2020-09-04T04:23:04.795Z",
+        "photo": {
+          "objectId": "60f78f98d9f1465d3b1da12d",
+          "__type": "File",
+          "url": "https://example.com/user_1.jpg",
+          "updatedAt": "2021-07-21T03:08:08.692Z",
+          "createdAt": "2021-07-21T03:08:08.692Z",
+        },
+        "objectId": "5f51c1287628f2468aa696e6"
+      }
+    },
+    {...}
+  ],
+  "count": 500
 }
 ```
 
@@ -997,8 +1002,8 @@ curl -X GET \
   -G \
   --data-urlencode 'startPosition=0' \
   --data-urlencode 'maxResultsCount=20' \
-  --data-urlencode 'includeUser=username,avatar_url' \
-  --data-urlencode 'includeStatistics=wins' \
+  --data-urlencode 'selectUserKeys=username,avatar' \
+  --data-urlencode 'includeUser=avatar' \
   --data-urlencode 'version=1' \
   https://{{host}}/1.1/leaderboard/leaderboards/user/<statisticName>/ranks/<uid>
 ```
@@ -1006,9 +1011,11 @@ curl -X GET \
 | --------- | ---- | ---------------------------------------- |
 | startPosition  | 可选  | 排行头部起始位置，默认为 0。 |
 | maxResultsCount | 可选   | 最大返回数量，默认为 20。 |
-| includeUser | 可选   |  返回用户在 `_User` 表的其他字段，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，查询该信息需要提供 masterKey。|
+| selectUserKeys | 可选   |  返回用户在 `_User` 表的其他字段，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，查询该信息需要提供 masterKey，否则会忽略该参数。 |
+| includeUser | 可选   |  返回用户在 `_User` 表的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，查询该信息需要提供 masterKey，否则会忽略该参数。 |
 | includeStatistics | 可选   |  返回该用户在其他排行榜中的成绩，支持用英文逗号 `,` 隔开传入多个值，如果传入了不存在的排行榜名称，将会返回错误。 |
 | version | 可选   | 返回指定 version 的排行结果。默认返回当前版本的数据。可查询的历史版本请参考 [历史数据](leaderboard.html#历史数据)。 |
+| count  | 可选  | 值为 1 时返回该排行榜中的成员数量，默认为 0。 |
 
 返回：
 
@@ -1046,7 +1053,7 @@ curl -X GET \
       "user": {...}
     }
   ],
-  "count": 5
+  "count": 500
 }
 ```
 
