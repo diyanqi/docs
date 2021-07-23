@@ -1018,7 +1018,7 @@ ReadOnlyCollection<LCObject> friends = await query.Find();
 
 ```objc
 LCQuery *query = [[LCUser currentUser] followeeObjectsQuery];
-[query whereKey:@"friendStatus" equalTo:@(true)];
+[query whereKey:@"friendStatus" equalTo:@YES];
 [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
     // handle result
 }];
