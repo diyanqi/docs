@@ -64,7 +64,7 @@ Java SDK 一共包含如下几个模块：
 
 获取 SDK 有多种方式，较为推荐的方式是通过包依赖管理工具下载最新版本。
 
-我们已经将所有的 library 发布到了 maven 中心仓库，开发者可以用以下任意包管理工具来安装 SDK。
+我们已经将所有的 library 发布到了 maven 中心仓库，开发者可以用以下任意包管理工具来安装 SDK，并可以在[公开的 release 列表页](https://github.com/leancloud/java-unified-sdk/releases)查看最新版本。
 
 #### 使用存储功能
 
