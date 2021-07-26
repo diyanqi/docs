@@ -35,7 +35,7 @@ todo.saveInBackground().subscribe(new Observer<LCObject>() {
 
 ## SDK 安装与初始化
 
-请阅读《Java SDK 配置指南》。
+请阅读《[Java SDK 配置指南](https://leancloud.cn/docs/sdk_setup-java.html)》。
 
 > Android SDK 老版本迁移
 >
