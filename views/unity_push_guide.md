@@ -4,7 +4,7 @@
 
 本文介绍了如何在 Unity 中使用 LeanCloud 的推送功能。建议先阅读 [推送通知服务总览](push_guide.html) 了解相关概念。
 
-目前支持 iOS 及国内 Android 厂商（华为，小米，VIVO，OPPO，魅族）。
+由于 Android 系统对于第三方推送管控越来越严格，所以目前只支持 iOS 及 Android 厂商（华为，小米，VIVO，OPPO，魅族）推送。
 
 ## 准备工作
 
@@ -15,6 +15,7 @@
 ### Android
 
 申请各厂商 Android 推送权限，请参考 [Android 混合推送开发指南](android_mixpush_guide.html)。
+
 （注意：这里只需要参考《Android 混合推送开发指南》中申请各厂商的推送参数，而`不需要` Android 相关配置）。
 
 ## 安装
@@ -25,11 +26,13 @@
 
 如果项目中`有`其他 Android Gradle 配置，则需要下载 unity-push-without-gradle.unitypackage，这个包中不包含推送相关的 Android Gradle 配置，需要开发者自行补充。
 
+（这里不提供 UPM 方式安装是因为有 Android Gradle 配置）
+
 ## 配置
 
 ### iOS
 
-只需要在初始化时传入 iOS 开发者 TeamId，见初始化部分
+只需要在初始化时传入 iOS 开发者 TeamId，见[初始化](#初始化)
 
 ### Android
 
@@ -52,6 +55,7 @@ VIVO 推送后台申请的 app_id 和 api_key 需要配置到 Assets/Plugins/And
 ### 初始化
 
 这里需要开发者根据平台及设备信息，进行不同厂商 SDK 的初始化。
+
 （其中小米推送有能力在其他厂商下建立推送连接，可以用作`缺省`厂商使用）
 
 ```cs
