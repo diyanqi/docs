@@ -953,8 +953,8 @@ curl -X GET \
 | --------- | ---- | ---------------------------------------- |
 | startPosition  | 可选  | 排行头部起始位置，默认为 0。 |
 | maxResultsCount | 可选   | 最大返回数量，默认为 20。 |
-| selectUserKeys | 可选   |  返回用户在 `_User` 表的其他字段，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，查询该信息需要提供 masterKey，否则会忽略该参数。 |
-| includeUser | 可选   |  返回用户在 `_User` 表的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，查询该信息需要提供 masterKey，否则会忽略该参数。 |
+| selectUserKeys | 可选   |  返回用户在 `_User` 表的其他字段，支持多个字段，用英文逗号 `,` 隔开。为确保安全，在非 masterKey 请求下不返回 `email` 及 `mobilePhoneNumber` 等敏感字段。|
+| includeUser | 可选   |  返回用户在 `_User` 表的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，在非 masterKey 请求下不返回 `email` 及 `mobilePhoneNumber` 等敏感字段字段。|
 | includeStatistics | 可选   |  返回该用户在其他排行榜中的成绩，如果传入了不存在的排行榜名称，将会返回错误。 |
 | version | 可选   | 返回指定 version 的排行结果，默认返回当前版本的数据。可查询的历史版本请参考 [历史数据](leaderboard.html#历史数据)。|
 | count  | 可选  | 值为 1 时返回该排行榜中的成员数量，默认为 0。 |
@@ -1011,8 +1011,8 @@ curl -X GET \
 | --------- | ---- | ---------------------------------------- |
 | startPosition  | 可选  | 排行头部起始位置，默认为 0。 |
 | maxResultsCount | 可选   | 最大返回数量，默认为 20。 |
-| selectUserKeys | 可选   |  返回用户在 `_User` 表的其他字段，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，查询该信息需要提供 masterKey，否则会忽略该参数。 |
-| includeUser | 可选   |  返回用户在 `_User` 表的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，查询该信息需要提供 masterKey，否则会忽略该参数。 |
+| selectUserKeys | 可选   |  返回用户在 `_User` 表的其他字段，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，在非 masterKey 请求下不返回 `email` 及 `mobilePhoneNumber` 等敏感字段。 |
+| includeUser | 可选   |  返回用户在 `_User` 表的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，在非 masterKey 请求下不返回 `email` 及 `mobilePhoneNumber` 等敏感字段。|
 | includeStatistics | 可选   |  返回该用户在其他排行榜中的成绩，支持用英文逗号 `,` 隔开传入多个值，如果传入了不存在的排行榜名称，将会返回错误。 |
 | version | 可选   | 返回指定 version 的排行结果。默认返回当前版本的数据。可查询的历史版本请参考 [历史数据](leaderboard.html#历史数据)。 |
 | count  | 可选  | 值为 1 时返回该排行榜中的成员数量，默认为 0。 |
