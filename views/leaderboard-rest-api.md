@@ -945,7 +945,6 @@ curl -X GET \
   --data-urlencode 'selectUserKeys=username,avatar' \
   --data-urlencode 'includeUser=avatar' \
   --data-urlencode 'includeStatistics=wins' \
-  --data-urlencode 'version=1' \
   https://{{host}}/1.1/leaderboard/leaderboards/user/<statisticName>/ranks
 ```
 
@@ -1004,7 +1003,6 @@ curl -X GET \
   --data-urlencode 'maxResultsCount=20' \
   --data-urlencode 'selectUserKeys=username,avatar' \
   --data-urlencode 'includeUser=avatar' \
-  --data-urlencode 'version=1' \
   https://{{host}}/1.1/leaderboard/leaderboards/user/<statisticName>/ranks/<uid>
 ```
 | 参数        | 约束   | 说明                                   |
@@ -1072,7 +1070,6 @@ curl -X GET \
   --data-urlencode 'maxResultsCount=2' \
   --data-urlencode 'selectObjectKeys=name,avatar' \
   --data-urlencode 'includeObject=avatar' \
-  --data-urlencode 'version=1' \
   --data-urlencode 'count=1' \
   https://{{host}}/1.1/leaderboard/leaderboards/object/<statisticName>/ranks
 ```
@@ -1136,7 +1133,6 @@ curl -X GET \
   --data-urlencode 'maxResultsCount=2' \
   --data-urlencode 'selectObjectKeys=name,avatar' \
   --data-urlencode 'includeObject=avatar' \
-  --data-urlencode 'version=1' \
   --data-urlencode 'count=1' \
   https://{{host}}/1.1/leaderboard/leaderboards/object/<statisticName>/ranks/<objectId>
 ```
@@ -1203,7 +1199,6 @@ curl -X GET \
   -G \
   --data-urlencode 'startPosition=0' \
   --data-urlencode 'maxResultsCount=2' \
-  --data-urlencode 'version=1' \
   --data-urlencode 'count=1' \
   https://{{host}}/1.1/leaderboard/leaderboards/entity/<statisticName>/ranks
 ```
@@ -1250,7 +1245,6 @@ curl -X GET \
   -G \
   --data-urlencode 'startPosition=0' \
   --data-urlencode 'maxResultsCount=2' \
-  --data-urlencode 'version=1' \
   --data-urlencode 'count=1' \
   https://{{host}}/1.1/leaderboard/leaderboards/entity/<statisticName>/ranks/<id>
 ```
