@@ -22,6 +22,7 @@ apnsTopic|iOS|基于 Token Authentication 的推送需要设置该字段。iOS S
 deviceType| |设备类型，目前支持 `ios`、`android`。
 installationId|Android|LeanCloud SDK 为每个 Android 设备产生的唯一标识符
 timeZone| |字符串，设备设定的时区
+valid| |valid 表示当前这条设备记录是否有效，是 false 表示这条记录失效了，比如设备长时间未活跃、使用平台推送时未通过长连接登录推送服务、使用混合推送时厂商返回设备 registration 失效等。
 
 ### Notification
 
