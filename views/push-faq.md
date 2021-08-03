@@ -41,10 +41,10 @@
 ### 有一些 iOS 设备收不到推送，到控制台查看推送记录，发现 invalidTokens 的数量大于 0，是怎么回事？
 
 invalidTokens 的数量由以下两部分组成：
-* 选择的设备与选择的证书不匹配时，会增加 invalidTokens 的数量，例如使用开发证书给生产证书的设备推送。
+* 选择的设备与选择的证书不匹配时，会增加 invalidTokens 的数量，例如使用开发证书给生产证书的设备推送。请检查 APNS 证书是否过期，并检查是否使用了正确的证书类型。
 * 目标设备移除或重装了对应的 App。
-
-针对第一种情况，请检查 APNS 证书是否过期，并检查是否使用了正确的证书类型。
+* [保存 DeviceToken](ios_push_guide.html#保存_Token)时没有上传 team ID 也会报错 invalidTokens。
+* 使用 Token Authentication 的方式在控制台上传证书时，TeamID 或者 Topics 输入错误（Topics 是 App 的 Bundle ID）也会报错 invalidTokens。检查相关配置可参考：[iOS 推送设置指南](ios_push_cert.html#上传_Token_Authentication_Key)。
 
 ### Android 消息接收能不能自定义 Receiver 不弹出通知
 
