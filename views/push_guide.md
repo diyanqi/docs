@@ -45,7 +45,7 @@ errors| | 本次推送过程中的错误信息。
 
 如果某个设备不想收到推送提醒，可以将 `_Installation` 表中相应安装对象的 `valid` 字段修改为 `false`。
 
-注意：我们只保留最近一周的推送记录，并会对过期的推送记录定时进行清理。推送记录清理和推送消息过期时间无关，也就是说即使推送记录被清理，没有过期的推送消息依然是有效的，目标用户依然是能够收到消息。推送过期时间设置请参考《推送 REST API 使用指南》的《过期时间和定时推送》一节。
+注意：我们只保留最近一周的推送记录，并会对过期的推送记录定时进行清理。推送记录清理和推送消息过期时间无关，也就是说即使推送记录被清理，没有过期的推送消息依然是有效的，目标用户依然是能够收到消息。推送过期时间设置请参考[《推送 REST API 使用指南》](https://leancloud.cn/docs/push-rest-api.html)的*《过期时间和定时推送》*一节。
 
 ## Unity 推送
 
@@ -53,20 +53,20 @@ Unity SDK 即将支持推送通知，敬请期待！
 
 ## iOS 推送
 
-请阅读《iOS 推送开发指南》。
+请阅读[《iOS 推送开发指南》](https://leancloud.cn/docs/ios_push_guide.html)。
 
 ## Android 推送
 
 由于 Android 系统权限控制越来越严，云服务自有通道的推送到达率受到影响。
 因此，建议商用版应用使用我们的「混合推送」方案，该方案对接了国内主流厂商的不同接口，让开发者通过统一的 API 完成推送任务。
-详见《Android 混合推送开发指南》。
+详见[《Android 混合推送开发指南》](https://leancloud.cn/docs/android_mixpush_guide.html)。
 
-如果想要使用云服务自有通道推送，请阅读《Android 推送开发指南》。 
+如果想要使用云服务自有通道推送，请阅读[《Android 推送开发指南》](https://leancloud.cn/docs/android_push_guide.html)。
 ## 使用 REST API 推送消息
 
-请阅读《推送 REST API 使用指南》。
+请阅读[《推送 REST API 使用指南》](https://leancloud.cn/docs/push-rest-api.html)。
 
 ## 云引擎下通过 JavaScript SDK 创建推送
 
 JavaScript SDK 也提供了创建推送的接口，使用场景主要面向云引擎。
-详见《云引擎常见问题解答》的《云引擎下如何通过 JavaScript SDK 创建推送？》。
+详见[《云引擎常见问题解答》](https://leancloud.cn/docs/leanengine_faq.html)的*《云引擎下如何通过 JavaScript SDK 创建推送？》*。
