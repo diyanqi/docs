@@ -75,6 +75,12 @@ if (Application.platform == RuntimePlatform.IPhonePlayer) {
 }
 ```
 
+海外 Android 用户可以通过初始化 FCM 进行推送。
+
+```cs
+LCFCMPushManager.RegisterFCMPush();
+```
+
 ## Installation
 
 SDK 提供默认的 Installation 对象，用来保存推送所需的 token 以及其它数据。
