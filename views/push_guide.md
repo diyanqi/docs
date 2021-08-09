@@ -49,22 +49,22 @@ errors| | 本次推送过程中的错误信息。
 
 ## Unity 推送
 
-请阅读《Unity 推送开发指南》。
+请阅读[Unity 推送开发指南](unity_push_guide.html)。
 
 ## iOS 推送
 
-请阅读[《iOS 推送开发指南》](https://leancloud.cn/docs/ios_push_guide.html)。
+请阅读[iOS 推送开发指南](ios_push_guide.html)。
 
 ## Android 推送
 
 由于 Android 系统权限控制越来越严，云服务自有通道的推送到达率受到影响。
 因此，建议商用版应用使用我们的「混合推送」方案，该方案对接了国内主流厂商的不同接口，让开发者通过统一的 API 完成推送任务。
-详见[《Android 混合推送开发指南》](https://leancloud.cn/docs/android_mixpush_guide.html)。
+详见[Android 混合推送开发指南](android_mixpush_guide.html)。
 
-如果想要使用云服务自有通道推送，请阅读[《Android 推送开发指南》](https://leancloud.cn/docs/android_push_guide.html)。
+如果想要使用云服务自有通道推送，请阅读[Android 推送开发指南](android_push_guide.html)。
 ## 使用 REST API 推送消息
 
-请阅读[《推送 REST API 使用指南》](https://leancloud.cn/docs/push-rest-api.html)。
+请阅读[推送 REST API 使用指南](push-rest-api.html)。
 
 ## 云引擎下通过 JavaScript SDK 创建推送
 
