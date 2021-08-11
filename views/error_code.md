@@ -7,7 +7,7 @@
 
 * iOS Objective C SDK 的 [AVConstants](https://github.com/leancloud/objc-sdk/blob/master/AVOS/Sources/Foundation/LCConstants.h)。
 * PHP SDK 中与网络请求操作相关的错误码，比如 `28` 表示请求超时、`7` 表示连接服务器失败，请参考 [libcurl error codes](http://curl.haxx.se/libcurl/c/libcurl-errors.html)。
-* Android 的 [LCException](https://leancloud.cn/api-docs/android/index.html) 以及 [常量字段值](https://leancloud.cn/api-docs/android/constant-values.html#cn.leancloud.LCException.OTHER_CAUSE)。
+* Android 的 [LCException](https://leancloud.cn/api-docs/android/cn/leancloud/LCException.html) 以及 [常量字段值](https://leancloud.cn/api-docs/android/constant-values.html#cn.leancloud.LCException.OTHER_CAUSE)。
 * JavaScript SDK 的 [AV.Error](https://leancloud.github.io/javascript-sdk/docs/AV.Error.html)。
 
 ## 0
@@ -478,4 +478,3 @@
 * 含义 - 不合法的 LeaderBoard 对象。
 
 {{ im.errorCodes() }}
-
