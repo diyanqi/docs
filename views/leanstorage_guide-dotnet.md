@@ -2024,6 +2024,53 @@ if (currentUser.IsAnonymous) {
 
 随着用户量的增长，你可能会发现相比于为每一名用户单独设置权限，将预先设定好的权限直接分配给一部分用户是更好的选择。为了迎合这种需求，云服务支持基于角色的权限管理。请参阅《ACL 权限管理开发指南》。
 
+## 子类化
+
+子类化推荐给进阶的开发者在进行代码重构的时候做参考。你可以用 `LCObject` 重载符 [] 访问/赋值任意字段；你也可以使用子类化的属性来封装获取字段的方法，增强编码体验。子类化有很多优势，包括减少代码的编写量，具有更好的扩展性，和支持自动补全等等。
+
+### 实现
+
+要实现子类化，需要下面三个步骤：
+
+1. 继承 `LCObject`；
+2. 重载构造方法，传入 `类名`；
+3. 注册子类
+
+下面是实现 `Student` 子类化的例子：
+
+```cs
+// 定义 Student 类型
+class Student : LCObject {
+    internal string Name {
+        get => this["name"] as string;
+        set {
+            this["objectValue"] = value;
+        }
+    }
+
+    internal Student() : base("Student") { }
+}
+
+// 注册 Student 子类
+LCObject.RegisterSubclass("Student", () => new Student());
+```
+
+### 使用
+
+如下所示，两段代码对 name 字段的赋值方式等价。
+
+```cs
+LCObject student = new LCObject("Student");
+student["name"] = "小明";
+await student.Save();
+```
+
+```cs
+Student student = new Student();
+student.Name = "小明";
+await student.Save();
+```
+
 ## 全文搜索
 
 全文搜索是一个针对应用数据进行全局搜索的接口，它基于搜索引擎构建，提供更强大的搜索功能。要深入了解其用法和阅读示例代码，请阅读《全文搜索指南》。
