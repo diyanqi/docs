@@ -16,7 +16,7 @@ Installation 表示一个允许推送的设备的唯一标示，对应数据管�
 ---|---|---
 badge|iOS|呈现在应用图标右上角的红色圆形数字提示，例如待更新的应用数、未读信息数目等。
 channels| |设备订阅的频道。频道名称只能包含大小写英文字母、数字、下划线（`_`）、连字符（`-`）、等号（`=`）、汉字（中日韩统一表意文字）。
-deviceProfile||在应用有多个 iOS 推送证书或多个 Android 混合推送配置的场景下，deviceProfile 用于指定当前设备使用的证书名或配置名。其值需要与 **云服务控制台 > 推送 > 设置** 内配置的证书名或配置名对应，否则将无法完成推送。`deviceProfile` 的值必须以字母开头，由大小写字母、数字和下划线组成的字符串，或为空值。deviceProfile 是特殊字段，只支持 `equals` 查询。 
+deviceProfile||在应用有多个 iOS 推送证书或多个 Android 混合推送配置的场景下，deviceProfile 用于指定当前设备使用的证书名或配置名。其值需要与 **云服务控制台 > 推送 > 设置** 内配置的证书名或配置名对应，否则将无法完成推送。`deviceProfile` 的值必须以字母开头，由大小写字母、数字和下划线组成的字符串，或为空值。deviceProfile 是特殊字段，只支持 `equals` 查询。
 deviceToken|iOS|APNS 推送的唯一标识符
 apnsTopic|iOS|基于 Token Authentication 的推送需要设置该字段。iOS SDK 会自动读取 iOS 应用的 bundle ID 作为 apnsTopic。但以下情况需要手工指定： 1. 使用低于 v4.2.0 的 iOS SDK 版本; 2. 不使用 iOS SDK （如 React Native）；3. 使用不同于 bundle ID 的 topic。
 deviceType| |设备类型，目前支持 `ios`、`android`。
@@ -31,7 +31,7 @@ valid| |valid 表示当前这条设备记录是否有效，是 false 表示这�
 名称|适用平台|描述
 ---|---|---
 notificationId| | 推送消息 ID
-msg| |本次推送的消息内容，JSON 对象，详见[推送 REST API 使用指南](push-rest-api.html)中的[消息内容](push-rest-api.html#消息内容-Data)。
+msg| |本次推送的消息内容，JSON 对象，详见[推送 REST API 使用指南](push-rest-api.html)中的[消息内容参数](push-rest-api.html#消息内容参数)。
 invalidTokens|iOS|本次推送遇到多少次由 APNS 返回的 [INVALID TOKEN](https://developer.apple.com/library/mac/technotes/tn2265/_index.html#//apple_ref/doc/uid/DTS40010376-CH1-TNTAG32) 错误。**如果这个数字过大，请留意证书是否正常。**
 prod|iOS|使用什么环境证书。**dev** 表示开发证书，**prod** 表示生产环境证书。
 status| |本次推送的状态，**in-queue** 表示仍然在队列，**done** 表示完成，**scheduled** 表示定时推送任务等待触发中。
