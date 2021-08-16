@@ -30,14 +30,18 @@ valid| |valid 表示当前这条设备记录是否有效，是 false 表示这�
 
 名称|适用平台|描述
 ---|---|---
-data| |本次推送的消息内容，JSON 对象。
+notificationId| | 推送消息 ID
+msg| |本次推送的消息内容，JSON 对象，详见[推送 REST API 使用指南](push-rest-api.html)中的[消息内容](push-rest-api.html#消息内容-Data)。
 invalidTokens|iOS|本次推送遇到多少次由 APNS 返回的 [INVALID TOKEN](https://developer.apple.com/library/mac/technotes/tn2265/_index.html#//apple_ref/doc/uid/DTS40010376-CH1-TNTAG32) 错误。**如果这个数字过大，请留意证书是否正常。**
 prod|iOS|使用什么环境证书。**dev** 表示开发证书，**prod** 表示生产环境证书。
 status| |本次推送的状态，**in-queue** 表示仍然在队列，**done** 表示完成，**scheduled** 表示定时推送任务等待触发中。
 devices| |本次推送目标设备数。这个数字不是实际送达数，而是处理本次推送请求时在 `_Installation` 表中符合查询条件且有效的总设备数。有效是指 `_Installation` 表的 valid 字段为 true 且 updatedAt 字段时间在最近三个月以内。目标设备数可能会包含大量的非活跃用户(如已卸载 App 的用户)，这部分用户可能无法收到推送。
-successes| |本次推送成功设备数。推送成功对普通 Android 设备来说指目标设备收到了推送，对 iOS 设备或使用了混合推送的 Android 设备来说指消息成功推送给了 Apple APNS 或设备对应的混合推送平台。
+successes| |本次推送成功设备数。推送成功对普通 Android 设备来说指目标设备收到了推送，对 iOS 设备或使用了混合推送的 Android 设备来说指消息成功推送给了 Apple APNS 或设备对应的混合推送平台。此外还有 `[lc/ios/fcm/hms/mi/oppo/vivo/meizu]Successes` 等分别代码通过各渠道推送成功的设备数。
 where| |本次推送查询 `_Installation` 表的条件，符合这些查询条件的设备将接收本条推送消息。
 errors| | 本次推送过程中的错误信息。
+from-service| | **push**"表示是直接发送的推送消息，**rtm** 表示是 RTM 离线推送消息。
+push-time| | 定时推送的发送时间
+
 
 推送本质上是根据一个 query 条件来查询 `_Installation` 表里符合条件的设备，然后将消息推送给设备。因为 `_Installation` 是一个可以完全自定义属性的 Key-Value Object，因此可以实现各种复杂条件推送，例如频道订阅、地理位置信息推送、特定用户推送等。
 
