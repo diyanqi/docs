@@ -477,10 +477,11 @@ action|字符串|可选|注册 Receiver 时提供的 action name，仅当需要�
 ios | Apple APNs
 android | 云服务自有 Android 平台
 mi | 小米推送
-hms | 华为 HMS 推送
-mz | 魅族推送
-vivo | vivo 推送
-oppo | oppo 推送
+hms | 华为 HMS 推送 （仅国内版适用）
+mz | 魅族推送 （仅国内版适用）
+vivo | vivo 推送 （仅国内版适用）
+oppo | oppo 推送 （仅国内版适用）
+fcm | FCM 推送（仅国际版适用）
 
 #### 通过查询条件发推送
 
