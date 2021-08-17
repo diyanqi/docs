@@ -319,7 +319,7 @@ curl -X GET \
 }
 ```
 
-如果你需要获得用户的其他信息，例如 `username`，可以在请求 url 中指定 `selectUserKeys` 来获取。如果用户的其他信息中有 pointer 字段，可以在请求 url 中指定 `includeUser` 来获取 pointer 字段的更详细的信息。这两个参数需要用户登录或使用 masterKey 权限，否则会报权限错误。
+如果你需要获得用户的其他信息，例如 `username`，可以在请求 url 中指定 `selectKeys` 来获取。如果用户的其他信息中有 pointer 字段，可以在请求 url 中指定 `includeKeys` 来获取 pointer 字段的更详细的信息。这两个参数需要用户登录或使用 masterKey 权限，否则会报权限错误。
 
 通过用户登录，传入 `sessionToken` 获取更多信息：
 
@@ -329,8 +329,8 @@ curl -X GET \
   -H "X-LC-Key: {{appkey}}" \
   -H "X-LC-Session: <sessionToken>" \
   --data-urlencode 'statistics=world' \
-  --data-urlencode 'selectUserKeys=username,avatar.url' \
-  --data-urlencode 'includeUser=avatar' \
+  --data-urlencode 'selectKeys=username,avatar.url' \
+  --data-urlencode 'includeKeys=avatar' \
   https://{{host}}/1.1/leaderboard/users/self/statistics
 ```
 
@@ -341,8 +341,8 @@ curl -X GET \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{masterkey}},master" \
   --data-urlencode 'statistics=wins' \
-  --data-urlencode 'selectUserKeys=username,avatar.url' \
-  --data-urlencode 'includeUser=avatar' \
+  --data-urlencode 'selectKeys=username,avatar.url' \
+  --data-urlencode 'includeKeys=avatar' \
   https://{{host}}/1.1/leaderboard/users/<uid>/statistics
 ```
 
@@ -422,7 +422,7 @@ curl -X POST \
 }
 ```
 
-如果你需要获得用户的其他信息，例如 `username`，可以在请求 url 中指定 `selectUserKeys` 来获取。如果用户的其他信息中有 pointer 字段，可以在请求 url 中指定 `includeUser` 来获取 pointer 字段的更详细的信息。这两个参数需要用户登录或使用 masterKey 权限，否则会报权限错误。
+如果你需要获得用户的其他信息，例如 `username`，可以在请求 url 中指定 `selectKeys` 来获取。如果用户的其他信息中有 pointer 字段，可以在请求 url 中指定 `includeKeys` 来获取 pointer 字段的更详细的信息。这两个参数需要用户登录或使用 masterKey 权限，否则会报权限错误。
 
 ```sh
 curl -X POST \
@@ -430,7 +430,7 @@ curl -X POST \
   -H "X-LC-Key: {{masterkey}},master" \
   -H "Content-Type: application/json" \
   -d '["60d950629be318a249000001", "60d950629be318a249000000"]'
-  https://{{host}}/1.1/leaderboard/users/statistics/<statisticName>?selectUserKeys=username,avatar&includeUser=avatar
+  https://{{host}}/1.1/leaderboard/users/statistics/<statisticName>?selectKeys=username,avatar&includeKeys=avatar
 ```
 
 返回示例
@@ -601,14 +601,14 @@ curl -X GET \
 }
 ```
 
-你可以在请求中用 `selectObjectKeys` 来指定一同返回 object 在数据存储中的字段数据，多个字段用英文逗号 `,` 隔开，能否返回数据受 acl 限制。例如一并返回 object 在存储中的 `name` 和 `level` 字段属性：
+你可以在请求中用 `selectKeys` 来指定一同返回 object 在数据存储中的字段数据，多个字段用英文逗号 `,` 隔开，能否返回数据受 acl 限制。例如一并返回 object 在存储中的 `name` 和 `level` 字段属性：
 
 ```sh
 curl -X GET \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
   --data-urlencode 'statistics=wins' \
-  --data-urlencode 'selectObjectKeys=name,level' \
+  --data-urlencode 'selectKeys=name,level' \
   https://{{host}}/1.1/leaderboard/objects/<objectId>/statistics
 ```
 
@@ -633,14 +633,14 @@ curl -X GET \
 }
 ```
 
-如果 object 的某个字段属性是 pointer 类型，可以使用 `includeObject` 来获取该 pointer 字段的数据，多个字段用英文逗号 `,` 隔开。例如获取 `memberType` 是 `Weapon` 的某个 object 的 `avatar` 字段：
+如果 object 的某个字段属性是 pointer 类型，可以使用 `includeKeys` 来获取该 pointer 字段的数据，多个字段用英文逗号 `,` 隔开。例如获取 `memberType` 是 `Weapon` 的某个 object 的 `avatar` 字段：
 
 ```sh
 curl -X GET \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
   --data-urlencode 'statistics=wins' \
-  --data-urlencode 'includeObject=avatar' \
+  --data-urlencode 'includeKeys=avatar' \
   https://{{host}}/1.1/leaderboard/objects/<objectId>/statistics
 ```
 
@@ -715,7 +715,7 @@ curl -X POST \
 }
 ```
 
-你可以在请求 url 中用 `selectObjectKeys` 来指定一同返回 object 在数据存储中的字段数据，多个字段用英文逗号 `,` 隔开，能否返回数据受 acl 限制。如果 object 的某个字段属性是 pointer 类型，可以使用 `includeObject` 来获取该 pointer 字段的数据，多个字段用英文逗号 `,` 隔开。
+你可以在请求 url 中用 `selectKeys` 来指定一同返回 object 在数据存储中的字段数据，多个字段用英文逗号 `,` 隔开，能否返回数据受 acl 限制。如果 object 的某个字段属性是 pointer 类型，可以使用 `includeKeys` 来获取该 pointer 字段的数据，多个字段用英文逗号 `,` 隔开。
 
 
 ```sh
@@ -724,7 +724,7 @@ curl -X POST \
   -H "X-LC-Key: {{masterkey}},master" \
   -H "Content-Type: application/json" \
   -d '["60d950629be318a249000001"]'
-  https://{{host}}/1.1/leaderboard/objects/statistics/<statisticName>?selectObjectKeys=name,avatar&includeObject=avatar
+  https://{{host}}/1.1/leaderboard/objects/statistics/<statisticName>?selectKeys=name,avatar&includeKeys=avatar
 ```
 
 返回示例：
@@ -942,8 +942,8 @@ curl -X GET \
   -G \
   --data-urlencode 'startPosition=0' \
   --data-urlencode 'maxResultsCount=20' \
-  --data-urlencode 'selectUserKeys=username,avatar' \
-  --data-urlencode 'includeUser=avatar' \
+  --data-urlencode 'selectKeys=username,avatar' \
+  --data-urlencode 'includeKeys=avatar' \
   --data-urlencode 'includeStatistics=wins' \
   https://{{host}}/1.1/leaderboard/leaderboards/user/<statisticName>/ranks
 ```
@@ -952,8 +952,8 @@ curl -X GET \
 | --------- | ---- | ---------------------------------------- |
 | startPosition  | 可选  | 排行头部起始位置，默认为 0。 |
 | maxResultsCount | 可选   | 最大返回数量，默认为 20。 |
-| selectUserKeys | 可选   |  返回用户在 `_User` 表的其他字段，支持多个字段，用英文逗号 `,` 隔开。为确保安全，在非 masterKey 请求下不返回敏感字段 `email` 及 `mobilePhoneNumber`。|
-| includeUser | 可选   |  返回用户在 `_User` 表的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。为确保安全，在非 masterKey 请求下不返回敏感字段 `email` 及 `mobilePhoneNumber`。|
+| selectKeys | 可选   |  返回用户在 `_User` 表的其他字段，支持多个字段，用英文逗号 `,` 隔开。为确保安全，在非 masterKey 请求下不返回敏感字段 `email` 及 `mobilePhoneNumber`。|
+| includeKeys | 可选   |  返回用户在 `_User` 表的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。为确保安全，在非 masterKey 请求下不返回敏感字段 `email` 及 `mobilePhoneNumber`。|
 | includeStatistics | 可选   |  返回该用户在其他排行榜中的成绩，如果传入了不存在的排行榜名称，将会返回错误。 |
 | version | 可选   | 返回指定 version 的排行结果，默认返回当前版本的数据。可查询的历史版本请参考 [历史数据](leaderboard.html#历史数据)。|
 | count  | 可选  | 值为 1 时返回该排行榜中的成员数量，默认为 0。 |
@@ -1001,16 +1001,16 @@ curl -X GET \
   -G \
   --data-urlencode 'startPosition=0' \
   --data-urlencode 'maxResultsCount=20' \
-  --data-urlencode 'selectUserKeys=username,avatar' \
-  --data-urlencode 'includeUser=avatar' \
+  --data-urlencode 'selectKeys=username,avatar' \
+  --data-urlencode 'includeKeys=avatar' \
   https://{{host}}/1.1/leaderboard/leaderboards/user/<statisticName>/ranks/<uid>
 ```
 | 参数        | 约束   | 说明                                   |
 | --------- | ---- | ---------------------------------------- |
 | startPosition  | 可选  | 排行头部起始位置，默认为 0。 |
 | maxResultsCount | 可选   | 最大返回数量，默认为 20。 |
-| selectUserKeys | 可选   |  返回用户在 `_User` 表的其他字段，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，在非 masterKey 请求下不返回敏感字段 `email` 及 `mobilePhoneNumber`。 |
-| includeUser | 可选   |  返回用户在 `_User` 表的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，在非 masterKey 请求下不返回敏感字段 `email` 及 `mobilePhoneNumber`。|
+| selectKeys | 可选   |  返回用户在 `_User` 表的其他字段，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，在非 masterKey 请求下不返回敏感字段 `email` 及 `mobilePhoneNumber`。 |
+| includeKeys | 可选   |  返回用户在 `_User` 表的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。 为确保安全，在非 masterKey 请求下不返回敏感字段 `email` 及 `mobilePhoneNumber`。|
 | includeStatistics | 可选   |  返回该用户在其他排行榜中的成绩，支持用英文逗号 `,` 隔开传入多个值，如果传入了不存在的排行榜名称，将会返回错误。 |
 | version | 可选   | 返回指定 version 的排行结果。默认返回当前版本的数据。可查询的历史版本请参考 [历史数据](leaderboard.html#历史数据)。 |
 | count  | 可选  | 值为 1 时返回该排行榜中的成员数量，默认为 0。 |
@@ -1068,8 +1068,8 @@ curl -X GET \
   -G \
   --data-urlencode 'startPosition=0' \
   --data-urlencode 'maxResultsCount=2' \
-  --data-urlencode 'selectObjectKeys=name,avatar' \
-  --data-urlencode 'includeObject=avatar' \
+  --data-urlencode 'selectKeys=name,avatar' \
+  --data-urlencode 'includeKeys=avatar' \
   --data-urlencode 'count=1' \
   https://{{host}}/1.1/leaderboard/leaderboards/object/<statisticName>/ranks
 ```
@@ -1078,8 +1078,8 @@ curl -X GET \
 | --------- | ---- | ---------------------------------------- |
 | startPosition  | 可选  | 排行头部起始位置，默认为 0。 |
 | maxResultsCount | 可选   | 最大返回数量，默认为 20。 |
-| selectObjectKeys | 可选   | 返回 object 在数据存储中的其他字段信息，支持多个字段，用英文逗号 `,` 隔开。返回的数据尊重 acl 权限。 |
-| includeObject | 可选   |  返回 object 在数据存储中的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。 返回的数据尊重 acl 权限。 |
+| selectKeys | 可选   | 返回 object 在数据存储中的其他字段信息，支持多个字段，用英文逗号 `,` 隔开。返回的数据尊重 acl 权限。 |
+| includeKeys | 可选   |  返回 object 在数据存储中的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。 返回的数据尊重 acl 权限。 |
 | includeStatistics | 可选   |  返回该用户在其他排行榜中的成绩，支持用英文逗号 `,` 隔开传入多个值。如果传入了不存在的排行榜名称，将会返回错误。 |
 | version | 可选   | 返回指定 version 的排行结果，默认返回当前版本的数据。可查询的历史版本请参考 [历史数据](leaderboard.html#历史数据)。|
 | count  | 可选  | 值为 1 时返回该排行榜中的成员数量，默认为 0。 |
@@ -1131,8 +1131,8 @@ curl -X GET \
   -G \
   --data-urlencode 'startPosition=0' \
   --data-urlencode 'maxResultsCount=2' \
-  --data-urlencode 'selectObjectKeys=name,avatar' \
-  --data-urlencode 'includeObject=avatar' \
+  --data-urlencode 'selectKeys=name,avatar' \
+  --data-urlencode 'includeKeys=avatar' \
   --data-urlencode 'count=1' \
   https://{{host}}/1.1/leaderboard/leaderboards/object/<statisticName>/ranks/<objectId>
 ```
@@ -1140,8 +1140,8 @@ curl -X GET \
 | --------- | ---- | ---------------------------------------- |
 | startPosition  | 可选  | 排行头部起始位置，默认为 0。 |
 | maxResultsCount | 可选   | 最大返回数量，默认为 20。 |
-| selectObjectKeys | 可选   | 返回 object 在数据存储中的其他字段信息，支持多个字段，用英文逗号 `,` 隔开。返回的数据尊重 acl 权限。 |
-| includeObject | 可选   |  返回 object 在数据存储中的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。 返回的数据尊重 acl 权限。 |
+| selectKeys | 可选   | 返回 object 在数据存储中的其他字段信息，支持多个字段，用英文逗号 `,` 隔开。返回的数据尊重 acl 权限。 |
+| includeKeys | 可选   |  返回 object 在数据存储中的 pointer 字段的详细信息，支持多个字段，用英文逗号 `,` 隔开。 返回的数据尊重 acl 权限。 |
 | includeStatistics | 可选   |  返回该用户在其他排行榜中的成绩，支持用英文逗号 `,` 隔开传入多个值。如果传入了不存在的排行榜名称，将会返回错误。 |
 | version | 可选   | 返回指定 version 的排行结果，默认返回当前版本的数据。可查询的历史版本请参考 [历史数据](leaderboard.html#历史数据)。|
 | count  | 可选  | 值为 1 时返回该排行榜中的成员数量，默认为 0。 |
