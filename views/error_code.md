@@ -5,9 +5,9 @@
 
 本文档列举出服务端和 SDK 返回的错误码及相应说明。其他由各 SDK 产生的错误码，请参考以下链接：
 
-* iOS Objective C SDK 的 [AVConstants](https://github.com/leancloud/objc-sdk/blob/master/AVOS/AVOSCloud/AVConstants.h)。
+* iOS Objective C SDK 的 [AVConstants](https://github.com/leancloud/objc-sdk/blob/master/AVOS/Sources/Foundation/LCConstants.h)。
 * PHP SDK 中与网络请求操作相关的错误码，比如 `28` 表示请求超时、`7` 表示连接服务器失败，请参考 [libcurl error codes](http://curl.haxx.se/libcurl/c/libcurl-errors.html)。
-* Android 的 [AVException](https://leancloud.cn/api-docs/android/cn/leancloud/AVException.html)。
+* Android 的 [LCException](https://leancloud.cn/api-docs/android/cn/leancloud/LCException.html) 以及 [常量字段值](https://leancloud.cn/api-docs/android/constant-values.html#cn.leancloud.LCException.OTHER_CAUSE)。
 * JavaScript SDK 的 [AV.Error](https://leancloud.github.io/javascript-sdk/docs/AV.Error.html)。
 
 ## 0
@@ -100,7 +100,7 @@
 ## 119
 
 * 信息 - `That operation isn't allowed for clients.`
-* 含义 - 该操作无法从客户端发起。请检查该错误由哪个操作引起，然后在应用控制台中找到对应的服务设置来启用相应的选项，例如 **控制台 > 存储 > 设置 > 用户账号**、**控制台 > 消息 > 短信 > 设置 > 短信选项** 等等。
+* 含义 - 该操作无法从客户端发起。请结合报错信息中的提示和引起报错的操作，在应用控制台中找到对应的服务设置来启用相应的选项，例如 **控制台 > 内建账户 > 设置**、**控制台 > 短信 > 设置**、**控制台 > 设置 > 安全中心 > 服务开关** 等等。
 
 ## 120
 
@@ -478,4 +478,3 @@
 * 含义 - 不合法的 LeaderBoard 对象。
 
 {{ im.errorCodes() }}
-

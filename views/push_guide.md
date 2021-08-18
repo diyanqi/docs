@@ -16,12 +16,13 @@ Installation 表示一个允许推送的设备的唯一标示，对应数据管�
 ---|---|---
 badge|iOS|呈现在应用图标右上角的红色圆形数字提示，例如待更新的应用数、未读信息数目等。
 channels| |设备订阅的频道。频道名称只能包含大小写英文字母、数字、下划线（`_`）、连字符（`-`）、等号（`=`）、汉字（中日韩统一表意文字）。
-deviceProfile||在应用有多个 iOS 推送证书或多个 Android 混合推送配置的场景下，deviceProfile 用于指定当前设备使用的证书名或配置名。其值需要与 **云服务控制台 > 推送 > 设置** 内配置的证书名或配置名对应，否则将无法完成推送。`deviceProfile` 的值必须以字母开头，由大小写字母、数字和下划线组成的字符串，或为空值。deviceProfile 是特殊字段，只支持 `equals` 查询。 
+deviceProfile||在应用有多个 iOS 推送证书或多个 Android 混合推送配置的场景下，deviceProfile 用于指定当前设备使用的证书名或配置名。其值需要与 **云服务控制台 > 推送 > 设置** 内配置的证书名或配置名对应，否则将无法完成推送。`deviceProfile` 的值必须以字母开头，由大小写字母、数字和下划线组成的字符串，或为空值。deviceProfile 是特殊字段，只支持 `equals` 查询。
 deviceToken|iOS|APNS 推送的唯一标识符
 apnsTopic|iOS|基于 Token Authentication 的推送需要设置该字段。iOS SDK 会自动读取 iOS 应用的 bundle ID 作为 apnsTopic。但以下情况需要手工指定： 1. 使用低于 v4.2.0 的 iOS SDK 版本; 2. 不使用 iOS SDK （如 React Native）；3. 使用不同于 bundle ID 的 topic。
 deviceType| |设备类型，目前支持 `ios`、`android`。
 installationId|Android|LeanCloud SDK 为每个 Android 设备产生的唯一标识符
 timeZone| |字符串，设备设定的时区
+valid| |valid 表示当前这条设备记录是否有效，是 false 表示这条记录失效了，比如设备长时间未活跃、使用平台推送时未通过长连接登录推送服务、使用混合推送时厂商返回设备 registration 失效等。
 
 ### Notification
 
@@ -29,14 +30,18 @@ timeZone| |字符串，设备设定的时区
 
 名称|适用平台|描述
 ---|---|---
-data| |本次推送的消息内容，JSON 对象。
+notificationId| | 推送消息 ID
+msg| |本次推送的消息内容，JSON 对象，详见[推送 REST API 使用指南](push-rest-api.html)中的[消息内容参数](push-rest-api.html#消息内容参数)。
 invalidTokens|iOS|本次推送遇到多少次由 APNS 返回的 [INVALID TOKEN](https://developer.apple.com/library/mac/technotes/tn2265/_index.html#//apple_ref/doc/uid/DTS40010376-CH1-TNTAG32) 错误。**如果这个数字过大，请留意证书是否正常。**
 prod|iOS|使用什么环境证书。**dev** 表示开发证书，**prod** 表示生产环境证书。
 status| |本次推送的状态，**in-queue** 表示仍然在队列，**done** 表示完成，**scheduled** 表示定时推送任务等待触发中。
 devices| |本次推送目标设备数。这个数字不是实际送达数，而是处理本次推送请求时在 `_Installation` 表中符合查询条件且有效的总设备数。有效是指 `_Installation` 表的 valid 字段为 true 且 updatedAt 字段时间在最近三个月以内。目标设备数可能会包含大量的非活跃用户(如已卸载 App 的用户)，这部分用户可能无法收到推送。
-successes| |本次推送成功设备数。推送成功对普通 Android 设备来说指目标设备收到了推送，对 iOS 设备或使用了混合推送的 Android 设备来说指消息成功推送给了 Apple APNS 或设备对应的混合推送平台。
+successes| |本次推送成功设备数。推送成功对普通 Android 设备来说指目标设备收到了推送，对 iOS 设备或使用了混合推送的 Android 设备来说指消息成功推送给了 Apple APNS 或设备对应的混合推送平台。此外还有 `[lc/ios/fcm/hms/mi/oppo/vivo/meizu]Successes` 等分别代表通过各渠道推送成功的设备数。
 where| |本次推送查询 `_Installation` 表的条件，符合这些查询条件的设备将接收本条推送消息。
 errors| | 本次推送过程中的错误信息。
+from-service| | **push**"表示是直接发送的推送消息，**rtm** 表示是 RTM 离线推送消息。
+push-time| | 定时推送的发送时间
+
 
 推送本质上是根据一个 query 条件来查询 `_Installation` 表里符合条件的设备，然后将消息推送给设备。因为 `_Installation` 是一个可以完全自定义属性的 Key-Value Object，因此可以实现各种复杂条件推送，例如频道订阅、地理位置信息推送、特定用户推送等。
 
@@ -44,28 +49,28 @@ errors| | 本次推送过程中的错误信息。
 
 如果某个设备不想收到推送提醒，可以将 `_Installation` 表中相应安装对象的 `valid` 字段修改为 `false`。
 
-注意：我们只保留最近一周的推送记录，并会对过期的推送记录定时进行清理。推送记录清理和推送消息过期时间无关，也就是说即使推送记录被清理，没有过期的推送消息依然是有效的，目标用户依然是能够收到消息。推送过期时间设置请参考《推送 REST API 使用指南》的《过期时间和定时推送》一节。
+注意：我们只保留最近一周的推送记录，并会对过期的推送记录定时进行清理。推送记录清理和推送消息过期时间无关，也就是说即使推送记录被清理，没有过期的推送消息依然是有效的，目标用户依然是能够收到消息。推送过期时间设置请参考[《推送 REST API 使用指南》](https://leancloud.cn/docs/push-rest-api.html)的*《过期时间和定时推送》*一节。
 
 ## Unity 推送
 
-Unity SDK 即将支持推送通知，敬请期待！
+请阅读[Unity 推送开发指南](unity_push_guide.html)。
 
 ## iOS 推送
 
-请阅读《iOS 推送开发指南》。
+请阅读[iOS 推送开发指南](ios_push_guide.html)。
 
 ## Android 推送
 
 由于 Android 系统权限控制越来越严，云服务自有通道的推送到达率受到影响。
 因此，建议商用版应用使用我们的「混合推送」方案，该方案对接了国内主流厂商的不同接口，让开发者通过统一的 API 完成推送任务。
-详见《Android 混合推送开发指南》。
+详见[Android 混合推送开发指南](android_mixpush_guide.html)。
 
-如果想要使用云服务自有通道推送，请阅读《Android 推送开发指南》。 
+如果想要使用云服务自有通道推送，请阅读[Android 推送开发指南](android_push_guide.html)。
 ## 使用 REST API 推送消息
 
-请阅读《推送 REST API 使用指南》。
+请阅读[推送 REST API 使用指南](push-rest-api.html)。
 
 ## 云引擎下通过 JavaScript SDK 创建推送
 
 JavaScript SDK 也提供了创建推送的接口，使用场景主要面向云引擎。
-详见《云引擎常见问题解答》的《云引擎下如何通过 JavaScript SDK 创建推送？》。
+详见[《云引擎常见问题解答》](https://leancloud.cn/docs/leanengine_faq.html)的*《云引擎下如何通过 JavaScript SDK 创建推送？》*。

@@ -8143,6 +8143,54 @@ assert(student.save().isSuccess)
 {% endif %}
 {% endif %}
 
+{% if platform_name === "Flutter" %}
+
+## 子类化
+
+子类化推荐给进阶的开发者在进行代码重构的时候做参考。你可以用 `LCObject` 重载符 [] 访问/赋值任意字段；你也可以使用子类化的属性来封装获取字段的方法，增强编码体验。子类化有很多优势，包括减少代码的编写量，具有更好的扩展性，和支持自动补全等等。
+
+### 实现
+
+要实现子类化，需要下面三个步骤：
+
+1. 继承 `LCObject`；
+2. 重载构造方法，传入 `类名`；
+3. 注册子类
+
+下面是实现 `Student` 子类化的例子：
+
+```dart
+// 定义 Student 类型
+class Student extends LCObject {
+  String get name => this['name'];
+
+  set name(String value) => this['name'] = value;
+
+  Student() : super('Student');
+}
+
+// 注册 Student 子类
+LCObject.registerSubclass<Student>('Student', () => new Student());
+```
+
+### 使用
+
+如下所示，两段代码对 name 字段的赋值方式等价。
+
+```dart
+LCObject student = new LCObject("Student");
+student["name"] = "小明";
+await student.save();
+```
+
+```dart
+Student student = new Student();
+student.name = "小明";
+await student.save();
+```
+
+{% endif %}
+
 {% if platform_name === "Swift" %}
 
 ## 多线程安全

@@ -70,9 +70,19 @@ AVUser.getCurrentUser().followInBackground(userObjectId).subscribe(new Observer<
 ```cs
 // 关注
 try {
-  await user.Follow("user_object_id");
+  await currentUser.Follow("user_object_id");
   // 关注成功
 } catch (Exception e) {
+  // 关注失败
+}
+```
+
+```dart
+// 关注
+try {
+  await currentUser.follow('user_object_id');
+  // 关注成功
+} on Exception catch (e) {
   // 关注失败
 }
 ```
@@ -125,9 +135,20 @@ try {
   Dictionary<string, object> attrs = new Dictionary<string, object> {
     { "score", 100 }
   };
-  await user.Follow("user_object_id", attrs);
+  await currentUser.Follow("user_object_id", attrs);
   // 关注成功
 } catch (Exception e) {
+  // 关注失败
+}
+```
+
+```dart
+// 关注
+try {
+  Map<String, dynamic> attrs = {'score': 100};
+  await currentUser.follow('user_object_id', attrs: attrs);
+  // 关注成功
+} on Exception catch (e) {
   // 关注失败
 }
 ```
@@ -175,9 +196,18 @@ AVUser.getCurrentUser().unfollowInBackground(userObjectId).subscribe(new Observe
 
 ```cs
 try {
-  await user2.Unfollow("user_object_id");
+  await currentUser.Unfollow("user_object_id");
   // 取关成功
 } catch (Exception e) {
+  // 取关失败
+}
+```
+
+```dart
+try {
+  await currentUser.unfollow('user_object_id');
+  // 取关成功
+} on Exception catch (e) {
   // 取关失败
 }
 ```
@@ -231,8 +261,13 @@ followeeQuery.findInBackground().subscribe(new Observer<List<AVObject>>() {
 ```
 
 ```cs
-LCQuery<LCObject> query = user.FolloweeQuery();
+LCQuery<LCObject> query = currentUser.FolloweeQuery();
 ReadOnlyCollection<LCObject> followees = await query.Find();
+```
+
+```dart
+LCQuery<LCObject> query = currentUser.followeeQuery();
+List<LCObject> followees = await query.find();
 ```
 
 #### 查询我的粉丝
@@ -283,8 +318,13 @@ followerQuery.findInBackground().subscribe(new Observer<List<AVObject>>() {
 ```
 
 ```cs
-LCQuery<LCObject> query = user.FollowerQuery();
-ReadOnlyCollection<LCObject> results = await query.Find();
+LCQuery<LCObject> query = currentUser.FollowerQuery();
+ReadOnlyCollection<LCObject> followers = await query.Find();
+```
+
+```dart
+LCQuery<LCObject> query = currentUser.followerQuery();
+List<LCObject> followers = await query.find();
 ```
 
 {{ docs.langSpecStart('java') }} 
@@ -378,7 +418,10 @@ AVUser.currentUser().getFollowersAndFolloweesInBackground(new FollowersAndFollow
 });
 ```
 ```cs
-LCFollowersAndFollowees followersAndFollowees = await user.GetFollowersAndFollowees();
+LCFollowersAndFollowees followersAndFollowees = await currentUser.GetFollowersAndFollowees();
+```
+```dart
+LCFollowersAndFollowees followersAndFollowees = await currentUser.getFollowersAndFollowees();
 ```
 
 #### 向粉丝展示动态
@@ -568,6 +611,15 @@ try {
 }
 ```
 
+```dart
+try {
+  await LCFriendship.request('user_object_id');
+  // 好友请求发送成功
+} on Exception catch (e) {
+  // 好友请求发送失败
+}
+```
+
 ```objc
 [LCFriendship requestWithUserId:@"user_object_id" callback:^(BOOL succeeded, NSError * _Nullable error) {
     if (succeeded) {
@@ -618,6 +670,11 @@ Dictionary<string, object> attrs = new Dictionary<string, object> {
   { "group", "sport" }
 };
 await LCFriendship.Request("user_object_id", attrs);
+```
+
+```dart
+Map<String, dynamic> attrs = {'group': 'sport'};
+await LCFriendship.request('user_object_id', attributes: attrs);
 ```
 
 ```objc
@@ -674,9 +731,16 @@ currentUser.friendshipRequestQuery(AVFriendshipRequest.STATUS_PENDING, true, tru
 
 ```cs
 LCQuery<LCFriendshipRequest> query = new LCQuery<LCFriendshipRequest>("_FriendshipRequest")
-  .WhereEqualTo("friend", user)
+  .WhereEqualTo("friend", currentUser)
   .WhereEqualTo("status", "pending");
 ReadOnlyCollection<LCFriendshipRequest> requests = await query.Find();
+```
+
+```dart
+LCQuery<LCFriendshipRequest> query = new LCQuery<LCFriendshipRequest>('_FriendshipRequest')
+  .WhereEqualTo('friend', currentUser)
+  .WhereEqualTo('status, 'pending');
+List<LCFriendshipRequest> requests = await query.find();
 ```
 
 ```objc
@@ -739,12 +803,23 @@ currentUser.friendshipRequestQuery(AVFriendshipRequest.STATUS_PENDING, false, tr
 
 ```cs
 LCQuery<LCFriendshipRequest> query = new LCQuery<LCFriendshipRequest>("_FriendshipRequest")
-  .WhereEqualTo("friend", user)
+  .WhereEqualTo("friend", currentUser)
   .WhereEqualTo("status", "pending");
 ReadOnlyCollection<LCFriendshipRequest> requests = await query.Find();
 foreach (LCFriendshipRequest request in requests) {
   // 接受
   await LCFriendship.AcceptRequest(request);
+}
+```
+
+```dart
+LCQuery<LCFriendshipRequest> query = new LCQuery<LCFriendshipRequest>('_FriendshipRequest')
+  .WhereEqualTo('friend', currentUser)
+  .WhereEqualTo('status', 'pending');
+List<LCFriendshipRequest> requests = await query.find();
+for (LCFriendshipRequest request in requests) {
+  // 接受
+  await LCFriendship.acceptRequest(request);
 }
 ```
 
@@ -813,7 +888,7 @@ currentUser.friendshipRequestQuery(AVFriendshipRequest.STATUS_PENDING, false, tr
 
 ```cs
 LCQuery<LCFriendshipRequest> query = new LCQuery<LCFriendshipRequest>("_FriendshipRequest")
-  .WhereEqualTo("friend", user)
+  .WhereEqualTo("friend", currentUser)
   .WhereEqualTo("status", "pending");
 ReadOnlyCollection<LCFriendshipRequest> requests = await query.Find();
 foreach (LCFriendshipRequest request in requests) {
@@ -822,6 +897,18 @@ foreach (LCFriendshipRequest request in requests) {
     { "group", "sport" }
   };
   await LCFriendship.AcceptRequest(request, attrs);
+}
+```
+
+```dart
+LCQuery<LCFriendshipRequest> query = new LCQuery<LCFriendshipRequest>('_FriendshipRequest')
+  .WhereEqualTo('friend', currentUser)
+  .WhereEqualTo('status', 'pending');
+List<LCFriendshipRequest> requests = await query.find();
+for (LCFriendshipRequest request in requests) {
+  // 接受
+  Map<String, dynamic> attrs = {'group': 'sport'};
+  await LCFriendship.acceptRequest(request, attributes: attrs);
 }
 ```
 
@@ -889,12 +976,23 @@ currentUser.friendshipRequestQuery(AVFriendshipRequest.STATUS_PENDING, false, tr
 
 ```cs
 LCQuery<LCFriendshipRequest> query = new LCQuery<LCFriendshipRequest>("_FriendshipRequest")
-  .WhereEqualTo("friend", user)
+  .WhereEqualTo("friend", currentUser)
   .WhereEqualTo("status", "pending");
 ReadOnlyCollection<LCFriendshipRequest> requests = await query.Find();
 foreach (LCFriendshipRequest request in requests) {
   // 拒绝
   await LCFriendship.DeclineRequest(request);
+}
+```
+
+```dart
+LCQuery<LCFriendshipRequest> query = new LCQuery<LCFriendshipRequest>('_FriendshipRequest')
+  .WhereEqualTo('friend', currentUser)
+  .WhereEqualTo('status', 'pending');
+List<LCFriendshipRequest> requests = await query.find();
+for (LCFriendshipRequest request in requests) {
+  // 拒绝
+  await LCFriendship.declineRequest(request);
 }
 ```
 
@@ -955,12 +1053,23 @@ currentUser.friendshipRequestQuery(AVFriendshipRequest.STATUS_DECLINED, true, tr
 
 ```cs
 LCQuery<LCFriendshipRequest> query = new LCQuery<LCFriendshipRequest>("_FriendshipRequest")
-  .WhereEqualTo("friend", user)
+  .WhereEqualTo("friend", currentUser)
   .WhereEqualTo("status", "declined");
 ReadOnlyCollection<LCFriendshipRequest> requests = await query.Find();
 foreach (LCFriendshipRequest request in requests) {
   // 接受
   await LCFriendship.AcceptRequest(request);
+}
+```
+
+```dart
+LCQuery<LCFriendshipRequest> query = new LCQuery<LCFriendshipRequest>('_FriendshipRequest')
+  .WhereEqualTo('friend', currentUser)
+  .WhereEqualTo('status', 'declined');
+List<LCFriendshipRequest> requests = await query.find();
+for (LCFriendshipRequest request in requests) {
+  // 接受
+  await LCFriendship.acceptRequest(request);
 }
 ```
 
@@ -1010,10 +1119,15 @@ query.findInBackground().subscribe(new Observer<List<AVFriendship>>() {
 ```
 
 ```cs
-LCQuery<LCObject> query = new LCQuery<LCObject>("_Followee")
-  .WhereEqualTo("user", user)
+LCQuery<LCObject> query = currentUser.FolloweeQuery()
   .WhereEqualTo("friendStatus", true);
 ReadOnlyCollection<LCObject> friends = await query.Find();
+```
+
+```dart
+LCQuery<LCObject> query = currentUser.followeeQuery()
+  .WhereEqualTo('friendStatus', true);
+List<LCObject> friends = await query.find();
 ```
 
 ```objc
@@ -1066,6 +1180,17 @@ followee.Unset("nickname");
 await followee.Save();
 ```
 
+```dart
+LCObject followee = LCObject.createWithoutData('_Followee', 'followee objectId');
+// 添加新属性
+followee['remark'] = '丐帮帮主';
+// 更新已有属性
+followee['group'] = 'friend';
+// 删除已有属性
+followee.unset('nickname');
+await followee.save();
+```
+
 ```objc
 LCObject *followee = [LCObject objectWithClassName:@"_Followee" objectId:@"followee objectId"];
 // 添加新属性
@@ -1102,7 +1227,11 @@ currentUser.unfollowInBackground(targetUserObjectId).subscribe(new Observer<JSON
 ```
 
 ```cs
-await user1.Unfollow("Tom's objectId");
+await currentUser.Unfollow("Tom's objectId");
+```
+
+```dart
+await currentUser.unfollow("Tom's objectId");
 ```
 
 ```objc
