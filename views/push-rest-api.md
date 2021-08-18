@@ -279,7 +279,7 @@ iOS 设备中 data 和 alert 内属性的具体含义请参考：
 
 ##### iOS 设备 data 各属性说明
 
-名称|格式|约束|描述
+名称&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|格式|约束|描述
 ---|---|---|---
 alert|普通字符串或 JSON 字符串|必填|表示消息内容。如果目标设备中只包含 iOS 设备则还可以是 JSON 类型，下面详述 JSON 类型时支持的属性,
 title|字符串|可选|表示推送内容标题，如果 alert 字段为字符串可以在此补充提供 title，如果 alert 是 JSON 类型则无需再提供本字段,
