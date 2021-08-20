@@ -319,67 +319,6 @@ curl -X GET \
 }
 ```
 
-如果你需要获得用户的其他信息，例如 `username`，可以在请求 url 中指定 `selectKeys` 来获取。如果用户的其他信息中有 pointer 字段，可以在请求 url 中指定 `includeKeys` 来获取 pointer 字段的更详细的信息。这两个参数需要用户登录或使用 masterKey 权限，否则会报权限错误。
-
-通过用户登录，传入 `sessionToken` 获取更多信息：
-
-```sh
-curl -X GET \
-  -H "X-LC-Id: {{appid}}" \
-  -H "X-LC-Key: {{appkey}}" \
-  -H "X-LC-Session: <sessionToken>" \
-  --data-urlencode 'statistics=world' \
-  --data-urlencode 'selectKeys=username,avatar.url' \
-  --data-urlencode 'includeKeys=avatar' \
-  https://{{host}}/1.1/leaderboard/users/self/statistics
-```
-
-使用服务端 masterKey 超级权限来获取更多信息。例如：
-
-```sh
-curl -X GET \
-  -H "X-LC-Id: {{appid}}" \
-  -H "X-LC-Key: {{masterkey}},master" \
-  --data-urlencode 'statistics=wins' \
-  --data-urlencode 'selectKeys=username,avatar.url' \
-  --data-urlencode 'includeKeys=avatar' \
-  https://{{host}}/1.1/leaderboard/users/<uid>/statistics
-```
-
-返回结果：
-
-
-```json
-{
-  "results": [
-    {
-      "statisticName": "wins",
-      "statisticValue": 5,
-      "version": 0,
-      "user": {
-        "__type": "Pointer",
-        "className": "_User",
-        "username": "xiaoli",
-        "avatar": {
-          "bucket": "test_files",
-          "url": "https://example.com/xiaoli.jpg",
-          "objectId": "60d950629be318a249000000",
-          "__type": "File",
-          "provider": "qiniu"
-        },
-        "objectId": "60d950629be318a249000001"
-      }
-    },
-    {
-      "statisticName": "world",
-      "statisticValue": 91,
-      "version": 0,
-      "user": {...}
-    }
-  ]
-}
-```
-
 #### 查询一组 user 的成绩
 
 通过这个接口可以一次性拉取多个 user 的成绩，最多不超过 200 个。在请求中，需要在 body 中传入 user 的 `objectId` 的 Array。
@@ -421,47 +360,6 @@ curl -X POST \
   ]
 }
 ```
-
-如果你需要获得用户的其他信息，例如 `username`，可以在请求 url 中指定 `selectKeys` 来获取。如果用户的其他信息中有 pointer 字段，可以在请求 url 中指定 `includeKeys` 来获取 pointer 字段的更详细的信息。这两个参数需要用户登录或使用 masterKey 权限，否则会报权限错误。
-
-```sh
-curl -X POST \
-  -H "X-LC-Id: {{appid}}" \
-  -H "X-LC-Key: {{masterkey}},master" \
-  -H "Content-Type: application/json" \
-  -d '["60d950629be318a249000001", "60d950629be318a249000000"]'
-  https://{{host}}/1.1/leaderboard/users/statistics/<statisticName>?selectKeys=username,avatar&includeKeys=avatar
-```
-
-返回示例
-
-```json
-{
-  "results": [
-    {
-      "statisticName": "wins",
-      "statisticValue": 1,
-      "version": 0,
-      "user": {
-        "__type": "Pointer",
-        "className": "_User",
-        "username": "user_1",
-        "avatar": {
-          "bucket": "test_files",
-          "provider": "leancloud",
-          "name": "user_1.jpg",
-          "url": "https://example.com/user_1.jpg",
-          "objectId": "60dbec5a9be318df3c000002",
-          "__type": "File"
-        },
-        "objectId": "60d950629be318a249000001"
-      }
-    },
-    {...}
-  ]
-}
-```
-
 
 #### 删除成绩
 
