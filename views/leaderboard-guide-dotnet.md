@@ -138,7 +138,7 @@ foreach(var ranking in rankings) {
 |`includeStatistics`|`string[]`|指定返回的 `Ranking` 中需要包含的其他成绩|
 |`version`|`number`|指定返回某个历史版本的成绩|
 
-默认情况下返回的排行榜结果中的 `user` 是一个只有 `id` 属性的 `LCUser` Pointer。如果想要想下面这个例子一样，在排行榜结果中显示用户名或者其他的用户属性（对应 `_User` 表中的属性），那么需要使用 `selectUserKeys` 选项。
+默认情况下返回的排行榜结果中的 `user` 是一个只有 `id` 属性的 `LCUser` Pointer。如果想要像下面这个例子一样，在排行榜结果中显示用户名或者其他的用户属性（对应 `_User` 表中的属性），那么需要使用 `selectUserKeys` 选项。
 
 |排名|Username|Age|Score↓|
 |:--:|--|:--:|:--:|
