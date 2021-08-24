@@ -1,8 +1,3 @@
-{% import "views/_helper.njk" as docs %}
-{% extends "./leaderboard-guide.tmpl" %}
-{% set platformName = "C\#` `" %}
-{% set avUser = "LCUser" %}
-
 # 排行版开发指南 &middot; .Net
 
 ## 安装 SDK
