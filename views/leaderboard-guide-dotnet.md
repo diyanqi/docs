@@ -1,4 +1,4 @@
-# 排行版开发指南 &middot; .Net
+# 排行榜开发指南 &middot; .Net
 
 ## 安装 SDK
 
