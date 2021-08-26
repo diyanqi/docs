@@ -26,7 +26,7 @@ Key|Value|含义|来源
 LeanCloud 国际版不要求绑定自定义域名。除了使用自定义域名外，也可以使用如下共享域名：
 
 ```
-appid前八位.{{service}}.lncldglobal.com
+appid前八位.api.lncldglobal.com
 ```
 
 ### 请求 url 中的变量
