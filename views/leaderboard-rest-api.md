@@ -437,77 +437,6 @@ curl -X GET \
 }
 ```
 
-你可以在请求中用 `selectKeys` 来指定一同返回 object 在数据存储中的字段数据，多个字段用英文逗号 `,` 隔开，能否返回数据受 ACL 限制。
-例如一并返回 object 的 `name` 和 `level` 字段属性：
-
-```sh
-curl -X GET \
-  -H "X-LC-Id: {{appid}}" \
-  -H "X-LC-Key: {{appkey}}" \
-  --data-urlencode 'statistics=wins' \
-  --data-urlencode 'selectKeys=name,level' \
-  https://{{host}}/1.1/leaderboard/objects/<objectId>/statistics
-```
-
-返回值示例：
-
-```json
-{
-  "results": [
-    {
-      "statisticName": "wins",
-      "statisticValue": 5,
-      "version": 0,
-      "object": {
-        "__type": "Pointer",
-        "className": "Weapon",
-        "name": "sword",
-        "level": "10",
-        "objectId": "60d1b38b9be318093f000002"
-      }
-    }
-  ]
-}
-```
-
-如果 object 的某个字段属性是 pointer 类型，可以进一步使用 `includeKeys` 来获取该 pointer 字段的数据，多个字段同样用英文逗号 `,` 隔开。例如获取 `memberType` 是 `Weapon` 的某个 object 的 `avatar` 字段：
-
-```sh
-curl -X GET \
-  -H "X-LC-Id: {{appid}}" \
-  -H "X-LC-Key: {{appkey}}" \
-  --data-urlencode 'statistics=wins' \
-  --data-urlencode 'includeKeys=avatar' \
-  https://{{host}}/1.1/leaderboard/objects/<objectId>/statistics
-```
-
-返回结果中会包含 `avatar` 的全部信息：
-
-```json
-{
-  "results": [
-    {
-      "statisticName": "wins",
-      "statisticValue": 8.5,
-      "version": 0,
-      "object": {
-        "__type": "Pointer",
-        "className": "Weapon",
-        "avatar": {
-          "bucket": "test_files",
-          "provider": "leancloud",
-          "name": "clothes.jpg",
-          "url": "https://example.com/clothes.jpg",
-          "objectId": "60d2ceb09be318244c000004",
-          "__type": "File"
-        },
-        "objectId": "60d2ceb09be318244c000005"
-      }
-    }
-  ]
-}
-```
-
 获取某个 entity 成绩时则需指定该 entity 的字符串：
 
 ```sh
@@ -591,8 +520,6 @@ curl -X POST \
   -d '["60d950629be318a249000001", "60d950629be318a249000000"]'
   https://{{host}}/1.1/leaderboard/objects/statistics/<statisticName>
 ```
-
-像获取单个 object 的成绩一样，获取多个 object 成绩时同样可以使用 `selectKeys` 和 `includeKeys`。
 
 传入 entity 的字符串数组则可以一次性获取多个 entity 的成绩（最多不超过 200 个）：
 
