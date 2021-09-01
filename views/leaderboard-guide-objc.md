@@ -4,15 +4,20 @@
 
 排行榜是存储 SDK 中的一个模块，要在 Objective-C 运行环境中使用排行榜功能，需要安装存储 SDK，请参考《[ Objective C SDK 配置指南](sdk_setup-objc.html)》。
 
-### Leaderboard
+## Leaderboard
 
 `LCLeaderboard` 类是对排行榜的抽象。`LCLeaderboard` 实例有以下属性：
 
 |属性|类型|说明|
 |:--:|:--:|--|
-|`statisticName`|`NSString`|所排名的成绩名字|
+|`statisticName`|`NSString`|所排名的成绩的名字|
+|`limit`|`NSInteger`|限制返回的结果数量，默认为 `20`|
+|`skip`|`NSInteger`|指定从某个位置开始获取，与 `limit` 一起可以实现翻页，默认为 `0`|
+|`includeStatistics`|`NSArray<NSString *>`|指定返回的 `Ranking` 中需要包含的其他成绩|
+|`version`|`NSInteger`|指定版本，默认为 `0`|
+|`returnCount`|`BOOL`|是否返回该排行榜的成员总数，默认为 `false`|
 
-### Statistic
+## Statistic
 
 排行榜是对用户的成绩进行排名的结果。SDK 提供了一个 `LCLeaderboardStatistic` 类来表示成绩。`LCLeaderboardStatistic` 实例有以下属性：
 
@@ -25,12 +30,14 @@
 |`object`|`LCObject`|如果该成绩属于一个 `object`，则可通过此属性获取该 `LCObject`|
 |`entity`|`NSString`|如果该成绩属于一个 `entity`，则可通过此属性获取该 `entity`|
 
-### Ranking
+## Ranking
+
+排行榜排序的结果是一个数组，数组的成员是一个叫 `LCLeaderboardRanking` 的类：
 
 |属性|类型|说明|
 |:--:|:--:|--|
 |`statisticName`|`NSString`|成绩名字，对应排行榜的 `statisticName`|
-|`rank`|`NSInteger`|排名，从 0 开始|
+|`rank`|`NSInteger`|排名，从 `0` 开始|
 |`value`|`double`|成绩值|
 |`includedStatistics`|`NSArray<LCLeaderboardStatistic *>`|该 `user`/`object`/`entity` 的其他成绩|
 |`user`|`LCUser`|如果该排名属于一个 `user`，则可通过此属性获取该 `LCUser`|
@@ -96,7 +103,7 @@
 }];
 ```
 
-你还可以查询某个排行榜的一批 `user` 的成绩：
+你还可以查询某个排行榜的一组 `user` 的成绩：
 
 ```objc
 LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"score"];
@@ -124,11 +131,13 @@ LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"scor
 }];
 ```
 
+**删除成绩需要用户登录，且用户只能删除自己的成绩。**
+
 ### Object 成绩管理
 
 可以通过 SDK 查询 `LCObject` 的成绩。
 
-#### 用户成绩查询
+#### Object 成绩查询
 
 你可以查询某 `object` 的在某些排行榜成绩：
 
@@ -160,7 +169,7 @@ LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"scor
 }];
 ```
 
-你还可以查询某个排行榜的一批 `object` 的成绩：
+你还可以查询某个排行榜的一组 `object` 的成绩：
 
 ```objc
 LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"score"];
@@ -179,7 +188,7 @@ LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"scor
 
 可以通过 SDK 查询 `entity` 的成绩。
 
-#### 用户成绩查询
+#### Entity 成绩查询
 
 你可以查询某 `entity` 的在某些排行榜成绩：
 
@@ -209,11 +218,12 @@ LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"scor
 }];
 ```
 
-你还可以查询某个排行榜的一批 `entity` 的成绩：
+你还可以查询某个排行榜的一组 `entity` 的成绩：
 
 ```objc
 LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"score"];
-[leaderboard getStatisticsWithEntities:@[entity] callback:^(NSArray<LCLeaderboardStatistic *> * _Nullable statistics, NSError * _Nullable error) {
+[leaderboard getStatisticsWithEntities:@[entity] 
+                              callback:^(NSArray<LCLeaderboardStatistic *> * _Nullable statistics, NSError * _Nullable error) {
     if (statistics) {
         // statistics 是查询的成绩结果
     } else if (error) {
@@ -228,7 +238,7 @@ LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"scor
 
 ### 获取用户排行榜结果
 
-通过 SDK 获取 `LCUser` 的排行榜结果。
+可以通过 SDK 获取 `LCUser` 的排行榜结果。
 
 #### 获取指定区间的用户排名
 
@@ -238,7 +248,8 @@ LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"scor
 LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"world"];
 leaderboard.limit = 10;
 leaderboard.skip = 0;
-[leaderboard getUserResultsWithOption:nil callback:^(NSArray<LCLeaderboardRanking *> * _Nullable rankings, NSInteger count, NSError * _Nullable error) {
+[leaderboard getUserResultsWithOption:nil
+                             callback:^(NSArray<LCLeaderboardRanking *> * _Nullable rankings, NSInteger count, NSError * _Nullable error) {
     if (error) {
         // 处理错误
     } else {
@@ -247,20 +258,150 @@ leaderboard.skip = 0;
 }];
 ```
 
+默认情况下返回的排行榜结果中的 `user` 是一个只有 `objectId` 属性的 `LCUser` Pointer。如果想要在排行榜结果中显示用户名或者其他的用户属性（对应 `_User` 表中的属性），甚至一个 Pointer 属性的全部数据，那么需要使用 `LCLeaderboardQueryOption` 选项：
+
+```objc
+LCLeaderboardQueryOption *option = [[LCLeaderboardQueryOption alloc] init];
+option.selectKeys = @[@"username", @"objectPointer"];
+option.includeKeys = @[@"objectPointer"];
+LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"world"];
+[leaderboard getUserResultsWithOption:option
+                             callback:^(NSArray<LCLeaderboardRanking *> * _Nullable rankings, NSInteger count, NSError * _Nullable error) {
+    if (error) {
+        // 处理错误
+    } else {
+        // 处理 rankings 和 count
+    }
+}];
+```
+
+如果想要在排行榜结果中包含用户的其他成绩，可以使用 `includeStatistics` 选项：
+
+```objc
+leaderboard.includeStatistics = @[@"kills"];
+```
+
 #### 获取指定用户附近的排名
+
+另一种常见的需求是获取当前登录用户附近的排名：
+
+```objc
+[leaderboard getUserResultsAroundUser:user.objectId
+                               option:nil
+                             callback:^(NSArray<LCLeaderboardRanking *> * _Nullable rankings, NSInteger count, NSError * _Nullable error) {
+    if (error) {
+        // 处理错误
+    } else {
+        // 处理 rankings 和 count
+    }
+}];
+```
+
+各参数的适用场景与用法与上文——获取指定区间的用户排名——中的类似，不再详述。
 
 ### 获取 Object 排行榜结果
 
-通过 SDK 获取 `LCObject` 的排行榜结果。
+可以通过 SDK 获取 `LCObject` 的排行榜结果。
 
 #### 获取指定区间的 Object 排名
 
+获取排行榜结果最常见的使用场景是获取排名前 N 的 `object` 成绩：
+
+```objc
+LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"world"];
+leaderboard.limit = 10;
+leaderboard.skip = 0;
+[leaderboard getObjectResultsWithOption:nil
+                               callback:^(NSArray<LCLeaderboardRanking *> * _Nullable rankings, NSInteger count, NSError * _Nullable error) {
+    if (error) {
+        // 处理错误
+    } else {
+        // 处理 rankings 和 count
+    }
+}];
+```
+
+默认情况下返回的排行榜结果中的 `object` 是一个只有 `objectId` 属性的 `LCObject` Pointer。如果想要在排行榜结果中显示其它的属性（对应表中的属性），甚至一个 Pointer 属性的全部数据，那么需要使用 `LCLeaderboardQueryOption` 选项：
+
+```objc
+LCLeaderboardQueryOption *option = [[LCLeaderboardQueryOption alloc] init];
+option.selectKeys = @[@"username", @"objectPointer"];
+option.includeKeys = @[@"objectPointer"];
+LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"world"];
+[leaderboard getObjectResultsWithOption:option
+                               callback:^(NSArray<LCLeaderboardRanking *> * _Nullable rankings, NSInteger count, NSError * _Nullable error) {
+    if (error) {
+        // 处理错误
+    } else {
+        // 处理 rankings 和 count
+    }
+}];
+```
+
+如果想要在排行榜结果中包含 `object` 的其他成绩，可以使用 `includeStatistics` 选项：
+
+```objc
+leaderboard.includeStatistics = @[@"kills"];
+```
+
 #### 获取指定 Object 附近的排名
+
+另一种常见的需求是获取某个 `object` 附近的排名：
+
+```objc
+[leaderboard getObjectResultsAroundObject:object.objectId
+                                   option:nil
+                                 callback:^(NSArray<LCLeaderboardRanking *> * _Nullable rankings, NSInteger count, NSError * _Nullable error) {
+    if (error) {
+        // 处理错误
+    } else {
+        // 处理 rankings 和 count
+    }
+}];
+```
+
+各参数的适用场景与用法与上文——获取指定区间的 Object 排名——中的类似，不再详述。
 
 ### 获取 Entity 排行榜结果
 
-通过 SDK 获取 `entity` 的排行榜结果。
+可以通过 SDK 获取 `entity` 的排行榜结果。
 
 #### 获取指定区间的 Entity 排名
 
+获取排行榜结果最常见的使用场景是获取排名前 N 的 `entity` 成绩：
+
+```objc
+LCLeaderboard *leaderboard = [[LCLeaderboard alloc] initWithStatisticName:@"world"];
+leaderboard.limit = 10;
+leaderboard.skip = 0;
+[leaderboard getEntityResultsWithCallback:^(NSArray<LCLeaderboardRanking *> * _Nullable rankings, NSInteger count, NSError * _Nullable error) {
+    if (error) {
+        // 处理错误
+    } else {
+        // 处理 rankings 和 count
+    }
+}];
+```
+
+如果想要在排行榜结果中包含 `entity` 的其他成绩，可以使用 `includeStatistics` 选项：
+
+```objc
+leaderboard.includeStatistics = @[@"kills"];
+```
+
 #### 获取指定 Entity 附近的排名
+
+另一种常见的需求是获取某个 `entity` 附近的排名：
+
+```objc
+[leaderboard getEntityResultsAroundEntity:entity
+                                 callback:^(NSArray<LCLeaderboardRanking *> * _Nullable rankings, NSInteger count, NSError * _Nullable error) {
+    if (error) {
+        // 处理错误
+    } else {
+        // 处理 rankings 和 count
+    }
+}];
+```
+
+各参数的适用场景与用法与上文——获取指定区间的 Entity 排名——中的类似，不再详述。
