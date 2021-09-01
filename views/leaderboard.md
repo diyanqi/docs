@@ -88,6 +88,9 @@
 * [快速入门](leaderboard-quick-start-dotnet.html)：展示了如何快速接入排行榜功能。
 * [C# 排行榜开发指南](leaderboard-guide-dotnet.html)：对如何开发排行榜进行了详细介绍。
 
+### Objective-C
+* [Objective-C 排行榜开发指南](leaderboard-guide-objc.html)：对如何开发排行榜进行了详细介绍。
+
 ### 在线交流
 
 为了能及时解答大家的疑问，进一步了解游戏开发者的需求和使用场景，我们建立了游戏开发群，欢迎各位游戏开发者加入。[详情 >>>](https://forum.leancloud.cn/t/leancloud-qq/19389)
