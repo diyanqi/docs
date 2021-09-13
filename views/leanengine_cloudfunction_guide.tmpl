@@ -1544,11 +1544,11 @@ leancloud.OnLogin(func(req *ClassHookRequest) error {
 
 该 hook 属于 before 类 hook.
 
+{% if platformName === "Node.js" %}
 ### OnAuthData
 
 在云存储处理第三方登录的 `authData` 时触发，开发者可以在这个 Hook 中进行对 `authData` 的校验或转换。比如：
 
-{% if platformName === "Node.js" %}
 ```js
 AV.Cloud.onAuthData(function (request) {
   let authData = request.authData;
@@ -1564,12 +1564,17 @@ AV.Cloud.onAuthData(function (request) {
   return authData;
 })
 ```
+该 hook 属于 before 类 hook.
+
 {% endif %}
 {% if platformName === "Python" %}
+### OnAuthData
+
+在云存储处理第三方登录的 `authData` 时触发，开发者可以在这个 Hook 中进行对 `authData` 的校验或转换。比如：
+
 ```python
 @engine.on_auth_data
 def on_auth_data(auth_data):
-    print auth_data
     if auth_data['weixin']['code'] == '12345':
         # 校验成功，返回校验或转换之后的 auth_data，用户继续登录流程
         auth_data['weixin']['code'] = '45678'
@@ -1578,68 +1583,9 @@ def on_auth_data(auth_data):
         # 校验失败，抛出异常，则用户无法登录
         raise LeanEngineError('invalid code')
 ```
-{% endif %}
-{% if platformName === "PHP" %}
-```php
-Cloud::OnAuthData(function($authData) {
-    if ($authData["weixin"]["code"] == "12345")) {
-        $authData["weixin"]["code"] = "45678";
-    } else {
-        // 校验失败，抛出异常，则用户无法登录
-        throw new FunctionError("invalid code");
-    }
-    // 校验成功，返回校验或转换之后的 authData，用户继续登录流程
-    return $authData;
-});
-```
-{% endif %}
-{% if platformName === "Java" %}
-```java
-@EngineHook(className = "_User", type = EngineHookType.onAuthData)
-public static Map<String, Map<String, String>> userOnAuthData(Map<String, Map<String, String>> authData) throws Exception {
-  if (authData.get("weixin").get("code") == "12345") {
-      // 校验成功，返回校验或转换之后的 authData，用户继续登录流程
-      authData.get("weixin").put("code", "45678");
-      return authData;
-  } else {
-      // 校验失败，抛出异常，则用户无法登录
-      throw new Exception("invalid code");
-  }
-}
-```
-{% endif %}
-{% if platformName === ".NET" %}
-```cs
-[LCEngineUserHook(LCEngineUserHookType.OnAuthData)]
-public static Dictionary<string, Dictionary<string, string>> OnAuthData(Dictionary<string, Dictionary<string, string>> authData) {
-    if (authData["weixin"]["code"] == "12345") {
-        // 校验成功，返回校验或转换之后的 authData，用户继续登录流程
-        authData["weixin"]["code"] = "45678";
-        return authData;
-    } else {
-        // 校验失败，抛出异常，则用户无法登录
-        throw new Exception("invalid code");
-    }
-}
-```
-{% endif %}
-{% if platformName === "Go" %}
-```go
-leancloud.OnAuthData(func(req *ClassHookRequest) interface{}, error {
-    authData := req.AuthData
-    if authData["weixin"]["code"] == "12345" {
-        // 校验成功，返回校验或转换之后的 authData，用户继续登录流程
-        authData["weixin"]["code"] = "45678"
-        return authData, nil
-    } else {
-        // 校验失败，抛出异常，则用户无法登录
-        return nil, leancloud.CloudError{Code: 400, Message: "invalid code"}
-    }
-})
-```
-{% endif %}
-
 该 hook 属于 before 类 hook.
+
+{% endif %}
 
 ### 即时通讯 Hook 函数
 
