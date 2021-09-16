@@ -1542,7 +1542,7 @@ install:
   - {use: 'default'}
 ```
 
-pom.xml 中增肌依赖项目：
+pom.xml 中增加依赖项目：
 ```
 <dependency>
     <groupId>com.sample</groupId>
