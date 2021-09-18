@@ -80,34 +80,6 @@ LeanCloud 即时通讯服务是完全独立的即时通讯业务抽象，专注�
 
 LeanCloud 云引擎提供了托管 Python 和 Node.js 运行的方式，开发者可以用这两种语言按照签名的算法实现签名，完全可以支持开发者的自定义权限控制。
 
-### JavaScript SDK 即时通信使用 `leancloud-storage/live-query` SDK，创建图片消息报类型错误:「`TypeError：file must be an AV.File`」。
- 
-
-这个问题是因为 typed-messages plugin 会从 'leancloud-storage' 中 import File，而用 webpack 打包时 'leancloud-storage' 与 'leancloud-storage/live-query' 对应的是两个不同的 bundle，所以拿到的 File 不是同一个 File。
-
-推荐的用法是直接使用 `leancloud-storage` 然后单独加载 LiveQuery 部分，需要在初始化 SDK 的时候进行如下配置： 
-
-```
-import { Realtime } from 'leancloud-realtime';
-import { LiveQueryPlugin } from 'leancloud-realtime-plugin-live-query';
-import { TypedMessagesPlugin } from 'leancloud-realtime-plugin-typed-messages';
-import AV from 'leancloud-storage';
-
-const realtime = new Realtime({
-  // appId, appKey,
-  plugins: [TypedMessagesPlugin, LiveQueryPlugin],
-});
-AV.init({
-  // appId, appKey,
-  realtime,
-});
-```
-对于同时使用 RTM 与 LiveQuery 的场景，这样处理还有一些好处：  
-
-* 减少重复的代码（因为 leancloud-storage/live-query 是可以独立运行的，这个 bundle 里包含了 RTM 的核心部分代码），大大减少最终 bundle 的体积。 
-
-* RTM 与 LiveQuery 共享一个长链接，减少用户的客户端开销。
-
 
 ### 即时通信服务中，有些消息类型及时性要求特别高，有些消息及时性要求不高。一个房间内的消息有没有优先级？
 

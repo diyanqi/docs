@@ -486,13 +486,15 @@ const realtime = getApp().realtime;
 
 1. 安装存储 SDK 至 `libs` 目录，并将文件重命名为 `leancloud-storage.js`。
 2. 安装即时通讯 SDK 至 `libs` 目录，并将文件重命名为 `leancloud-realtime.js`。
-3. 下载 [`leancloud-realtime-plugin-typed-messages.js`](https://unpkg.com/leancloud-realtime-plugin-typed-messages@^3.0.0)，移动到 `libs` 目录。必须保证<u>三个文件在同一目录中</u>。
+3. 下载 [`leancloud-realtime-plugin-typed-messages.js`](https://unpkg.com/leancloud-realtime-plugin-typed-messages@^4.0.0)，移动到 `libs` 目录。必须保证<u>三个文件在同一目录中</u>。
 4. 在 `app.js` 中<u>依次加载</u> `leancloud-storage.js`、`leancloud-realtime.js` 和 `leancloud-realtime-plugin-typed-messages.js`。
   ```javascript
   const AV = require('./libs/leancloud-storage.js');
-  const { Realtime, setAdapters } = require('./libs/leancloud-realtime.js');
-  const { TypedMessagesPlugin } = require('./libs/leancloud-realtime-plugin-typed-messages.js');
-  const { ImageMessage } = require('./libs/leancloud-realtime-plugin-typed-messages.js');
+  const IM = require('./libs/leancloud-realtime.js');
+  const initPlugin = require('./libs/leancloud-realtime-plugin-typed-messages.js');
+
+  const { Realtime, setAdapters } = IM;
+  const { TypedMessagesPlugin, ImageMessage } = initPlugin(AV, IM);
   ```
 5. 在 `app.js` 中初始化应用：
   ```javascript
