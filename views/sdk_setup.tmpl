@@ -234,9 +234,12 @@ const { Realtime, TextMessage } = require('leancloud-realtime');
 ```
 ```即时通讯（含富媒体消息）
 const AV = require('leancloud-storage');
-const { Realtime, TextMessage } = require('leancloud-realtime');
-// 富媒体消息插件暴露（export）的成员完整列表可以参考 [富媒体消息插件 API 文档](https://leancloud.github.io/js-realtime-sdk/plugins/typed-messages/docs/module-leancloud-realtime-plugin-typed-messages.html)。
-const { TypedMessagesPlugin, ImageMessage } = require('leancloud-realtime-plugin-typed-messages');
+const IM = require('leancloud-realtime');
+// 富媒体消息插件包含的消息类型可以参考 [富媒体消息插件 API 文档](https://leancloud.github.io/js-realtime-sdk/plugins/typed-messages/docs/module-leancloud-realtime-plugin-typed-messages.html)。
+const initPlugin = require('leancloud-realtime-plugin-typed-messages');
+
+const { Realtime, TextMessage } = IM;
+const { TypedMessagesPlugin, ImageMessage } = initPlugin(AV, IM);
 ```
 
 {{ docs.langSpecStart('即时通讯 即时通讯（含富媒体消息）') }}
@@ -270,7 +273,7 @@ const { Realtime } = require('leancloud-realtime/es-latest');
 ```即时通讯（含富媒体消息）
 <script src="//code.bdstatic.com/npm/leancloud-storage@{{jssdkversion}}/dist/av-min.js"></script>
 <script src="//code.bdstatic.com/npm/leancloud-realtime@{{jsimsdkversion}}/dist/im-browser.min.js"></script>
-<script src="//code.bdstatic.com/npm/leancloud-realtime-plugin-typed-messages@3.1.0/dist/typed-messages.min.js"></script>
+<script src="//code.bdstatic.com/npm/leancloud-realtime-plugin-typed-messages@4.0.2/dist/typed-messages.min.js"></script>
 ```
 
 通过这种方式引入的 SDK 可以通过全局变量 `AV` 获得引用：
@@ -333,7 +336,7 @@ Node.js 中 SDK 的安装与引用也是通过包管理工具 npm，请参考 [n
 
 前往 [即时通讯 SDK 下载页](https://releases.leanapp.cn/#/leancloud/js-realtime-sdk/releases)，下载最新版本的 `im.min.js`，移动到 `libs` 目录，并将文件重命名为 `leancloud-realtime.js`。
 
-下载 [`typed-messages.min.js`](https://code.bdstatic.com/npm/leancloud-realtime-plugin-typed-messages@3.1.0/dist/typed-messages.min.js)，移动到 `libs` 目录。必须保证<strong>三个文件在同一目录中</strong>。
+下载 [`typed-messages.min.js`](https://code.bdstatic.com/npm/leancloud-realtime-plugin-typed-messages@4.0.2/dist/typed-messages.min.js)，移动到 `libs` 目录。
 {{ docs.langSpecEnd('即时通讯（含富媒体消息）') }}
 
 前往 [微信小程序 Adapters 下载页](https://unpkg.com/browse/@leancloud/platform-adapters-weapp/lib/)，下载最新版本的 `index.js`，移动到 `libs` 目录，并将文件重命名为 `leancloud-adapters-weapp.js`。
@@ -443,9 +446,12 @@ setAdapters(adapters);
 ```
 ```即时通讯（含富媒体消息）
 const AV = require('leancloud-storage/core');
-const { Realtime, setAdapters } = require('leancloud-realtime/im');
-const { TypedMessagesPlugin, ImageMessage } = require('leancloud-realtime-plugin-typed-messages');
+const IM = require('leancloud-realtime/im');
+const initPlugin = require('leancloud-realtime-plugin-typed-messages');
 const adapters = require('@leancloud/platform-adapters-alipay');
+
+const { Realtime, setAdapters } = IM;
+const { TypedMessagesPlugin, ImageMessage } = initPlugin(AV, IM);
 
 AV.setAdapters(adapters); // 为存储 SDK 设置 adapters
 setAdapters(adapters);    // 为即时通讯 SDK 设置 adapters
@@ -495,9 +501,12 @@ setAdapters(adapters);
 ```
 ```即时通讯（含富媒体消息）
 const AV = require('leancloud-storage/core');
-const { Realtime, setAdapters } = require('leancloud-realtime/im');
-const { TypedMessagesPlugin, ImageMessage } = require('leancloud-realtime-plugin-typed-messages');
+const IM = require('leancloud-realtime/im');
+const initPlugin = require('leancloud-realtime-plugin-typed-messages');
 const adapters = require('@leancloud/platform-adapters-baidu');
+
+const { Realtime, setAdapters } = IM;
+const { TypedMessagesPlugin, ImageMessage } = initPlugin(AV, IM);
 
 AV.setAdapters(adapters); // 为存储 SDK 设置 adapters
 setAdapters(adapters);    // 为即时通讯 SDK 设置 adapters
@@ -522,7 +531,7 @@ setAdapters(adapters);    // 为即时通讯 SDK 设置 adapters
 
 前往 [即时通讯 SDK 下载页](https://releases.leanapp.cn/#/leancloud/js-realtime-sdk/releases)，下载最新版本的 `im.min.js`，移动到 `libs` 目录，并将文件重命名为 `leancloud-realtime.js`。
 
-下载 [`typed-messages.min.js`](https://code.bdstatic.com/npm/leancloud-realtime-plugin-typed-messages@3.1.0/dist/typed-messages.min.js)，移动到 `libs` 目录。必须保证<strong>三个文件在同一目录中</strong>。
+下载 [`typed-messages.min.js`](https://code.bdstatic.com/npm/leancloud-realtime-plugin-typed-messages@4.0.2/dist/typed-messages.min.js)，移动到 `libs` 目录。必须保证<strong>三个文件在同一目录中</strong>。
 {{ docs.langSpecEnd('即时通讯（含富媒体消息）') }}
 
 前往 [字节跳动小程序 Adapters 下载页](https://code.bdstatic.com/npm/@leancloud/platform-adapters-toutiao@1.4.1/lib/index.js)，下载最新版本的 `index.js`，移动到 `libs` 目录，并将文件重命名为 `leancloud-adapters-toutiao.js`。
@@ -646,8 +655,12 @@ setAdapters(adapters);
 ```
 ```即时通讯（含富媒体消息）
 const AV = require('leancloud-storage/core');
-const { Realtime, setAdapters } = require('leancloud-realtime/im');
-const { TypedMessagesPlugin, ImageMessage } = require('leancloud-realtime-plugin-typed-messages');
+const IM = require('leancloud-realtime/im');
+const initPlugin = require('leancloud-realtime-plugin-typed-messages');
+
+const { Realtime, setAdapters } = IM;
+const { TypedMessagesPlugin, ImageMessage } = initPlugin(AV, IM);
+
 const adapters = require('@leancloud/platform-adapters-quickapp');
 AV.setAdapters(adapters);
 setAdapters(adapters);
@@ -718,9 +731,13 @@ setAdapters(adapters);
 ```
 ```即时通讯（含富媒体消息）
 import AV from 'leancloud-storage/core';
-import { Realtime, setAdapters } from 'leancloud-realtime/im';
-import { TypedMessagesPlugin, ImageMessage } from 'leancloud-realtime-plugin-typed-messages';
+import IM from 'leancloud-realtime/im';
+import initPlugin from 'leancloud-realtime-plugin-typed-messages';
 import * as adapters from '@leancloud/platform-adapters-react-native';
+
+const { Realtime, setAdapters } = IM;
+const { TypedMessagesPlugin, ImageMessage } = initPlugin(AV, IM);
+
 AV.setAdapters(adapters);
 setAdapters(adapters);
 ```
