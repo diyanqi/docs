@@ -40,7 +40,7 @@
 ```objc
 AVShortMessageRequestOptions *options = [[AVShortMessageRequestOptions alloc] init];
 options.templateName = @"Register_Notice"; // 控制台配置好的模板名称
-options.signatureName = @"LeanCloud";      // 控制台配置好的短信签名
+options.signatureName = @"LeanCloud";      // 控制台配置好的短信签名名称
 // 往 18200008888 这个手机号码发送短信，使用预先配置的模板和签名
 [AVSMS requestShortMessageForPhoneNumber:@"18200008888"
                                 options:options
@@ -56,7 +56,7 @@ options.signatureName = @"LeanCloud";      // 控制台配置好的短信签名
 _ = LCSMSClient.requestShortMessage(
     mobilePhoneNumber: "18200008888",
     templateName: "Register_Notice", // 控制台配置好的模板名称
-    signatureName: "LeanCloud")      // 控制台配置好的短信签名
+    signatureName: "LeanCloud")      // 控制台配置好的短信签名名称
 { (result) in
     switch result {
     case .success:
@@ -69,7 +69,7 @@ _ = LCSMSClient.requestShortMessage(
 ```java
 LCSMSOption option = new LCSMSOption();
 option.setTemplateName("Register_Notice"); // 控制台配置好的模板名称
-option.setSignatureName("LeanCloud");      // 控制台配置好的短信签名
+option.setSignatureName("LeanCloud");      // 控制台配置好的短信签名名称
 // 往 18200008888 这个手机号码发送短信，使用预先配置的模板和签名
 LCSMS.requestSMSCodeInBackground("18200008888", option).subscribe(new Observer<LCNull>() {
     @Override
@@ -93,7 +93,7 @@ LCSMS.requestSMSCodeInBackground("18200008888", option).subscribe(new Observer<L
 AV.Cloud.requestSmsCode({
   mobilePhoneNumber: '18200008888', // 目标手机号
   template: 'Register_Notice',      // 控制台配置好的模板名称
-  sign:'LeanCloud'                  // 控制台配置好的短信签名
+  sign:'LeanCloud'                  // 控制台配置好的短信签名名称
 }).then(function(){
   // 调用成功
 }, function(err){
@@ -111,8 +111,8 @@ AVCloud.RequestSMSCodeAsync("18200008888","Register_Notice",null,"LeanCloud").Co
 ```php
 // 往 18200008888 这个手机号码发送短信，使用预先配置的模板（「Register_Notice」参数）和签名（「LeanCloud」参数）
 $options = [
-  "template" => "Register_Notice",
-  "name" => "LeanCloud",
+  "template" => "Register_Notice", // 控制台配置好的模板名称
+  "name" => "LeanCloud", // 控制台配置好的短信签名名称
 ];
 SMS::requestSMSCode("18200008888", $options);
 ```
@@ -125,7 +125,7 @@ try {
 // 往 18200008888 这个手机号码发送短信，使用预先配置的模板和签名
   await LCSMSClient.requestSMSCode('18200008888',
       template: 'Register_Notice', // 控制台配置好的模板名称
-      signature: 'LeanCloud'); // 控制台配置好的短信签名
+      signature: 'LeanCloud'); // 控制台配置好的短信签名名称
 } on LCException catch (e) {
   print(e.message);
 }
@@ -138,7 +138,10 @@ try {
 {% endcall %}
 
 - 短信的内容来自名为 `Register_Notice` 的 [模板](#短信模板)，需要在控制台提前创建并通过审核。
-- `LeanCloud` 为 [短信签名](#短信签名)，是必需添加的，也需要在控制台提前创建并通过审核才可使用。
+
+- `LeanCloud` 为 [短信签名](#短信签名)名称，是必需添加的，也需要在控制台提前创建并通过审核才可使用。
+
+    注意，这个参数的值是在控制台设置的**短信签名名称**，而不是短信签名本身。如果在控制台创建了多个名称相同的签名，那么最后创建的签名会覆盖之前创建的签名。利用这一特性可以实现不更改发送代码的前提下替换短信签名。
 
 ## 开通短信服务
 
@@ -1047,8 +1050,8 @@ try {
 
 ```objc
 AVShortMessageRequestOptions *options = [[AVShortMessageRequestOptions alloc] init];
-options.templateName = @"New_Series";
-options.signatureName = @"sign_BuyBuyBuy";
+options.templateName = @"New_Series"; // 模板名称
+options.signatureName = @"sign_BuyBuyBuy"; // 签名名称
 options.validationToken = <#validationToken#>;
 
 [AVSMS requestShortMessageForPhoneNumber:@"18200008888"
@@ -1064,8 +1067,8 @@ options.validationToken = <#validationToken#>;
 ```swift
 _ = LCSMSClient.requestShortMessage(
     mobilePhoneNumber: "18200008888",
-    templateName: "New_Series",
-    signatureName: "sign_BuyBuyBuy",
+    templateName: "New_Series", // 模板名称
+    signatureName: "sign_BuyBuyBuy", // 签名名称
     captchaVerificationToken: "captcha_verification_token")
 { (result) in
     switch result {
@@ -1078,8 +1081,8 @@ _ = LCSMSClient.requestShortMessage(
 ```
 ```java
 LCSMSOption option = new LCSMSOption();
-option.setTemplateName("Order_Notice");
-option.setSignatureName("sign_BuyBuyBuy");
+option.setTemplateName("Order_Notice"); // 模板名称
+option.setSignatureName("sign_BuyBuyBuy"); // 签名名称
 option.setCaptchaValidateToken("validateToken");
 LCSMS.requestSMSCodeInBackground("18200008888", option).subscribe(new Observer<LCNull>() {
     @Override
@@ -1101,7 +1104,7 @@ LCSMS.requestSMSCodeInBackground("18200008888", option).subscribe(new Observer<L
 ```javascript
 // mobilePhoneNumber：手机号
 // template：模板名称
-// sign：签名 
+// sign：签名名称
 AV.Cloud.requestSmsCode({
     mobilePhoneNumber: '18200008888',
     template: 'New_Series',
@@ -1117,7 +1120,7 @@ AV.Cloud.requestSmsCode({
 ```cs
 // 18200008888：手机号
 // New_Series：模板名称
-// sign_BuyBuyBuy：签名 
+// sign_BuyBuyBuy：签名名称
 AVCloud.RequestSMSCodeAsync("18200008888","New_Series",null,"sign_BuyBuyBuy","上一步返回的 validate_token").ContinueWith(t =>
 {
     var result = t.Result;
@@ -1131,13 +1134,15 @@ AVCloud.RequestSMSCodeAsync("18200008888","New_Series",null,"sign_BuyBuyBuy","�
 from leancloud import cloud
 options = { "validate_token": validate_token }
 cloud.request_sms_code("18200008888",
-  template="New_Series", sign="sign_BuyBuyBuy", params=options)
+  template="New_Series",  # 模板名称
+  sign="sign_BuyBuyBuy",  # 签名名称
+  params=options)
 ```
 ```dart
 try {
   await LCSMSClient.requestSMSCode('18200008888',
-      template: 'Order_Notice',
-      signature: 'sign_BuyBuyBuy',
+      template: 'Order_Notice',  // 模板名称
+      signature: 'sign_BuyBuyBuy', // 签名名称
       variables: {'validate_token': validate_token}); //上一步返回的 validate_token
 } on LCException catch (e) {
   print(e.message);

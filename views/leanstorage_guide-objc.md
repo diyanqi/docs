@@ -1415,7 +1415,7 @@ user.mobilePhoneNumber = @"+8618200008888";
 ```objc
 LCShortMessageRequestOptions *options = [[LCShortMessageRequestOptions alloc] init];
 options.templateName = @"template_name";// 控制台配置好的模板名称
-options.signatureName = @"sign_name";     // 控制台配置好的短信签名
+options.signatureName = @"sign_name";     // 控制台配置好的短信签名名称
 [LCSMS requestShortMessageForPhoneNumber:@"186xxxxxxxx" options:options callback:^(BOOL succeeded, NSError * _Nullable error) {
     if (succeeded) {
         /* 请求成功 */
