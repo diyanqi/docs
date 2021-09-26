@@ -251,7 +251,7 @@ LCObject todo = LCObject.createWithoutData("Todo", "582570f38ac247004f39c24b");
 todo.put("content", "这周周会改到周三下午三点。");
 todo.saveInBackground(option).subscribe(new Observer<LCObject>() {
     public void onSubscribe(Disposable disposable) {}
-    public void onNext(LCObject account) {
+    public void onNext(LCObject savedTodo) {
         System.out.println("保存成功");
     }
     public void onError(Throwable throwable) {
