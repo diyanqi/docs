@@ -933,9 +933,6 @@ await todo.fetch(includes: ['priority','location']);
 
 ### 更新对象
 
-{% if platform_name !== "Go" %}
-要更新一个对象，只需指定需要更新的属性名和属性值，然后调用 `{% if platform_name === "JavaScript" %}save{% endif %}{% if platform_name === "Python" %}save{% endif %}{% if platform_name === "PHP" %}save{% endif %}{% if platform_name === "Swift" %}save{% endif %}{% if platform_name === "Flutter" %}save{% endif %}` 方法。例如：
-{% endif %}
 {% if platform_name === "Go" %}
 在使用 Go SDK 时，更新对象和创建对象相同，可以使用自定义类型对象或者 `map`。
 
