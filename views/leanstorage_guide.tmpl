@@ -1065,12 +1065,6 @@ await todo.save();
 云服务会自动识别需要更新的属性并将对应的数据发往云端，未更新的属性会保持原样。
 {% endif %}
 
-
-{% if platform_name != "Go" %}
-
-云服务会自动识别需要更新的属性并将对应的数据发往云端，未更新的属性会保持原样。
-{% endif %}
-
 {% if platform_name === "JavaScript" %}
 如果想要查看哪些属性有尚未保存的修改，可以调用 `dirtyKeys` 方法：
 
