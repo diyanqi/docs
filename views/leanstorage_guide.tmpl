@@ -933,9 +933,6 @@ await todo.fetch(includes: ['priority','location']);
 
 ### 更新对象
 
-{% if platform_name !== "Go" %}
-要更新一个对象，只需指定需要更新的属性名和属性值，然后调用 `{% if platform_name === "JavaScript" %}save{% endif %}{% if platform_name === "Python" %}save{% endif %}{% if platform_name === "PHP" %}save{% endif %}{% if platform_name === "Swift" %}save{% endif %}{% if platform_name === "Flutter" %}save{% endif %}` 方法。例如：
-{% endif %}
 {% if platform_name === "Go" %}
 在使用 Go SDK 时，更新对象和创建对象相同，可以使用自定义类型对象或者 `map`。
 
@@ -1065,12 +1062,6 @@ LCObject todo = LCObject.createWithoutData('Todo', '582570f38ac247004f39c24b');
 todo['content'] = '这周周会改到周三下午三点。';
 await todo.save();
 ```
-云服务会自动识别需要更新的属性并将对应的数据发往云端，未更新的属性会保持原样。
-{% endif %}
-
-
-{% if platform_name != "Go" %}
-
 云服务会自动识别需要更新的属性并将对应的数据发往云端，未更新的属性会保持原样。
 {% endif %}
 
