@@ -1619,7 +1619,7 @@ TDSUser currentUser = await TDSUser.LoginWithAuthData(appleAuthData, "lc_apple")
     "expires_in":    7200,
     "refresh_token": "…",
     "scope":         "…"
-  }
+  },
   "weibo": {
     "refresh_token": "2.0xxx",
     "uid": "271XFEFEW273",

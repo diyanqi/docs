@@ -2076,7 +2076,7 @@ LCUser.loginWithAuthData(thirdPartyData, "weixin").subscribe(new Observer<LCUser
     "expires_in":    7200,
     "refresh_token": "…",
     "scope":         "…"
-  }
+  },
   "weibo": {
     "refresh_token": "2.0xxx",
     "uid": "271XFEFEW273",
