@@ -9,7 +9,7 @@
 另外，离线分析仅支持 `select` 语句，不支持 `update`、`insert`、`delete` 等语句，所以它不会更新或修改数据源，开发者可以放心使用。
 
 {% call docs.noteWrap() -%}
-离线数据分析功能（**控制台** > **存储** > **离线数据分析**）**仅向商用版和企业版应用开放**，开发版应用无法使用；如果商用版和企业版应用无法正常使用该功能，请通过 [工单系统](https://leanticket.cn/t/leancloud) 或 [用户论坛](https://forum.leancloud.cn) 联系我们。
+离线数据分析功能（**控制台** > **存储** > **结构化数据** >**离线数据分析**）**仅向商用版和企业版应用开放**，开发版应用无法使用；如果商用版和企业版应用无法正常使用该功能，请通过 [工单系统](https://leanticket.cn/t/leancloud) 或 [用户论坛](https://forum.leancloud.cn) 联系我们。
 {%- endcall %}
 
 ## 限制
@@ -250,7 +250,7 @@ result 是一个 JSON 对象，形如：
 }
 ```
 
-如果 `status` 是 `OK`，表示任务成功，其他状态包括 `RUNNING` 表示正在运行，以及 `ERRor` 表示本次任务失败，并将返回失败信息 message。
+如果 `status` 是 `OK`，表示任务成功，其他状态包括 `RUNNING` 表示正在运行，以及 `ERROR` 表示本次任务失败，并将返回失败信息 message。
 
 `AV.Insight.JobQuery` 也可以设置 `skip` 和 `limit` 做分页查询。
 
