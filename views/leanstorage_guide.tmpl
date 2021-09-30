@@ -4335,21 +4335,10 @@ const file = new AV.File('resume.txt', data)
 ```
 {% endif %}
 {% if platform_name === "Python" %}
-可以通过字符串构建文件：
+可以用 `bytes` 构建文件：
 
 ```python
-from StringIO import StringIO
-
-data = StringIO('LeanCloud')
-# resume.txt 是文件名
-file = leancloud.File('resume.txt', data)
-```
-
-还可以用 `buffer` 构建文件：
-
-```python
-data = buffer('\x4c\x65\x61\x6e\x43\x6c\x6f\x75\x64')
-file = leancloud.File('resume.txt', data)
+file = leancloud.File("hello.txt", b"hello", mime_type="text/plain")
 ```
 {% endif %}
 {% if platform_name === "PHP" %}
