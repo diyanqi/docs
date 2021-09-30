@@ -1334,7 +1334,7 @@ curl -X DELETE \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
   -H "X-LC-Session: <sessionToken>" \
-  https://{{host}}/1.1/classes/_FriendshipRequest/<request-object-id>/
+  https://{{host}}/1.1/classes/_FriendshipRequest/<objectId>/
 ```
 
 请求 URL 中的 `request-object-id` 指的是申请好友时返回的 `objectId`，也是 `_FriendshipRequest` 表的 `objectId`。
