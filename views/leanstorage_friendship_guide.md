@@ -1337,7 +1337,7 @@ curl -X DELETE \
   https://{{host}}/1.1/classes/_FriendshipRequest/<objectId>/
 ```
 
-请求 URL 中的 `request-object-id` 指的是申请好友时返回的 `objectId`，也是 `_FriendshipRequest` 表的 `objectId`。
+`objectId` 在申请好友时会返回。
 
 删除成功：
 
