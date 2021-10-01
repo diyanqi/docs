@@ -1327,6 +1327,24 @@ curl -X PUT \
 {"updatedAt":"2020-11-24T09:24:19.029Z","objectId":"5fbcd10e2623ab370bb5f8a7"}
 ```
 
+#### 删除好友申请
+
+```sh
+curl -X DELETE \
+  -H "X-LC-Id: {{appid}}" \
+  -H "X-LC-Key: {{appkey}}" \
+  -H "X-LC-Session: <sessionToken>" \
+  https://{{host}}/1.1/classes/_FriendshipRequest/<objectId>/
+```
+
+`objectId` 在申请好友时会返回。
+
+删除成功：
+
+```json
+{}
+```
+
 #### 查询好友列表
 
 好友列表存于 `_Followee` 表，查询方式和普通表的查询相同，详细请参考[查询约束](rest_api.html#查询约束)。
