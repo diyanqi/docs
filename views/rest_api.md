@@ -360,6 +360,8 @@ md5( timestamp + App Key )
 = d5bcbb897e19b2f6633c716dfdfaf9be
 ```
 
+<div></div>
+
 ```sh
   -H "X-LC-Sign: d5bcbb897e19b2f6633c716dfdfaf9be,1453014943466" \
 ```
@@ -371,6 +373,8 @@ md5( timestamp + Master Key )
 = md5(1453014943466DyJegPlemooo4X1tg94gQkw1)
 = e074720658078c898aa0d4b1b82bdf4b
 ```
+
+<div></div>
 
 ```sh
   -H "X-LC-Sign: e074720658078c898aa0d4b1b82bdf4b,1453014943466,master" \
