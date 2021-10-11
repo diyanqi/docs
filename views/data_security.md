@@ -34,7 +34,7 @@ Class 权限指整个 Class（整张表）的读写权限，需要在控制台�
 
 在创建 Class 对话框可以设置 Class 的访问权限：
 
-![创建 Class 对话框](images/security/class-permissions.png.png)
+![创建 Class 对话框](images/security/class-permissions.png)
 
 - `add_fields` - 给 Class 增加新的字段，也就是说，保存对象时，如果对应的字段（列）不存在，是否允许自动创建新的字段。如果已经在控制台创建好 Class 的所有字段，最好对任意用户都关闭此权限，防止脏数据写入。
 - `create` - 在 Class 表中插入一个新对象。对于需要登录用户或者拥有指定授权的用户才能创建内容的场景，可以考虑根据情况设置此权限。

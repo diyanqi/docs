@@ -398,7 +398,7 @@ Class 名只能包含字母、数字、下划线，而且必须以字母开头�
 
 ### 全文搜索
 
-在这里可以进行全文搜索相关的配置，包括[添加、修改、停用搜索 Class](app_search_guide.html#为_Class_启用搜索)，重建索引，下载、更新[自定义词库](app_search_guide#自定义分词)。
+在这里可以进行全文搜索相关的配置，包括[添加、修改、停用搜索 Class](app_search_guide.html#为_Class_启用搜索)，重建索引，下载、更新[自定义词库](app_search_guide.html#自定义分词)。
 还可以查看全文搜索的索引大小和请求数（可分 Class、请求类型查看）。
 
 参见[全文搜索开发指南](app_search_guide.html)。
