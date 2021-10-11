@@ -4431,7 +4431,7 @@ const file = new AV.File('resume.txt', data, 'application/json');
 {% endif %}
 {% if platform_name === "Python" %}
 ```python
-file = leancloud.File('resume.txt', StringIO('{"company":"LeanCloud"}'), 'application/json')
+file = leancloud.File('resume.txt', b'{"company":"LeanCloud"}', 'application/json')
 ```
 {% endif %}
 {% if platform_name === "PHP" %}
