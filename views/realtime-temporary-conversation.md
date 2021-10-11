@@ -20,7 +20,7 @@
 
 功能点|临时对话|普通对话
 --|--|--
-消息发送/消息接收|√|√
+消息发送/消息接收|√|√
 查询历史消息|√|√
 接收离线消息|√|√
 修改与撤回消息|√|√
@@ -166,7 +166,7 @@ realtime.createIMClient('Tom').then(function(tom) {
 }).catch(console.error);
 ```
 
-## 接收消息
+## 接收消息
 
 {{ imPartial.receivedMessage() }}
 
