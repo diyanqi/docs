@@ -1732,7 +1732,7 @@ LCUser.verifySMSCodeForUpdatingPhoneNumberInBackground("123456", "+8618200008888
     public void onNext(LCNull null) {
         // 更新本地数据
         LCUser currentUser = LCUser.getCurrentUser();
-        currentUser.setMobilePhoneNumber("+8618200008888");
+        currentUser.setMobilePhoneNumber("+8618200008888");
     }
     public void onError(Throwable throwable) {
         // 验证码不正确

@@ -32,9 +32,9 @@ using LeanCloud.Core.Internal;
 {% macro receivedMessage() %}
 接收消息在每个语言的 SDK 略有不同，但是大致的流程是一致的，详细的请阅读每个语言对应的 SDK 文档：
 
-- [iOS Objectivc-C#接收消息](realtime_guide-objc.html#接收消息)
-- [Android Java#接收消息](realtime_guide-android.html#接收消息)
-- [JavaScript#接收消息](realtime_guide-js.html#接收消息)
+- [iOS Objectivc-C#接收消息](realtime_guide-objc.html#接收消息)
+- [Android Java#接收消息](realtime_guide-android.html#接收消息)
+- [JavaScript#接收消息](realtime_guide-js.html#接收消息)
 
 {% endmacro %}
 

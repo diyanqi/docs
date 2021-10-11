@@ -330,9 +330,9 @@ LCConnectionManager.getInstance().startConnection(new LCCallback() {
 LeanCloud.setLogLevel(LCLogger.Level.DEBUG);
 ```
 
-详细调试流程可以参考[Android SDK 调试指南][android-debug-guide]。
+详细调试流程可以参考[Android SDK 调试指南][android-debug-guide]。
 
-[android-debug-guide]: https://forum.leancloud.cn/t/leancloud-sdk-android-sdk/21829
+[android-debug-guide]: https://forum.leancloud.cn/t/leancloud-sdk-android-sdk/21829
 
 注意，在应用发布之前，请关闭调试日志，以免暴露敏感数据。
 

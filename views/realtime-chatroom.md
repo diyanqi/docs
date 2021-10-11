@@ -138,7 +138,7 @@ tom.getQuery({ name:'天南海北聊天室' }).find(function(conversations){
 }).catch(console.error);
 ```
 
-## 接收消息
+## 接收消息
 
 {{ imPartial.receivedMessage() }}
 
