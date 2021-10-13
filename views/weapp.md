@@ -214,7 +214,7 @@ SDK 提供了一系列小程序特有的用户相关的 API，适用于不同的
 LeanCloud 的用户系统支持一键使用微信用户身份登录。要使用一键登录功能，需要先设置小程序的 AppID 与 AppSecret：
 
 1. 登录 [微信公众平台](https://mp.weixin.qq.com)，在 **设置** > **开发设置** 中获得 AppID 与 AppSecret。
-2. 前往 LeanCloud 控制台 > 存储 > 用户 > 设置 > 第三方集成，启用「微信小程序」后填写 AppID 与 AppSecret。
+2. 前往 LeanCloud 控制台 > 内建账户 > 设置 > 第三方集成，启用「微信小程序」后填写 AppID 与 AppSecret。
 
 这样你就可以在应用中使用 `AV.User.loginWithMiniApp()` 方法来使用当前用户身份登录了。
 
@@ -238,7 +238,7 @@ AV.User.loginWithMiniApp().then(user => {
 }
 ```
 
-如果用户是第一次使用此应用，调用登录 API 会创建一个新的用户，你可以在 控制台 > **存储** 中的 `_User` 表中看到该用户的信息，如果用户曾经使用该方式登录过此应用（存在对应 `openid` 的用户），再次调用登录 API 会返回同一个用户。
+如果用户是第一次使用此应用，调用登录 API 会创建一个新的用户，你可以在 **控制台 > 数据存储 > 结构化数据** 中的 `_User` 表中看到该用户的信息，如果用户曾经使用该方式登录过此应用（存在对应 `openid` 的用户），再次调用登录 API 会返回同一个用户。
 
 用户的登录状态会保存在客户端中，可以使用 `AV.User.current()` 方法来获取当前登录的用户，下面的例子展示了如何为登录用户保存额外的信息：
 
@@ -420,7 +420,7 @@ AV.User.loginWithMiniApp().then(user => {
 }).catch(console.error);
 ```
 
-{{ docs.note("验证手机号码功能要求在「控制台 > 存储 > 用户 > 设置」中启用「用户注册时，向注册手机号码发送验证短信」。") }}
+{{ docs.note("验证手机号码功能要求在「控制台 > 内建账户 > 设置」中启用「从客户端注册或更新手机号时，向注册手机号码发送验证短信」。") }}
 
 ### 绑定现有用户
 如果你的应用已经在使用 LeanCloud 的用户系统，或者用户已经通过其他方式注册了你的应用（比如在 Web 端通过用户名密码注册），可以通过在小程序中调用 `AV.User#associateWithMiniApp()` 来关联已有的账户：
@@ -619,7 +619,7 @@ AV.Cloud.run('order').then((data) => {
 ## FAQ
 
 ### 配置 download 合法域名时显示「该域名因违规被禁止设置。」
-请前往 **控制台 > 存储 > 设置 > 文件** 配置你自己的文件域名。
+请前往 **控制台 > 数据存储 > 文件 > 设置** 配置你自己的文件域名。
 
 ### Access denied by api domain white list
 如果你的应用启用并配置了 [Web 安全域名](data_security.html#Web_应用安全设置)，你可能会 catch 到 `Access denied by api domain white list` 异常，请将提示的域名添加至应用的 Web 安全域名列表。

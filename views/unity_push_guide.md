@@ -89,7 +89,7 @@ SDK 提供默认的 Installation 对象，用来保存推送所需的 token 以�
 LCInstallation lcInstallation = await LCInstallation.GetCurrent();
 ```
 
-可以在 **云服务控制台 > 数据存储 > 结构话数据 > `_Installation`** 查看所有保存成功的 Installation 对象的数据。
+可以在 **云服务控制台 > 数据存储 > 结构化数据 > `_Installation`** 查看所有保存成功的 Installation 对象的数据。
 
 ## 推送消息
 

@@ -53,7 +53,7 @@ deviceType|String|设备类型，SDK 会自动设置该属性，一般情况下�
 apnsTopic|String|应用的 Bundle Identifier，SDK 会自动设置该属性，一般情况下不要随意更改
 timeZone|String|设备所处时区，SDK 会自动设置该属性，一般情况下不要随意更改
 
-可以在 **云服务控制台 > 数据存储 > 结构话数据 > `_Installation`** 查看所有保存成功的 Installation 对象的数据。
+可以在 **云服务控制台 > 数据存储 > 结构化数据 > `_Installation`** 查看所有保存成功的 Installation 对象的数据。
 
 ### 注册 APNs 获取 Token
 

@@ -1,7 +1,7 @@
 {% import "views/_helper.njk" as docs %}
 {{ docs.defaultLang('js') }}
 
-{% set autoFollowFolloweeOptionLink = "如果在 **控制台 > 存储 > 设置 > 其他** 勾选了 **应用内社交模块，关注用户时自动反向关注**" %}
+{% set autoFollowFolloweeOptionLink = "如果在 **控制台 > 数据存储 > 服务设置 > 其他设置** 勾选了 **应用内社交模块，关注用户时自动反向关注**" %}
 
 # 好友关系开发指南
 
@@ -562,7 +562,7 @@ curl -X GET \
 
 ### 权限管理
 
-好友关系接口向 `_Followee` 表存储数据时默认使用 `friendshipACL`。在「应用控制台 > 存储 > 结构化数据 > `_Followee` 表 > 权限」中可以看到默认的 `friendshipACL` 设置。其中包含三个选项：
+好友关系接口向 `_Followee` 表存储数据时默认使用 `friendshipACL`。在「应用控制台 > 数据存储 > 结构化数据 > `_Followee` 表 > 权限」中可以看到默认的 `friendshipACL` 设置。其中包含三个选项：
 
 * 共享权限：请求中的 User 和目标 Friend。**默认选项**，只有发起请求的用户以及自己关注的人，可以查看或修改自己的数据。
 * 公开权限：所有用户。所有用户都可以查询或修改当前用户的关注及其粉丝，相当于没有任何权限。

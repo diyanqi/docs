@@ -208,7 +208,7 @@ public class MyLeanCloudApp extends FlutterApplication {
 
 初始化 SDK 后，运行 Flutter 项目，`_Installation` 表会生成一条设备信息的数据。
 
-在控制台 > 消息 > 推送 > 在线发送可以自定义推送条件发送一条推送，测试当前设备能否正常收到推送。
+在控制台 > 推送 > 在线发送可以自定义推送条件发送一条推送，测试当前设备能否正常收到推送。
 
 可以根据 objectId 推送，iOS 设备也可以根据 deviceToken 推送，Android 设备可以根据 installationID 推送。
 
