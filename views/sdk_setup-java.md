@@ -74,32 +74,32 @@ Maven：
 <dependency>
     <groupId>cn.leancloud</groupId>
     <artifactId>storage-core</artifactId>
-    <version>8.1.2</version>
+    <version>8.1.4</version>
 </dependency>
 ```
 
 Ivy：
 
 ```xml
-<dependency org="cn.leancloud" name="storage-core" rev="8.1.2" />
+<dependency org="cn.leancloud" name="storage-core" rev="8.1.4" />
 ```
 
 SBT：
 
 ```scala
-libraryDependencies += "cn.leancloud" %% "storage-core" % "8.1.2"
+libraryDependencies += "cn.leancloud" %% "storage-core" % "8.1.4"
 ```
 
 Gradle：
 
 ```groovy
-implementation 'cn.leancloud:storage-core:8.1.2'
+implementation 'cn.leancloud:storage-core:8.1.4'
 ```
 
 如果是 Android 项目，则换成以下这些包：
 
 ```groovy
-implementation 'cn.leancloud:storage-android:8.1.2'
+implementation 'cn.leancloud:storage-android:8.1.4'
 implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 ```
 
@@ -111,26 +111,26 @@ Maven：
 <dependency>
     <groupId>cn.leancloud</groupId>
     <artifactId>realtime-core</artifactId>
-    <version>8.1.2</version>
+    <version>8.1.4</version>
 </dependency>
 ```
 
 Ivy:
 
 ```xml
-<dependency org="cn.leancloud" name="realtime-core" rev="8.1.2" />
+<dependency org="cn.leancloud" name="realtime-core" rev="8.1.4" />
 ```
 
 SBT:
 
 ```scala
-libraryDependencies += "cn.leancloud" %% "realtime-core" % "8.1.2"
+libraryDependencies += "cn.leancloud" %% "realtime-core" % "8.1.4"
 ```
 
 Gradle:
 
 ```groovy
-implementation 'cn.leancloud:realtime-android:8.1.2'
+implementation 'cn.leancloud:realtime-android:8.1.4'
 implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 ```
 
@@ -139,7 +139,7 @@ implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 Gradle：
 
 ```groovy
-implementation 'cn.leancloud:mixpush-android:8.1.2'
+implementation 'cn.leancloud:mixpush-android:8.1.4'
 implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 ```
 
@@ -401,23 +401,17 @@ SDK 安装指南基于当前最新版本的 SDK 编写，所以排查问题前�
 -dontwarn sun.misc.**
 -keep class sun.misc.** { *;}
 
--dontwarn com.alibaba.fastjson.**
--keep class com.alibaba.fastjson.** { *;}
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *;}
 
--dontwarn org.ligboy.retrofit2.**
--keep class org.ligboy.retrofit2.** { *;}
-
--dontwarn io.reactivex.rxjava2.**
--keep class io.reactivex.rxjava2.** { *;}
+-dontwarn io.reactivex.**
+-keep class io.reactivex.** { *;}
 
 -dontwarn sun.security.**
 -keep class sun.security.** { *; }
 
 -dontwarn com.google.**
 -keep class com.google.** { *;}
-
--dontwarn com.avos.**
--keep class com.avos.** { *;}
 
 -dontwarn cn.leancloud.**
 -keep class cn.leancloud.** { *;}
@@ -434,20 +428,12 @@ SDK 安装指南基于当前最新版本的 SDK 编写，所以排查问题前�
 -dontwarn org.apache.**
 -keep class org.apache.** { *;}
 
--dontwarn org.jivesoftware.smack.**
--keep class org.jivesoftware.smack.** { *;}
-
--dontwarn com.loopj.**
--keep class com.loopj.** { *;}
-
--dontwarn com.squareup.okhttp.**
--keep class com.squareup.okhttp.** { *;}
--keep interface com.squareup.okhttp.** { *; }
+-dontwarn okhttp3.**
+-keep class okhttp3.** { *;}
+-keep interface okhttp3.** { *; }
 
 -dontwarn okio.**
-
--dontwarn org.xbill.**
--keep class org.xbill.** { *;}
+-keep class okio.** { *;}
 
 -keepattributes *Annotation*
 
