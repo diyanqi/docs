@@ -6,7 +6,7 @@
 对于 POST 和 PUT 请求，请求的主体必须是 JSON 格式，而且 HTTP Header 的 Content-Type 需要设置为 `application/json`。
 请求的鉴权是通过 HTTP Header 里面包含的键值对来进行的，详见 [存储 REST API 使用指南](rest_api.html) 中的 [请求格式](rest_api.html#请求格式) 一节的说明。
 
-`_Conversation` 表包含一些内置的关键字段定义了对话的属性、成员等，单聊、群聊、聊天室、服务号均在此表中，详见 [即时通讯总览-对话](realtime_v2.html#对话) 一节。不过为了避免出现数据不一致问题，我们不推荐调用数据存储相关的 API 直接操作 `_Conversation` 表中的数据。
+`_Conversation` 表包含一些内置的关键字段定义了对话的属性、成员等，单聊、群聊、聊天室、服务号均在此表中，详见 [即时通讯总览-对话](realtime_v2.html#对话（Conversation）) 一节。不过为了避免出现数据不一致问题，我们不推荐调用数据存储相关的 API 直接操作 `_Conversation` 表中的数据。
 
 当前的 API 版本为 `1.2`：
 
@@ -33,7 +33,7 @@ curl -X POST \
 ```
 
 上面的例子会创建一个最简单的对话，包括两个 client ID 为 BillGates 和 SteveJobs 的初始成员。对话创建成功会返回 objectId，即即时通讯中的对话 ID，客户端就可以通过这个 ID 发送消息了。新创建的对话可以在 `_Conversation` 表内找到。
-对话的字段可参考 [即时通讯总览-对话](realtime_v2.html#对话) 一节。
+对话的字段可参考 [即时通讯总览-对话](realtime_v2.html#对话（Conversation）) 一节。
 传入 `"unique": true` 参数可以保证对话的唯一性。
 
 返回
@@ -717,7 +717,7 @@ curl -X POST \
   https://{{host}}/1.2/rtm/chatrooms
 ```
 
-对话的字段可参考  [即时通讯总览-对话](realtime_v2.html#对话) 一节。
+对话的字段可参考  [即时通讯总览-对话](realtime_v2.html#对话（Conversation）) 一节。
 
 返回
 
@@ -1301,7 +1301,7 @@ curl -X POST \
   https://{{host}}/1.2/rtm/service-conversations
 ```
 
-对话的字段可参考 [即时通讯总览-对话](realtime_v2.html#对话) 一节。
+对话的字段可参考 [即时通讯总览-对话](realtime_v2.html#对话（Conversation）) 一节。
 
 返回
 
