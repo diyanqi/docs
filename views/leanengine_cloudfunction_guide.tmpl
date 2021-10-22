@@ -1587,6 +1587,35 @@ def on_auth_data(auth_data):
 
 {% endif %}
 
+{% if platformName === ".NET" %}
+
+### OnAuthData
+
+在云存储处理第三方登录的 `authData` 时触发，开发者可以在这个 Hook 中进行对 `authData` 的校验或转换。比如：
+
+```cs
+[LCEngineUserHook(LCEngineUserHookType.OnAuthData)]
+public static Dictionary<string, object> OnAuthData(Dictionary<string, object> authData) {
+  if (authData.TryGetValue("fake_platform", out object tokenObj)) {
+    if (tokenObj is Dictionary<string, object> token) {
+      // 模拟校验
+      if (token["openid"] as string == "123" && token["access_token"] as string == "haha") {
+        LCLogger.Debug("Auth data Verified OK.");
+      } else {
+        throw new Exception("Invalid auth data.");
+      }
+    } else {
+      throw new Exception("Invalid auth data");
+    }
+  }
+  return authData;
+}
+```
+
+该 hook 属于 before 类 hook.
+
+{% endif %}
+
 ### 即时通讯 Hook 函数
 
 参见《即时通讯概览第四篇》的《万能的 Hook 机制》章节。
