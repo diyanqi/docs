@@ -218,7 +218,7 @@
 
 ![TypedMessage 继承自 Message。TextMessage、ImageMessage、AudioMessage、VideoMessage、LocationMessage 和其他消息类型继承自 TypedMessage。](images/realtime_v2_message_types.svg)
 
-如上所述，富媒体消息基于 JSON 格式，通过 [REST API](realtime_rest_api_v2.html#富媒体消息格式说明) 发送时需要序列化为包含以下属性的 JSON 字符串（使用客户端 SDK 发送消息时，SDK 会自动完成相应的转换）：
+富媒体消息基于 JSON 格式，通过 REST API 发送时需要传入符合特定格式的 JSON 字符串，具体格式见 [REST API 指南的说明](realtime_rest_api_v2.html#富媒体消息格式)。使用客户端 SDK 发送消息时，SDK 会自动完成相应的转换。
 
 属性 |约束| 说明
 --- |---|---
