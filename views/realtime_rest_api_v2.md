@@ -2121,7 +2121,7 @@ curl -X GET \
 
 参数与返回值可以参考 `GET /1.2/rtm/conversations/{conv_id}/messages` 接口。
 
-### 富媒体消息格式说明
+### 富媒体消息格式
 
 富媒体消息的参数格式相对于普通文本来说，仅仅是将 `message` 参数换成了一个 JSON 字符串。下面给出内置富媒体消息类型序列化为 JSON 的例子。
 
