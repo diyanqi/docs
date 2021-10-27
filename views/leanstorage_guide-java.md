@@ -214,7 +214,7 @@ query.getInBackground("582570f38ac247004f39c24b").subscribe(new Observer<LCObjec
 
 ```java
 LCObject todo = LCObject.createWithoutData("Todo", "582570f38ac247004f39c24b");
-todo.fetchInBackground().subscribe(new Observable<LCObject>() {
+todo.fetchInBackground().subscribe(new Observer<LCObject>() {
     public void onSubscribe(Disposable disposable) {}
     public void onNext(LCObject todo) {
         // todo 已刷新
@@ -229,7 +229,7 @@ todo.fetchInBackground().subscribe(new Observable<LCObject>() {
 ```java
 LCObject todo = LCObject.createWithoutData("Todo", "582570f38ac247004f39c24b");
 String keys = "priority, location";
-todo.fetchInBackground(keys).subscribe(new Observable<LCObject>() {
+todo.fetchInBackground(keys).subscribe(new Observer<LCObject>() {
     public void onSubscribe(Disposable disposable) {}
     public void onNext(LCObject todo) {
         // 只有 priority 和 location 会被获取和刷新
