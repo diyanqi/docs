@@ -4,10 +4,9 @@
 
 请求的 Base URL 可以在**云服务控制台 > 设置 > 应用凭证 > 服务器地址**查看。
 对于 POST 和 PUT 请求，请求的主体必须是 JSON 格式，而且 HTTP Header 的 Content-Type 需要设置为 `application/json`。
-请求的鉴权是通过 HTTP Header 里面包含的键值对来进行的，详见《存储 REST API 使用指南》中《请求格式》一节的说明。
+请求的鉴权是通过 HTTP Header 里面包含的键值对来进行的，详见 [存储 REST API 使用指南](rest_api.html) 中的 [请求格式](rest_api.html#请求格式) 一节的说明。
 
-`_Conversation` 表包含一些内置的关键字段定义了对话的属性、成员等，单聊、群聊、聊天室、服务号均在此表中，详见《即时通讯概览》的《对话》一节。
-不过为了避免出现数据不一致问题，我们不推荐调用数据存储相关的 API 直接操作 `_Conversation` 表中的数据。
+`_Conversation` 表包含一些内置的关键字段定义了对话的属性、成员等，单聊、群聊、聊天室、服务号均在此表中，详见 [即时通讯总览-对话](realtime_v2.html#对话（Conversation）) 一节。不过为了避免出现数据不一致问题，我们不推荐调用数据存储相关的 API 直接操作 `_Conversation` 表中的数据。
 
 当前的 API 版本为 `1.2`：
 
@@ -34,7 +33,7 @@ curl -X POST \
 ```
 
 上面的例子会创建一个最简单的对话，包括两个 client ID 为 BillGates 和 SteveJobs 的初始成员。对话创建成功会返回 objectId，即即时通讯中的对话 ID，客户端就可以通过这个 ID 发送消息了。新创建的对话可以在 `_Conversation` 表内找到。
-对话的字段可参考《即时通讯总览》的《对话》一节。
+对话的字段可参考 [即时通讯总览-对话](realtime_v2.html#对话（Conversation）) 一节。
 传入 `"unique": true` 参数可以保证对话的唯一性。
 
 返回
@@ -72,7 +71,7 @@ curl -X GET \
 ---|---|---
 skip | 可选 |
 limit | 可选 | 与 skip 联合使用实现分页
-where | 可选 | 参见《存储 REST API 使用指南》的《查询》一节
+where | 可选 | 参见  [存储 REST API 使用指南](rest_api.html) 中的 [查询](rest_api.html#查询) 一节
 
 
 返回
@@ -257,8 +256,8 @@ curl -X POST \
 ```
 
 **注意**，由于这个接口的管理性质，当你通过这个接口发送消息时，我们不会检查 **from_client** 是否有权限给这个对话发送消息，而是统统放行，请谨慎使用这个接口。
-如果你在应用中使用了我们内部定义的富媒体消息格式，在发送消息时 **message** 字段需要遵守相应的格式要求。
 
+如果你在应用中使用了我们内部定义的富媒体消息格式，在发送消息时 **message** 字段需要遵守相应的格式要求，详见下文 [富媒体消息格式](#富媒体消息格式) 。 
 
 参数 | 约束 | 说明
 ---|---|---
@@ -282,7 +281,7 @@ mention_client_ids | 可选 | 数组类型，表示需要提醒注意本消息�
 ### 查询历史消息
 
 该接口要求使用 master key。
-为了保证获取聊天记录的安全性，可以开启签名认证，具体可以参考《即时通讯开发指南》第三篇的《安全与签名》一节。
+为了保证获取聊天记录的安全性，可以开启签名认证，具体可以参考 [即时通讯开发指南](realtime-guide-senior.html) 第三篇的 [安全与签名](realtime-guide-senior.html#安全与签名) 一节。
 
 ```sh
 curl -X GET \
@@ -466,7 +465,7 @@ curl -X DELETE \
 
 ### 对话权限
 
-该功能介绍可参考《即时通讯开发指南》第三篇中的《权限管理与黑名单》一节。
+该功能介绍可参考  [即时通讯开发指南](realtime-guide-senior.html) 第三篇的 [权限管理与黑名单](realtime-guide-senior.html#权限管理与黑名单) 一节。
 
 #### 增加权限
 
@@ -635,7 +634,7 @@ next | 可选 | 第一次查询时返回，后面的查询带着这个参数，�
 
 ### 黑名单
 
-该功能介绍可参考《即时通讯开发指南》第三篇中的《权限管理与黑名单》一节。
+该功能介绍可参考 [即时通讯开发指南](realtime-guide-senior.html) 第三篇的 [权限管理与黑名单](realtime-guide-senior.html#权限管理与黑名单) 一节。
 
 #### 增加对话黑名单
 
@@ -718,7 +717,7 @@ curl -X POST \
   https://{{host}}/1.2/rtm/chatrooms
 ```
 
-对话的字段可参考《即时通讯总览》的《对话》一节。
+对话的字段可参考  [即时通讯总览-对话](realtime_v2.html#对话（Conversation）) 一节。
 
 返回
 
@@ -745,8 +744,7 @@ curl -X GET \
 ---|---|---
 skip | 可选 |
 limit | 可选 | 与 skip 联合使用实现分页
-where | 可选 | 请参考《数据存储 REST API 使用详解》的《查询》一节。
-
+where | 可选 | 请参考 [存储 REST API 使用指南](rest_api.html) 中的 [查询](rest_api.html#查询) 一节
 
 返回
 
@@ -842,9 +840,9 @@ curl -X POST \
   https://{{host}}/1.2/rtm/chatrooms/{chatroom_id}/messages
 ```
 
-**注意**，由于这个接口的管理性质，当你通过这个接口发送消息时，我们不会检查 **from_client** 是否有权限给这个聊天室发送消息，而是统统放行，请谨慎使用这个接口。
-如果你在应用中使用了我们内部定义的富媒体消息格式，在发送消息时 **message** 字段需要相应的格式要求。
-此外，聊天室目前**不支持**将消息同步发送给在线的 **from_client**。
+**注意**，由于这个接口的管理性质，当你通过这个接口发送消息时，我们不会检查 **from_client** 是否有权限给这个聊天室发送消息，而是统统放行，请谨慎使用这个接口。此外，聊天室目前**不支持**将消息同步发送给在线的 **from_client**。
+
+如果你在应用中使用了我们内部定义的富媒体消息格式，在发送消息时 **message** 字段需要遵守相应的格式要求，详见下文 [富媒体消息格式](#富媒体消息格式)。 
 
 参数 | 约束 | 说明
 ---|---|---
@@ -866,7 +864,7 @@ mention_client_ids | 可选 | 数组类型，表示需要提醒注意本消息�
 ### 查询历史消息
 
 该接口要求使用 master key。
-为了保证获取聊天记录的安全性，可以开启签名认证，具体可以参考《即时通讯开发指南》第三篇的《安全与签名》一节。
+为了保证获取聊天记录的安全性，可以开启签名认证，具体可以参考 [即时通讯开发指南](realtime-guide-senior.html) 第三篇的 [安全与签名](realtime-guide-senior.html#安全与签名) 一节。
 
 ```sh
 curl -X GET \
@@ -1050,7 +1048,7 @@ curl -X DELETE \
 
 ### 对话权限
 
-该功能介绍可参考《即时通讯开发指南》第三篇中的《权限管理与黑名单》一节。
+该功能介绍可参考 [即时通讯开发指南](realtime-guide-senior.html) 第三篇的 [权限管理与黑名单](realtime-guide-senior.html#权限管理与黑名单) 一节。
 
 #### 增加权限
 
@@ -1220,7 +1218,7 @@ next | 可选 | 第一次查询时返回，后面的查询带着这个参数，�
 
 ### 黑名单
 
-该功能介绍可参考《即时通讯开发指南》第三篇中的《权限管理与黑名单》一节。
+该功能介绍可参考 [即时通讯开发指南](realtime-guide-senior.html) 第三篇的 [权限管理与黑名单](realtime-guide-senior.html#权限管理与黑名单) 一节。
 
 #### 增加聊天室黑名单
 
@@ -1303,7 +1301,7 @@ curl -X POST \
   https://{{host}}/1.2/rtm/service-conversations
 ```
 
-对话的字段可参考《即时通讯总览》的《对话》一节。
+对话的字段可参考 [即时通讯总览-对话](realtime_v2.html#对话（Conversation）) 一节。
 
 返回
 
@@ -1330,7 +1328,7 @@ curl -X GET \
 ---|---|---
 skip | 可选 |
 limit | 可选 | 与 skip 联合使用实现分页
-where | 可选 | 请参考《数据存储 REST API 使用详解》的《查询》一节。
+where | 可选 | 请参考  [存储 REST API 使用指南](rest_api.html) 中的 [查询](rest_api.html#查询) 一节
 
 
 返回
@@ -1547,7 +1545,8 @@ curl -X POST \
 ```
 
 **注意**，由于这个接口的管理性质，当你通过这个接口发送消息时，我们不会检查 **from_client** 是否有权限给这个服务号发送消息，而是统统放行，请谨慎使用这个接口。
-如果你在应用中使用了我们内部定义的富媒体消息格式，在发送消息时 **message** 字段需要遵守相应的格式要求。
+
+如果你在应用中使用了我们内部定义的富媒体消息格式，在发送消息时 **message** 字段需要遵守相应的格式要求，详见下文 [富媒体消息格式](#富媒体消息格式)。 
 
 参数 | 约束 | 说明
 ---|---|---
@@ -1662,7 +1661,7 @@ curl -X GET \
 
 ### 黑名单
 
-该功能介绍可参考《即时通讯开发指南》第三篇中的《权限管理与黑名单》一节。
+该功能介绍可参考 [即时通讯开发指南](realtime-guide-senior.html) 第三篇的 [权限管理与黑名单](realtime-guide-senior.html#权限管理与黑名单) 一节。
 
 #### 增加服务号黑名单
 
@@ -1999,7 +1998,7 @@ curl -X GET \
 ---|---|---
 skip | 可选 |
 limit | 可选 | 与 skip 联合使用实现分页
-where | 可选 | 参考《存储 REST API 指南》中的《查询》一节
+where | 可选 | 参考 [存储 REST API 使用指南](rest_api.html) 中的 [查询](rest_api.html#查询) 一节
 
 返回
 
@@ -2121,6 +2120,194 @@ curl -X GET \
 ```
 
 参数与返回值可以参考 `GET /1.2/rtm/conversations/{conv_id}/messages` 接口。
+
+### 富媒体消息格式
+
+富媒体消息的参数格式相对于普通文本来说，仅仅是将 `message` 参数换成了一个 JSON 字符串。下面给出内置富媒体消息类型序列化为 JSON 的例子。
+
+#### 文本消息
+
+```sh
+curl -X POST \
+  -H "X-LC-Id: {{appid}}" \
+  -H "X-LC-Key: {{masterkey}},master" \
+  -H "Content-Type: application/json" \
+  -d '{"from_peer": "1a", "message": "{\"_lctype\":-1,\"_lctext\":\"这是一个纯文本消息\",\"_lcattrs\":{\"a\":\"_lcattrs 是用来存储用户自定义的一些键值对\"}}", "conv_id": "...", "transient": false}' \
+  https://{{host}}/1.1/rtm/messages
+```
+
+发送文本消息可以按照以上的格式进行，参数说明：
+
+属性 |约束| 说明
+--- |---|---
+`_lctype` | |富媒体消息的类型<table><thead><tr><th>消息</th><th>类型</th></tr></thead><tbody><tr><td>文本消息</td><td>-1</td></tr><tr><td>图像消息</td><td>-2</td></tr><tr><td>音频消息</td><td>-3</td></tr><tr><td>视频消息</td><td>-4</td></tr><tr><td>位置消息</td><td>-5</td></tr><tr><td>文件消息</td><td>-6</td></tr></tbody></table>以上类型均使用负数，所有正数留给自定义扩展类型使用，0 作为「没有类型」被保留起来。
+`_lctext` | |富媒体消息的文字说明
+`_lcattrs` | |JSON 字符串，用来给开发者存储自定义属性。
+`_lcfile` | |如果是包含了文件（图像、音频、视频、通用文件）的消息 ，<br/>`_lcfile` 就包含了它的文件实体的相关信息。
+`url` | |文件在上传之后的物理地址（注意，绑定或换绑自定义域名后，历史消息中的 url 不会更新）
+`objId` |可选 |文件对应的在 `_File` 表里面的 objectId
+`metaData` | 可选|文件的元数据
+
+**以上为所有类型的富媒体消息共有的属性。**
+
+#### 图像消息
+
+```json
+{
+  "_lctype":    -2,                    // 必要参数
+  "_lctext":    "图像的文字说明",
+  "_lcattrs": {
+    "a":        "_lcattrs 是用来存储用户自定义的一些键值对",
+    "b":        true,
+    "c":        12
+  },
+  "_lcfile": {
+    "url":      "http://ac-p2bpmgci.clouddn.com/246b8acc-2e12-4a9d-a255-8d17a3059d25", // 必要参数
+    "objId":    "54699d87e4b0a56c64f470a4", // 文件对应的 LCFile.objectId
+    "metaData": {
+      "name":   "IMG_20141223.jpeg",   // 图像的名称
+      "format": "png",                 // 图像的格式
+      "height": 768,                   // 单位：像素
+      "width":  1024,                  // 单位：像素
+      "size":   18                     // 单位：b
+    }
+  }
+}
+```
+
+上面是完整的例子，如果只想简单的发送图像 URL：
+
+```json
+{
+  "_lctype": -2,
+  "_lcfile": {
+    "url":   "http://ac-p2bpmgci.clouddn.com/246b8acc-2e12-4a9d-a255-8d17a3059d25"
+  }
+}
+```
+
+#### 音频消息
+
+```json
+{
+  "_lctype":      -3,
+  "_lctext":      "这是一个音频消息",
+  "_lcattrs": {
+    "a":          "_lcattrs 是用来存储用户自定义的一些键值对"
+  },
+  "_lcfile": {
+    "url":        "http://ac-p2bpmgci.clouddn.com/246b8acc-2e12-4a9d-a255-8d17a3059d25",
+    "objId":      "54699d87e4b0a56c64f470a4", //文件对应的 LCFile.objectId
+    "metaData": {
+      "name":     "我的滑板鞋.wav",
+      "format":   "wav",
+      "duration": 26,    // 单位：秒
+      "size":     2738   // 单位：b
+    }
+  }
+}
+```
+
+简略版：
+
+```json
+{
+  "_lctype": -3,
+  "_lcfile": {
+    "url":   "http://www.somemusic.com/x.mp3"
+  }
+}
+```
+
+#### 视频消息
+
+```json
+{
+  "_lctype":      -4,
+  "_lctext":      "这是一个视频消息",
+  "_lcattrs": {
+    "a":          "_lcattrs 是用来存储用户自定义的一些键值对"
+  },
+  "_lcfile": {
+    "url":        "http://ac-p2bpmgci.clouddn.com/99de0f45-171c-4fdd-82b8-1877b29bdd12",
+    "objId":      "54699d87e4b0a56c64f470a4", //文件对应的 LCFile.objectId
+    "metaData": {
+      "name":     "录制的视频.mov",
+      "format":   "avi",
+      "duration": 168,      // 单位：秒
+      "size":     18689     // 单位：b
+    }
+  }
+}
+```
+
+简略版：
+
+```json
+{
+  "_lctype": -4,
+  "_lcfile": {
+    "url":   "http://www.somevideo.com/Y.flv"
+  }
+}
+```
+
+#### 通用文件消息
+
+```json
+{
+  "_lctype": -6,
+  "_lctext": "这是一个普通文件类型",
+  "_lcattrs": {
+    "a":     "_lcattrs 是用来存储用户自定义的一些键值对"
+  },
+  "_lcfile": {
+    "url":   "http://www.somefile.com/jianli.doc",
+    "name":  "我的简历.doc",
+    "size":  18689          // 单位：b
+  }
+}
+```
+
+简略版：
+
+```json
+{
+  "_lctype": -6,
+  "_lcfile": {
+    "url":   "http://www.somefile.com/jianli.doc",
+    "name":  "我的简历.doc"
+  }
+}
+```
+
+#### 地理位置消息
+
+```json
+{
+  "_lctype":     -5,
+  "_lctext":     "这是一个地理位置消息",
+  "_lcattrs": {
+    "a":         "_lcattrs 是用来存储用户自定义的一些键值对"
+  },
+  "_lcloc": {
+    "longitude": 23.2,
+    "latitude":  45.2
+  }
+}
+```
+
+简略版：
+
+```json
+{
+  "_lctype":     -5,
+  "_lcloc": {
+    "longitude": 23.2,
+    "latitude":  45.2
+  }
+}
+```
 
 ## 接口请求频率限制
 
