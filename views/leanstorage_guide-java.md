@@ -214,7 +214,7 @@ query.getInBackground("582570f38ac247004f39c24b").subscribe(new Observer<LCObjec
 
 ```java
 LCObject todo = LCObject.createWithoutData("Todo", "582570f38ac247004f39c24b");
-todo.fetchInBackground().subscribe(new Observable<LCObject>() {
+todo.fetchInBackground().subscribe(new Observer<LCObject>() {
     public void onSubscribe(Disposable disposable) {}
     public void onNext(LCObject todo) {
         // todo 已刷新
@@ -229,7 +229,7 @@ todo.fetchInBackground().subscribe(new Observable<LCObject>() {
 ```java
 LCObject todo = LCObject.createWithoutData("Todo", "582570f38ac247004f39c24b");
 String keys = "priority, location";
-todo.fetchInBackground(keys).subscribe(new Observable<LCObject>() {
+todo.fetchInBackground(keys).subscribe(new Observer<LCObject>() {
     public void onSubscribe(Disposable disposable) {}
     public void onNext(LCObject todo) {
         // 只有 priority 和 location 会被获取和刷新
@@ -249,7 +249,7 @@ todo.fetchInBackground(keys).subscribe(new Observable<LCObject>() {
 ```java
 LCObject todo = LCObject.createWithoutData("Todo", "582570f38ac247004f39c24b");
 todo.put("content", "这周周会改到周三下午三点。");
-todo.saveInBackground(option).subscribe(new Observer<LCObject>() {
+todo.saveInBackground().subscribe(new Observer<LCObject>() {
     public void onSubscribe(Disposable disposable) {}
     public void onNext(LCObject savedTodo) {
         System.out.println("保存成功");
@@ -321,7 +321,7 @@ post.increment("likes", 1);
 
 - `add()` 将指定对象附加到数组末尾。
 - `addUnique()` 如果数组中不包含指定对象，则将该对象加入数组。对象的插入位置是随机的。
-- `removeAll()` 从数组字段中删除指定对象的所有实例。
+- `removeAll()` 从数组对象中删除指定数组中的所有对象。
 
 例如，`Todo` 用一个 `alarms` 属性保存所有闹钟的时间。下面的代码将多个时间加入这个属性：
 

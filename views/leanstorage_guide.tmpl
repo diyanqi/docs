@@ -1307,7 +1307,7 @@ leancloud.OpIncrement(1)
 - `append(String, elements: [LCValue])`<br/>将指定对象数组附加到数组末尾。
 - `append(String, elements: [LCValue], unique: Bool)`<br/>将指定对象数组附加到数组末尾，并且可以设置一个 `unique` 的 `bool` 值表示只是确保唯一，不会重复添加。
 - `remove(String, element: LCValue)`<br/>从数组字段中删除指定对象的所有实例。
-- `remove(String, elements: [LCValue])`<br/>从数组字段中删除指定的对象数组。
+- `remove(String, elements: [LCValue])`<br/>从数组对象中删除指定数组中的所有对象。
 {% endif %}
 {% if platform_name === "Flutter" %}
 - `add(key, value)`<br/>将指定对象附加到数组末尾。
@@ -1315,7 +1315,7 @@ leancloud.OpIncrement(1)
 - `addUnique(key, value)`<br/>将指定对象附加到数组末尾，确保对象唯一。
 - `addAllUnique(key, values)`<br/>将指定对象数组附加到数组末尾，确保对象唯一。
 - `remove(key, value)`<br/>从数组字段中删除指定对象的所有实例。
-- `removeAll(key, values)`<br/>从数组字段中删除指定的对象数组。
+- `removeAll(key, values)`<br/>从数组对象中删除指定数组中的所有对象。
 {% endif %}
 
 {% if platform_name === "Go" %}
