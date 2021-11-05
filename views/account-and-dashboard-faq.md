@@ -98,3 +98,13 @@ LeanCloud 不支持重命名 Class。
 
 由于众所周知的原因，许多海外地区访问国内服务的网络速度不尽如人意。
 如果应用主要面向海外用户，建议使用 [LeanCloud 国际版](https://leancloud.app/)（机房位于北美）。如果应用同时面向国内用户和海外用户，可以考虑购买专线方案改善海外用户访问速度。专线方案仅面向商用版应用，如有需要，可以提交工单联系我们。
+
+### LeanCloud SDK 收集哪些数据
+
+LeanCloud SDK 不采集个人信息，例如，不会收集设备 Mac 地址，不会采集唯一设备识别码（如 IMEI / android ID / IDFA / OPENUDID / GUID、SIM 卡 IMSI 信息等）对用户进行唯一标识，不会访问其他应用的数据信息。
+
+- [LeanCloud Android SDK 个人信息采集说明](https://www.leancloud.cn/privacy/sdk-data-collection/android/)
+- [LeanCloud Objective-C SDK Data Collection Practices](https://www.leancloud.cn/privacy/sdk-data-collection/objc/)
+- [LeanCloud Swift SDK Data Collection Practices](https://www.leancloud.cn/privacy/sdk-data-collection/swift/)
+
+LeanCloud SDK 都是开源的，开发者可以审查代码以确定 SDK 是否有其他收集用户数据的行为。
