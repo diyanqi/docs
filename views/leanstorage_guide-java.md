@@ -2206,7 +2206,7 @@ avUser.dissociateWithAuthData("weixin").subscribe(new Observer<LCUser>() {
 
 有些产品，新用户在使用第三方账号授权拿到相关信息后，仍然需要补充设置用户名、手机号、密码等重要信息后，才被允许登录成功。
 
-这时要使用 `loginWithauthData` 登录接口的 `failOnNotExist` 参数并将其设置为 `true`。服务端会判断是否已存在能匹配上的 `authData`，如果不存在则会返回 `211` 错误码和 `Could not find user` 报错信息。开发者根据这个 `211` 错误码，跳转到要求输入用户名、密码、手机号等信息的页面，实例化一个 `LCUser` 对象，保存上述补充数据，再次调用 `loginWithauthData` 接口进行登录，并 **不再传入 `failOnNotExist` 参数**。示例代码如下：
+这时要使用 `loginWithauthData` 登录接口的 `failOnNotExist` 参数并将其设置为 `true`。服务端会判断是否已存在能匹配上的 `authData`，如果不存在则会返回 `211` 错误码和 `Could not find user` 报错信息。开发者根据这个 `211` 错误码，跳转到要求输入用户名、密码、手机号等信息的页面，实例化一个 `LCUser` 对象，保存上述补充数据，再次调用 `loginWithauthData` 接口进行登录，并 **不再指定 `failOnNotExist` **。示例代码如下：
 
 ```java
 Map<String, Object> thirdPartyData = new HashMap<String, Object>();
@@ -2244,7 +2244,8 @@ user.loginWithAuthData(thirdPartyData, "weixin", failOnNotExist).subscribe(new O
 LCUser avUser = new LCUser();
 avUser.setUsername("Tom");
 avUser.setMobilePhoneNumber("+8618200008888");
-avUser.loginWithAuthData(thirdPartyData, "weixin").subscribe(new Observer<LCUser>() {
+Boolean failOnNotExist = false;
+avUser.loginWithAuthData(thirdPartyData, "weixin", failOnNotExist).subscribe(new Observer<LCUser>() {
     @Override
     public void onSubscribe(Disposable d) {
     }
