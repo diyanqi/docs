@@ -5546,7 +5546,7 @@ if err != nil {
 }
 
 // 设置其它属性
-if err := client.Users.ID(user.ID).Set("email", "tom@leancloud.rocks"); err != nil {
+if err := client.Users.ID(user.ID).Set("email", "tom@leancloud.rocks", leancloud.UseUser(user)); err != nil {
   panic(err)
 }
 ```
@@ -6887,7 +6887,7 @@ if err := client.User(user).Set("username", "Jerry"); err != nil {
 password := user.String("password")
 
 // 可以执行，因为用户已鉴权
-if err := client.User(user).Set("username", "Jerry", UseUser(user)); err != nil {
+if err := client.User(user).Set("username", "Jerry", leancloud.UseUser(user)); err != nil {
     panic(err)
 }
 
