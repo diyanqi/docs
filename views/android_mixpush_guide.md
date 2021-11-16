@@ -17,7 +17,7 @@ Android 混合推送功能仅对商用版应用开放，如果希望使用该功
 
 注意，混合推送可以随时按需开关。当该选项关闭后，下一次 Android 推送会与普通推送一样自动选择自有通道送达客户端，除了会再次遇到上面提到的自有通道在部分 ROM 上会受到限制的问题之外，不会有别的影响。而当该选项再次开启后，Android 推送又会去选择厂商推送渠道。
 
-开启了混合推送之后，Installation 表中每一个设备对应的记录，会增加一个 vendor 字段（如果没有这一字段，则说明客户端集成有问题），其值分别为：
+开启了混合推送之后，Installation 表中每一个设备对应的记录，会增加 `registrationId` 字段，用于记录厂商分配的注册 id（类似于 APNs 的 device token），同时还会增加一个 `vendor` 字段（如果没有这一字段，则说明客户端集成有问题），其值分别为：
 
 vendor | 厂商
 ---|---
@@ -39,7 +39,71 @@ vendor | 厂商
 
 下面我们逐一看看如何对接华为、小米、魅族等厂商的推送服务，文档的最后也提及了在海外市场如何对接 Firebase Cloud Messaging。
 
-### 混合推送 library 的构成
+## 推荐的接入方式
+
+混合推送本质上还是依赖于各厂商的 SDK 和服务端能力，我们的客户端 SDK 只是对厂商 SDK 的包装，而实际的推送请求也是通过 LeanCloud 中转之后发送到厂商后台。同时因为是一对多的关系，我们的客户端 SDK 更新速度可能跟不上所有厂商的迭代速度，因此建议大家直接对接厂商 SDK，然后在客户端把厂商分配的「注册 id」与厂商标识（见上一章 vendor 的说明）保存到设备信息（`Installation`）中，这样之后一样可以通过我们的推送 API 来给所有设备正确发送推送信息。
+
+### 客户端接入方法
+不同厂商获取「注册 id」的流程和接口会有不同，可以参考厂商平台的开发指南，这里我们说一下集成厂商 SDK 获取到「注册 id」之后如何按照规范来保存设备信息。
+
+- 华为推送（HMS）
+
+开发者从 `HmsMessageService` 继承自己的实现类，然后在 `onNewToken(String token)` 回调函数中调用如下代码进行保存：
+
+```
+  public static void updateInstallation(String hwToken) {
+    if (StringUtil.isEmpty(hwToken)) {
+      return;
+    }
+    LCInstallation installation = LCInstallation.getCurrentInstallation();
+    if (!VENDOR.equals(installation.getString(LCInstallation.VENDOR))) {
+      installation.put(LCInstallation.VENDOR, "HMS");
+    }
+    if (!hwToken.equals(installation.getString(LCInstallation.REGISTRATION_ID))) {
+      installation.put(LCInstallation.REGISTRATION_ID, hwToken);
+    }
+
+    installation.saveInBackground().subscribe(ObserverBuilder.buildSingleObserver(new SaveCallback() {
+      @Override
+      public void done(LCException e) {
+        if (null != e) {
+          LOGGER.e("update installation error!", e);
+        } else {
+          LOGGER.d("Huawei push registration successful!");
+        }
+      }
+    }));
+  }
+```
+
+示例代码可以参考[LCHMSMessageService](https://github.com/leancloud/java-unified-sdk/blob/master/android-sdk/mixpush-hms/src/main/java/cn/leancloud/LCHMSMessageService.java#L61)。
+
+- 小米推送
+
+开发者从 `PushMessageReceiver` 继承自己的实现类，然后在 `onReceiveRegisterResult` 回调函数中调用如上例代码进行保存（记得将 `vendor` 换成 `mi`）。示例代码可以参考[LCMiPushMessageReceiver](https://github.com/leancloud/java-unified-sdk/blob/master/android-sdk/mixpush-xiaomi/src/main/java/cn/leancloud/LCMiPushMessageReceiver.java#L119)。
+
+- Oppo 推送
+
+开发者从 `ICallBackResultService` 继承自己的实现类，然后在 `onRegister` 回调函数中调用如上例代码进行保存（记得将 `vendor` 换成 `oppo`）。示例代码可以参考[LCOPPOPushAdapter](https://github.com/leancloud/java-unified-sdk/blob/master/android-sdk/mixpush-oppo/src/main/java/cn/leancloud/LCOPPOPushAdapter.java#L45)。
+
+- vivo 推送
+
+开发者从 `OpenClientPushMessageReceiver` 继承自己的实现类，然后在 `onReceiveRegId` 回调函数中调用如上例代码进行保存（记得将 `vendor` 换成 `vivo`）。示例代码可以参考[LCVIVOPushMessageReceiver](https://github.com/leancloud/java-unified-sdk/blob/master/android-sdk/mixpush-vivo/src/main/java/cn/leancloud/LCVIVOPushMessageReceiver.java#L39)。
+
+- 魅族推送
+
+开发者从 `MzPushMessageReceiver` 继承自己的实现类，然后在 `onRegisterStatus` 回调函数中调用如上例代码进行保存（记得将 `vendor` 换成 `mz`）。示例代码可以参考[LCFlymePushMessageReceiver](https://github.com/leancloud/java-unified-sdk/blob/master/android-sdk/mixpush-meizu/src/main/java/cn/leancloud/LCFlymePushMessageReceiver.java#L101)。
+
+- FCM 推送
+
+开发者从 `FirebaseMessagingService` 继承自己的实现类，然后在 `onNewToken` 回调函数中调用如上例代码进行保存（记得将 `vendor` 换成 `fcm`）。示例代码可以参考[LCFirebaseMessagingService](https://github.com/leancloud/java-unified-sdk/blob/master/android-sdk/leancloud-fcm/src/main/java/cn/leancloud/LCFirebaseMessagingService.java#L69)。
+
+### 发送混合推送的服务端 API
+可以参考这里的说明来发送推送请求：[推送 REST API 使用指南](/push-rest-api.html)。
+
+> 如果开发者要集成我们封装的混合推送 SDK，可以继续往下阅读，如果自行接入厂商 SDK，则可以忽略下文。
+
+## 混合推送 library 的构成
 
 我们提供了一个 all-in-one 的混合推送模块，统一支持华为（HMS）、小米、Oppo、Vivo、魅族推送，开发者依赖如下:
 'cn.leancloud:mixpush-android:8.1.5@aar'
@@ -54,7 +118,6 @@ vendor | 厂商
 
 两组 library 的使用方法基本相同，开发者可以根据自己的需要选取合适的 library。有一点需要注意的是，在 6.5.1 及后续版本的 library 中，由于小米、Oppo、Vivo 并没有将他们的 SDK 包发布到公开源供开发者引用，所以如果是使用这几个厂商的推送，需要开发者将对应的 jar/aar 包（下载地址见[这里](https://github.com/leancloud/java-unified-sdk/tree/master/android-sdk/mixpush-android/libs)）手动加入工程中。
 
-
 ## 华为推送-HMS 版本
 
 ### 环境配置
@@ -68,7 +131,7 @@ vendor | 厂商
 
 #### 获取 HMS SDK
 
-SDK 从 7.2.5 版本开始升级到华为 PushKit V5 版本，开发者可以参考[华为官方文档](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/android-app-quickstart-0000001071490422)完成 HMS SDK 的接入。其主要步骤有：
+当前版本 SDK 依赖华为 PushKit V5 版本，开发者可以参考[华为官方文档](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/android-integrating-sdk-0000001050040084)完成 HMS SDK 的接入。其主要步骤有：
 
 - 在 AndroidStudio 开发环境中添加当前应用的 AppGallery Connect 配置文件，如下图所示：
 
@@ -87,7 +150,7 @@ SDK 从 7.2.5 版本开始升级到华为 PushKit V5 版本，开发者可以参
     ```groovy
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
-        classpath 'com.huawei.agconnect:agcp:1.4.2.300'
+        classpath 'com.huawei.agconnect:agcp:1.2.1.301'
     }
     ```
 
@@ -108,7 +171,7 @@ SDK 从 7.2.5 版本开始升级到华为 PushKit V5 版本，开发者可以参
         ```groovy
         dependencies {
           //其它已存在的依赖不要删除
-          implementation 'com.huawei.hms:push:5.1.1.301'
+          implementation 'com.huawei.hms:push:5.3.0.304'
         }
         ```
 
@@ -144,21 +207,21 @@ SDK 从 7.2.5 版本开始升级到华为 PushKit V5 版本，开发者可以参
 
 #### 修改应用 manifest 配置
 
-首先导入 `mixpush-android` 包，修改 `build.gradle` 文件，在 `dependencies` 中添加依赖：
+首先导入 `mixpush-hms` 包，修改 `build.gradle` 文件，在 `dependencies` 中添加依赖：
 
 ```groovy
 dependencies {
   //混合推送需要的包
-  implementation 'cn.leancloud:mixpush-android:8.1.5'
+  implementation 'cn.leancloud:mixpush-hms:8.1.5'
   //即时通信与推送需要的包
   implementation 'cn.leancloud:realtime-android:8.1.5'
   implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
 
-  implementation 'com.huawei.hms:push:4.0.2.300'
+  implementation 'com.huawei.hms:push:5.3.0.304'
 }
 ```
 
-如果只希望接入华为推送，可以将 `mixpush-android` 替换为 `mixpush-hms`。
+> 如果希望一次性接入所有厂商推送，可以将 `mixpush-hms` 替换为 `mixpush-android`。
 
 然后配置相关 AndroidManifest，添加 Permission（开发者要将其中的 `<包名>` 替换为自己的应用的 package）：
 
@@ -202,7 +265,10 @@ dependencies {
 
 ### 提升透传消息到达率
 
-当使用华为推送发透传消息时，如果目标设备上应用进程被杀，会出现推送消息无法接收的情况。这个是华为 ROM 对透传消息广播的限制导致的，需要引导用户在华为 「权限设置」中对应用开启自启动权限来避免。
+透传消息是由客户端应用负责处理的消息。终端设备收到透传消息后不直接展示，而是将数据传递给应用，由应用自主解析内容，并触发相关动作（如跳转网页、应用内页面等等）。透传消息的常用场景包括好友邀请、VoIP呼叫、语音播报等。
+按照华为官方说明，透传消息的到达率受 Android 系统和应用是否驻留在后台影响，推送服务不保证透传消息的高到达率，并且会让应用层处理变得复杂，所以还是推荐大家使用普通的通知栏消息。
+
+> 当使用华为推送发透传消息时，如果目标设备上应用进程被杀，会出现推送消息无法接收的情况。这个是华为 ROM 对透传消息广播的限制导致的，需要引导用户在华为 「权限设置」中对应用开启自启动权限来避免。
 
 ### 使用特定 activity 响应推送消息
 
@@ -219,7 +285,7 @@ dependencies {
 </activity>
 ```
 
-在目标 activity 的 `onCreate` 函数中可以从 intent extra data 中通过 `content` key 可以获得推送内容（JSON 格式，包含 push 消息中所有自定义属性）。
+在目标 activity 的 `onCreate` 函数中可以从 intent extra data 中通过 `content` key 可以获得推送内容（JSON 格式，包含 push 消息中所有自定义属性，可以参考我们的示例：[PushTargetActivity](https://github.com/leancloud/mixpush-demos/blob/master/huawei/app/src/main/java/cn/leancloud/demo/hmspush/PushTargetActivity.java)）。
 
 一般情况下，这里 intent-filter 的内容都不需要修改。
 如果同一开发者有多个应用都使用了我们的 HMS 混合推送，或者终端用户安装了多个使用我们的 HMS 混合推送的应用，那么在同一个终端上，推送消息在通知栏被点击之后，因为多个应用都响应同样的 intent-filter，所以会出现要选择应用来打开的情况。
@@ -256,7 +322,7 @@ curl -X POST \
 
 ```json
 {
-  "hps": {
+  "hms": {
     "msg": {
       "type": 3,
       "body": {
@@ -560,45 +626,48 @@ vivo 混合推送 demo：可参照 [这里](https://github.com/leancloud/mixpush
 
 ### 接入 SDK
 
-当前版本的 SDK 是基于 vivo 官方文档 [push SDK 接入文档](https://dev.vivo.com.cn/documentCenter/doc/365) 封装而来，使用的 vivo push SDK 基线版本是 `2.9.0.0`。我们会结合 demo（[源码](https://github.com/leancloud/mixpush-demos/tree/master/vivo/)）来解释整个接入流程。
+当前版本的 SDK 是基于 vivo 官方文档 [push SDK 接入文档](https://dev.vivo.com.cn/documentCenter/doc/365) 封装而来，使用的 vivo push SDK 基线版本是 `3.0.0.3`。我们会结合 demo（[源码](https://github.com/leancloud/mixpush-demos/tree/master/vivo/)）来解释整个接入流程。
 
 首先将 demo 工程 `app/libs` 目录下的所有 jar 包（如有）拷贝到目标工程的 libs 目录下，然后修改 `build.gradle` 文件，在 `dependencies` 中添加依赖：
 
 ```groovy
 dependencies {
   //混合推送需要的包
-  implementation files("libs/vivo_pushsdk-v2.9.0.0.aar") // 将 vivo_pushsdk-v2.9.0.0.aar 置于应用 libs 目录下
-  implementation 'cn.leancloud:mixpush-android:8.1.5'
+  implementation files("libs/vivo_pushsdk-v3.0.0.3_483.aar") // 将 vivo_pushsdk-v3.0.0.3_483.aar 置于应用 libs 目录下
+  implementation 'cn.leancloud:mixpush-vivo:8.1.5'
   //即时通信与推送需要的包
   implementation 'cn.leancloud:realtime-android:8.1.5'
   implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
 }
 ```
 
-如果只希望接入 vivo 推送，可以将 `mixpush-android` 替换为 `mixpush-vivo`。
-
 接下来配置 AndroidManifest，添加权限声明：
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+<uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" />
+<uses-permission android:name="com.heytap.mcs.permission.RECIEVE_MCS_MESSAGE" />
 ```
 
-最后在 AndroidManifest 中添加 service 与 receiver（开发者要将其中的 `com.vivo.push.app_id` 和 `com.vivo.push.app_key` 替换为自己的应用的信息）：
+最后在 AndroidManifest 中添加必须的 service 与 receiver（开发者要将其中的 `com.vivo.push.app_id` 和 `com.vivo.push.app_key` 替换为自己的应用的信息）：
 
 ```xml
+<!--Vivo Push需要配置的service、activity-->
 <service
     android:name="com.vivo.push.sdk.service.CommandClientService"
-    android:exported="true" />
+    android:permission="com.push.permission.UPSTAGESERVICE"
+    android:exported="true"/>
+
 <activity
     android:name="com.vivo.push.sdk.LinkProxyClientActivity"
     android:exported="false"
     android:screenOrientation="portrait"
-    android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-<!-- push应用定义消息receiver声明，大家要换成自己的实现类 -->
+    android:theme="@android:style/Theme.Translucent.NoTitleBar" /> <!-- push应用定义消息receiver声明 -->
 <receiver android:name=".MyPushMessageReceiver">
     <intent-filter>
+
         <!-- 接收push消息 -->
         <action android:name="com.vivo.pushclient.action.RECEIVE" />
     </intent-filter>
@@ -606,10 +675,15 @@ dependencies {
 
 <meta-data
     android:name="com.vivo.push.api_key"
-    android:value="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+    android:value="{your-app-key}" />
 <meta-data
     android:name="com.vivo.push.app_id"
-    android:value="xxxxx" />
+    android:value="{your-app-id}" />
+
+<!--Vivo Push SDK的版本信息-->
+<meta-data
+    android:name="sdk_version_vivo"
+    android:value="483"/>
 ```
 
 接下来我们看看代码上要怎么做。
@@ -697,36 +771,32 @@ public class LCMixPushManager {
 - 云推送服务器向 vivo 服务器 转发请求；
 - vivo 服务器通过系统长链接下发推送通知到手机端；
 - 手机端操作系统将消息展示在通知栏；
-- 用户点击通知栏消息。此时 vivo 系统会调用应用 AndroidManifest 里定义的响应 `com.vivo.pushclient.action.RECEIVE` action 的接收器（如前面 AndroidManifest 里定义的 `MyPushMessageReceiver` 类）。
+- 用户点击通知栏消息。
 
-应用需要从混合推送 SDK 中的 `LCVIVOPushMessageReceiver` 类派生出自己的实现类，在 `void onNotificationMessageClicked(Context var1, UPSNotificationMessage var2)` 方法中响应点击事件，以动态改变展示内容。
-下面是一个 `MyPushMessageReceiver` 类的简单示例：
+新版的 Vivo 推送已经不再通过 SDK 来响应通知栏的点击回调，而是在消息中直接指定了响应的 Activity 与附带数据，这要求我们在发送推送请求的时候就按照 Vivo 的规则组织好参数，同时客户端 AndroidManifest 里需要声明好响应 Activity 支持的 filter，例如：
 
-```java
-import android.content.Context;
-
-import cn.leancloud.LCVIVOPushMessageReceiver;
-import com.vivo.push.model.UPSNotificationMessage;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-public class MyPushMessageReceiver extends LCVIVOPushMessageReceiver {
-  private static final Logger logger = Logger.getLogger(MyPushMessageReceiver.class.getSimpleName());
-
-  public void onNotificationMessageClicked(Context var1, UPSNotificationMessage var2) {
-    logger.log(Level.FINER, "received MessageClick Event. " + var2.toString());
-  }
-}
+```xml
+<activity
+    android:name=".CustomActivity"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data
+            android:host="cn.leancloud.push"
+            android:path="/detail"
+            android:scheme="mixpushscheme" />
+    </intent-filter>
+</activity>
 ```
 
-这样就完成了 vivo 推送的完整流程。
-
+具体的客户端和 REST API 请求示例，可以参看我们的 demo。
 
 
 ## Oppo 推送
 
-混合推送 Oppo 模块基于 oppo Push SDK v2.1.0 版本，支持 Android 4.4 或以上版本的手机系统，服务支持信息如下：
+混合推送 Oppo 模块基于 oppo Push SDK v3.0.0 版本，支持 Android 4.4 或以上版本的手机系统，服务支持信息如下：
 
 - 支持平台：ColorOS 3.1 及以上的系统的 OPPO 机型，一加 5/5t 及以上机型，realme 所有机型。
 - 通知消息类型：只支持通知栏消息的推送。消息下发到 OS 系统模块并由系统通知模块展示，在用户点击通知前，不启动应用。具体限制可参考 [oppo 官方文档](https://open.oppomobile.com/wiki/doc#id=10743)。
@@ -749,7 +819,7 @@ public class MyPushMessageReceiver extends LCVIVOPushMessageReceiver {
 
 #### 下载 SDk
 
-- 将之前下载的 SDK（com.heytap.msp-push-2.1.0.aar）复制到工程 libs/ 目录下，然后修改 `build.gradle` 文件，在 `dependencies` 中添加依赖：
+- 将之前下载的 SDK（oppo-push-3.0.0.aar）复制到工程 libs/ 目录下，然后修改 `build.gradle` 文件，在 `dependencies` 中添加依赖：
 
 ```groovy
 dependencies {
@@ -764,7 +834,7 @@ dependencies {
 
 #### 配置 AndroidManifest.xml
 
-注意：oppo 推送服务SDK 2.1.0 版本支持的最低安卓版本为 Android 4.4 系统（`minSdkVersion="19"`）。
+注意：oppo 推送服务SDK 3.0.0 版本支持的最低安卓版本为 Android 4.4 系统（`minSdkVersion="19"`）。
 
 - 增加权限列表（如果应用无透传权限，则不用配置）
 
@@ -782,20 +852,20 @@ dependencies {
 
     ```xml
     <service
-      android:name="com.heytap.msp.push.service.CompatibleDataMessageCallbackService"     
-    android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">
+        android:name="com.heytap.msp.push.service.CompatibleDataMessageCallbackService"
+        android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">
         <intent-filter>
-        <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE"/>
+            <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE" />
         </intent-filter>
-    </service> <!--兼容Q以下版本-->
+    </service> <!-- 兼容Q以下版本 -->
     <service
-      android:name="com.heytap.msp.push.service.DataMessageCallbackService"     
-    android:permission="com.heytap.mcs.permission.SEND_PUSH_MESSAGE">
+        android:name="com.heytap.msp.push.service.DataMessageCallbackService"
+        android:permission="com.heytap.mcs.permission.SEND_PUSH_MESSAGE">
         <intent-filter>
-        <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>
-    <action android:name="com.heytap.msp.push.RECEIVE_MCS_MESSAGE"/>
+            <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE" />
+            <action android:name="com.heytap.msp.push.RECEIVE_MCS_MESSAGE" />
         </intent-filter>
-    </service> <!--兼容Q版本-->
+    </service>
     ```
 
 
@@ -860,7 +930,7 @@ public class MyApp extends Application {
     3. 打开应用内页（activity）；
     4. Intent scheme URL
 
-混合推送目前只支持默认动作（启动应用），将来会支持其他选项。
+客户端响应用户点击的过程不需要 SDK 参与，全部都是由系统通过消息里面附带的信息来自行处理。混合推送现在可支持所有动作方式，具体可参考我们的 demo。
 
 
 ## FCM 推送（仅国际版可用）
