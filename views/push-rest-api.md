@@ -253,9 +253,9 @@ curl -X DELETE \
 Path|Method|描述
 ---|---|---
 /1.1/push|POST|推送通知
-/1.1/notifications|GET|查询推送记录
-/1.1/notifications/:notification_id|GET|根据 ID 查推送记录
-/1.1/notifications/:notification_id|DELETE|根据 ID 删推送记录
+/1.1/tables/Notifications|GET|查询推送记录
+/1.1/tables/Notifications/:notification_id|GET|根据 ID 查推送记录
+/1.1/tables/Notifications/:notification_id|DELETE|根据 ID 删推送记录
 /1.1/scheduledPushMessages|GET|查询应用下所有的定时推送
 /1.1/scheduledPushMessages/:id|DELETE|根据 ID 删定时推送
 
