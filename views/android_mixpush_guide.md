@@ -320,7 +320,7 @@ dependencies {
 
 ### 应用在前台时自己处理通知栏消息
 
-华为手机可以支持这一需求，但需要在调用 REST API 发送消息时，指定 “message.android.notification.foreground_show” 值为 “false”，同时客户端 Manifest 中声明 HmsMessageService 子类，并声明 queries 节点（针对 Android 11 以上系统）。
+华为手机可以支持这一需求，但需要在调用 REST API 发送消息时，指定 `message.android.notification.foreground_show` 值为 `false`，同时客户端 Manifest 中声明 HmsMessageService 子类，并声明 `queries` 节点（针对 Android 11 以上系统）。
 
 REST API 请求示例：
 
@@ -950,7 +950,7 @@ vivo 桌面图标角标默认是关闭的，开发者接入完成后还需要终
   - notificationNum：未读消息数目
 
 简单示例：
-```
+```java
 Intent intent = new Intent();
 int missedCalls = 10;
 intent.setAction("launcher.action.CHANGE_APPLICATION_NOTIFICATION_NUM");
