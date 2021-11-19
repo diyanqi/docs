@@ -5,13 +5,13 @@
 
 自 Android 8.0 之后，系统权限控制越来越严，第三方推送通道的生命周期受到较大限制；同时，国内主流厂商也开始推出自己独立的推送服务，而厂商间千差万别的繁杂接口徒增了开发和代码维护的难度。为此，我们推出了混合推送的方案。我们逐一对接国内主流厂商，将它们不同的接口隐藏起来，让开发者通过统一的 API 完成推送任务。这不仅大幅降低了开发复杂度，还保障了主流 Android 系统上的推送到达率。
 
-在混合推送方案里，消息下发时使用的通道不再是我们自己维持的 WebSocket 长连接，而是借用厂商和 OS 层的系统通道进行通信。一条推送消息下发的步骤如下：
+在混合推送方案里，消息下发时使用的通道不再是 LeanCloud 自己维持的 WebSocket 长连接，而是借用厂商和 OS 层的系统通道进行通信。一条推送消息下发的步骤如下：
 1. 开发者调用云服务 Push API 请求对全部或特定设备进行推送；
 2. 云推送服务端将请求转发给厂商的推送接口；
 3. 厂商通过手机端的系统通道下发推送消息，同时手机端系统消息接收器将推送消息展示到通知栏；
 4. 终端用户点击消息之后唤起目标应用或者页面。
 
-整个流程与苹果的 APNs 推送类似，SDK 在客户端基本不会得到调用，消息的下发和展示都依赖厂商客户端的行为。所以如果部分厂商在某些推送中夹带了其他非开发者提交的消息，或者在服务启用的时候，有额外营销性质的弹窗，这都是厂商自己的行为，与我们完全无关，还请大家了解。另外，如果开发者碰到厂商 SDK 的问题，我们也无法深入调查，还请大家自行到厂商的论坛或技术支持渠道咨询解决。
+整个流程与苹果的 APNs 推送类似，SDK 在客户端基本不会得到调用（具体依赖于厂商的实现方案），消息的下发和展示都依赖厂商客户端的行为。所以***如果部分厂商在某些推送中夹带了其他非开发者提交的消息，或者在服务启用的时候，有额外营销性质的弹窗，这都是厂商自己的行为，与我们完全无关***，还请大家了解。另外，如果开发者碰到厂商 SDK 的问题，我们也无法深入调查，还请大家自行到厂商的论坛或技术支持渠道咨询解决。
 
 Android 混合推送功能仅对商用版应用开放，如果希望使用该功能，请进入 **云服务控制台 > 推送 > 设置 > 混合推送**，打开混合推送的开关。
 
@@ -32,16 +32,64 @@ vendor | 厂商
 通常情况下，需要提交不同的版本（分别对接厂商的推送服务）到相应厂商的应用商店。
 如果希望使用统一版本，那么需要自行判断手机型号，在手机上开启对应的推送。
 
+### 推送提醒的红点或角标展示
+
+很多开发者都希望可以在应用桌面开启角标或者小红点，以达到更好的提醒效果。国内厂商对此功能的开放程度不一，详见下表：
+
+厂商 | 是否支持角标/红点 | 是否需要配置 | 适配说明
+--- | --- | --- | ---
+华为 | 支持角标 | 是 | 请参考下文[华为角标适配说明](#华为角标适配说明)
+小米 | 支持角标 | 否 | 遵从系统默认逻辑，感应通知栏通知数目，按 1 自动增减
+OPPO | 支持红点 | 否 | 圆点展示需由用户在通知设置中手动开启，遵从系统默认逻辑，有通知则展示，无则不展示；数值展示只对指定应用开启，例如 QQ、微信，需向官方进行权限申请，暂无明确适配说明。
+VIVO | 支持角标 | 是 | 参考下文[vivo 手机角标适配说明](#vivo_手机角标适配说明)
+魅族 | 支持红点 | 否 | 遵从系统默认逻辑，仅支持红点展示，有通知则展示，无则不展示
+
+### 通知栏消息与透传消息
+
+很多开发者会关心通知栏消息和透传消息是否支持，因为应用状态不同，可能接收到消息的途径不一样，产品层面希望的处理方式也有差异。不同厂商对透传消息的支持不一样，详见下表：
+
+厂商 | 是否支持透传消息
+--- | --- 
+华为 | 是 
+小米 | 是 
+OPPO | 否  
+VIVO | 否（老版本有透传接口，新版本已不建议使用）
+魅族 | 否 
+
 ### 即时通讯的离线推送
 
 在即时通讯服务中，在 iOS 平台上如果用户下线，是可以启动离线消息推送机制的，对于 Android 用户来说，如果只是使用云推送自有通道，那么是不存在离线推送的，因为聊天和推送共享同一条 WebSocket 长链接，在即时通讯服务中用户下线了的话，那么推送也必然是不可达的。但是如果启用了混合推送，因为推送消息走的是厂商通道，这一点和 iOS 基本一致，所以这时候 Android 用户就存在离线推送的通知路径了。
 也就是说，如果开启了混合推送，那么即时通讯里面的离线推送和静音机制，对使用了混合推送的 Android 用户也是有效的。
 
+### 受限说明
+
+推送消息长度限制：
+
+- 消息中的应用包名最大支持 128 字节，消息内容最大支持 4KB 字节。
+
+最低 Android 版本要求：
+
+- 华为推送需要用户手机上安装 HMS Core（APK）4.0.0.300 及以上版本，最低 Android 版本为 4.1（minSdkVersion 19）。
+- 小米推送服务 SDK 支持的最低安卓版本为 2.3（minSdkVersion：9）。
+- VIVO 推送服务支持的最低 Android 版本为 6.0（minSdkVersion：23）。
+- OPPO 推送只支持 Android 4.4 或以上版本的手机系统（minSdkVersion：19）。
+- FCM 推送支持 Android 4.1 或以上版本的手机系统（minSdkVersion：16）。
+- 魅族（flyme）推送只支持 Android 4.2 或以上版本的手机系统（minSdkVersion：17）。
+
+影响送达率的因素说明：
+
+- 终端设备是否在线。如果设备离线，推送服务会缓存消息，待设备上线后，再将消息推送给设备。
+- 终端设备上集成推送服务 SDK 的应用是否被卸载。
+- 终端设备的网络状况是否稳定。
+- 终端设备的安全控制策略。
+- 透传消息的送达受 Android 系统和应用是否驻留在后台影响。
+
+
 下面我们逐一看看如何对接华为、小米、魅族等厂商的推送服务，文档的最后也提及了在海外市场如何对接 Firebase Cloud Messaging。
 
 ## 推荐的接入方式
 
-混合推送本质上还是依赖于各厂商的 SDK 和服务端能力，我们的客户端 SDK 只是对厂商 SDK 的包装，而实际的推送请求也是通过 LeanCloud 中转之后发送到厂商后台。同时因为是一对多的关系，我们的客户端 SDK 更新速度可能跟不上所有厂商的迭代速度，因此建议大家直接对接厂商 SDK，然后在客户端把厂商分配的「注册 id」与厂商标识（见上一章 vendor 的说明）保存到设备信息（`Installation`）中，这样之后一样可以通过我们的推送 API 来给所有设备正确发送推送信息。
+混合推送本质上还是依赖于各厂商的 SDK 和服务端能力，我们的客户端 SDK 只是对厂商 SDK 的包装，而实际的推送请求也是通过 LeanCloud 中转之后发送到厂商后台。因为是一对多的关系，我们的客户端 SDK 更新速度可能跟不上所有厂商的迭代速度，因此建议大家直接对接厂商 SDK，然后在客户端把厂商分配的「注册 id」与厂商标识（见上一章 vendor 的说明）保存到设备信息（`Installation`）中，这样之后一样可以通过我们的推送 API 来给所有设备正确发送推送信息。
 
 ### 客户端接入方法
 不同厂商获取「注册 id」的流程和接口会有不同，可以参考厂商平台的开发指南，这里我们说一下集成厂商 SDK 获取到「注册 id」之后如何按照规范来保存设备信息。
@@ -116,7 +164,7 @@ vendor | 厂商
 - Oppo 'cn.leancloud:mixpush-oppo:8.1.5'
 - Vivo 'cn.leancloud:mixpush-vivo:8.1.5'
 
-两组 library 的使用方法基本相同，开发者可以根据自己的需要选取合适的 library。有一点需要注意的是，在 6.5.1 及后续版本的 library 中，由于小米、Oppo、Vivo 并没有将他们的 SDK 包发布到公开源供开发者引用，所以如果是使用这几个厂商的推送，需要开发者将对应的 jar/aar 包（下载地址见[这里](https://github.com/leancloud/java-unified-sdk/tree/master/android-sdk/mixpush-android/libs)）手动加入工程中。
+两组 library 的使用方法基本相同，开发者可以根据自己的需要选取合适的 library。有一点需要注意的是，在 6.5.1 及后续版本的 library 中，由于小米、Oppo、Vivo 并没有将他们的 SDK 包发布到公开源供开发者引用，所以如果是使用这几个厂商的推送，需要开发者将厂商的 SDK 包手动加入工程中。
 
 ## 华为推送-HMS 版本
 
@@ -265,14 +313,68 @@ dependencies {
 
 ### 提升透传消息到达率
 
-透传消息是由客户端应用负责处理的消息。终端设备收到透传消息后不直接展示，而是将数据传递给应用，由应用自主解析内容，并触发相关动作（如跳转网页、应用内页面等等）。透传消息的常用场景包括好友邀请、VoIP呼叫、语音播报等。
+透传消息是由客户端应用负责处理的消息。终端设备收到透传消息后不直接展示，而是将数据传递给应用，由应用自主解析内容，并触发相关动作（如跳转网页、应用内页面等等）。透传消息的常用场景包括好友邀请、VoIP 呼叫、语音播报等。
 按照华为官方说明，透传消息的到达率受 Android 系统和应用是否驻留在后台影响，推送服务不保证透传消息的高到达率，并且会让应用层处理变得复杂，所以还是推荐大家使用普通的通知栏消息。
 
 > 当使用华为推送发透传消息时，如果目标设备上应用进程被杀，会出现推送消息无法接收的情况。这个是华为 ROM 对透传消息广播的限制导致的，需要引导用户在华为 「权限设置」中对应用开启自启动权限来避免。
 
+### 应用在前台时自己处理通知栏消息
+
+华为手机可以支持这一需求，但需要在调用 REST API 发送消息时，指定 “message.android.notification.foreground_show” 值为 “false”，同时客户端 Manifest 中声明 HmsMessageService 子类，并声明 queries 节点（针对 Android 11 以上系统）。
+
+REST API 请求示例：
+
+```json
+{
+    "hms": {
+      "message": {
+        "notification": {
+            "title": "message title",
+            "body": "message body"
+        },
+        "android": {
+            "notification": {
+                "foreground_show": false,
+                "click_action": {
+                    "type": 1,
+                    "action": "com.huawei.codelabpush.intent.action.test"
+                }
+            }
+        }
+      }
+    }
+}
+```
+
+manifest 配置示例：
+
+```
+<manifest ...>
+    ...
+    <application ...>
+        <service android:name="cn.leancloud.LCHMSMessageService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+    </application>
+    ...
+    <queries>
+        <intent>
+            <action android:name="com.huawei.hms.core.aidlservice" />
+        </intent>
+    </queries>
+    ...
+</manifest>
+```
+
 ### 使用特定 activity 响应推送消息
 
-华为推送消息，在用户点击了通知栏信息之后，默认是打开应用，用户也可以指定特定的 activity 来响应推送启动事件，开发者需要在 manifest 文件的 application 中定义如下的 activity：
+华为推送消息，在用户点击了通知栏信息之后，默认是打开应用，用户也可以指定特定的 activity 来响应推送启动事件。
+
+打开应用自定义页面有两种方式，一种是通过服务端 API 指定 intent 参数，另一种是指定 action 参数，我们混合推送 SDK 选择使用 intent 参数（具体可参考华为文档[服务端发送 push 消息](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/android-server-dev-0000001050040110)），开发者也可以在发送请求时自行指定 action 参数（按照华为的 REST API 规范指定即可）。
+
+对于目标 activity，开发者需要在 manifest 文件的 application 中增加 intent-filter 的定义，例如：
 
 ```xml
 <!-- (可选)开发者自定义的打开推送消息的目的 activity。-->
@@ -288,11 +390,11 @@ dependencies {
 在目标 activity 的 `onCreate` 函数中可以从 intent extra data 中通过 `content` key 可以获得推送内容（JSON 格式，包含 push 消息中所有自定义属性，可以参考我们的示例：[PushTargetActivity](https://github.com/leancloud/mixpush-demos/blob/master/huawei/app/src/main/java/cn/leancloud/demo/hmspush/PushTargetActivity.java)）。
 
 一般情况下，这里 intent-filter 的内容都不需要修改。
+
 如果同一开发者有多个应用都使用了我们的 HMS 混合推送，或者终端用户安装了多个使用我们的 HMS 混合推送的应用，那么在同一个终端上，推送消息在通知栏被点击之后，因为多个应用都响应同样的 intent-filter，所以会出现要选择应用来打开的情况。
 这可以通过在 intent-filter 中配置不一样的 `android:host` 解决。
 在云服务控制台，增加华为 HMS 推送配置的时候，开发者可以指定自己的 Android Intent Hostname（不指定就使用默认值 `cn.leancloud.push`），然后在这里的 intent-filter 中填上***同样***的值，客户端就可以区分不同应用的通知栏消息了。
 
-在 HMS 推送中，只能通过自定义 `intent` 参数来指定响应 activity 的（具体可参考华为文档[服务端发送 push 消息](https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/android-server-dev-0000001050040110)）。
 云端在调用 HMS 推送接口的时候，会把开发者自定义的属性，使用固定的 intentUri pattern 来封装成 `intent` 数据，其中 `intentUri` 的固定格式为：
 
 ```
@@ -345,8 +447,8 @@ curl -X POST \
 ### 华为推送自定义 Receiver
 
 如果你想推送消息，但不显示在 Android 系统的通知栏中，而是执行应用程序预定义的逻辑，可以自定义 Receiver。
-华为混合推送自定义 Receiver 需要继承 LCHMSMessageService，在收到透传消息的回调方法 `onMessageReceived` 获取推送消息数据。
-你的 Receiver 可以按照如下方式实现：
+
+华为混合推送自定义 Receiver 需要继承 LCHMSMessageService，在收到透传消息的回调方法 `onMessageReceived` 获取推送消息数据。你的 Receiver 可以按照如下方式实现：
 
 ```java
 public class MyHuaweiReceiver extends LCHMSMessageService {
@@ -389,6 +491,35 @@ public class MyHuaweiReceiver extends LCHMSMessageService {
 }
 ```
 
+### 华为角标适配说明
+#### 使用限制
+华为手机角标展示支持 EMUI 8.0 及以上手机。
+受限于华为手机角标能力的开放程度，在不同的推送场景下角标功能有所不同，详见下表。
+
+推送形式 | 角标能力 | 实现方式
+--- | --- | ---
+通知栏消息 | 支持角标自动加 1、直接设置或不变，支持通知点击的自动减 1，不支持通知清除的自动减 1 | 通过管理台或 Push API 关键字设置
+透传消息 | 开发者自行处理设置、加减逻辑 | 调用 HMS SDK 开放接口
+
+#### 配置说明
+##### 应用内角标设置权限申请
+为能实现角标修改的正确效果，请首先为应用添加华为手机上的角标读写权限，具体实现为在应用 AndroidManifest.xml 文件的 manifest 标签下添加以下权限配置：
+
+```xml
+<uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE"/>
+```
+
+##### 华为手机终端设置角标自增减
+华为手机支持角标自动增减 1（负数为减，正数为增），需要在客户端通过代码实现，示例如下：
+
+```java
+Bundle extra = new Bundle();
+extra.putString("package", "xxxxxx");
+extra.putString("class", "yyyyyyy");
+extra.putInt("badgenumber", i);
+context.getContentResolver().call(Uri.parse("content://com.huawei.android.launcher.settings/badge/"), "change_badge", null, extra);
+```
+
 ### 推送消息智能分类
 
 华为推送服务会将推送消息自动分为服务与通讯、资讯营销两类，不同类别的提醒方式有所差异，因此也会影响混合推送内容中一些属性的效果。
@@ -399,6 +530,7 @@ public class MyHuaweiReceiver extends LCHMSMessageService {
 请参考[华为的开发者文档][huawei-classification]了解服务与通讯、资讯营销两个分类的具体差异。
 
 [huawei-classification]: https://developer.huawei.com/consumer/cn/doc/development/HMSCore-Guides/message-classification-management-solution-0000001149358835
+
 ### 参考 demo
 
 我们提供了一个 [最新的华为推送 demo](https://github.com/leancloud/mixpush-demos/tree/master/huawei)，可供你在接入过程中参考。
@@ -415,12 +547,12 @@ public class MyHuaweiReceiver extends LCHMSMessageService {
 
 ### 接入 SDK
 
-我们混合推送基于小米 3.7.5 版本 SDK 进行开发。开发者需要首先导入 `mixpush-android` 包：修改 `build.gradle` 文件，在 **dependencies** 中添加依赖：
+我们混合推送基于小米 4.8.2 版本 SDK 进行开发。开发者需要首先导入 `mixpush-android` 包：修改 `build.gradle` 文件，在 **dependencies** 中添加依赖：
 
 ```groovy
 dependencies {
   //混合推送需要的包
-  implementation fileTree(dir: 'libs', include: ['*.jar']) // 需将 MiPush_SDK_Client_3_7_5.jar 放入应用的 libs 目录下
+  implementation fileTree(dir: 'libs', include: ['*.jar']) // 需将 MiPush_SDK_Client_4_8_2.jar 放入应用的 libs 目录下
   implementation 'cn.leancloud:mixpush-android:8.1.5'
   //即时通信与推送需要的包
   implementation 'cn.leancloud:realtime-android:8.1.5'
@@ -793,6 +925,43 @@ public class LCMixPushManager {
 
 具体的客户端和 REST API 请求示例，可以参看我们的 demo。
 
+### vivo 手机角标适配说明
+#### 使用限制
+VIVO 的通知栏消息，并不支持角标显示，而透传消息（官方已建议不再继续使用），则可以由开发者自己处理设置逻辑。
+VIVO 桌面图标角标默认是关闭的，开发者接入完成后还需要终端用户手动开启，开启完成后收到新消息时，在已安装的应用桌面图标右上角显示「数字角标」。终端用户开启角标设置的路径是：「设置」-「通知与状态栏」-「应用通知管理」-「应用名称」-「桌面图标角标」。
+
+> 视 OS 版本差异，「桌面图标角标」名称可能为「应用图标标记」或「桌面角标」。
+
+#### 配置说明
+- 添加权限
+
+为能实现角标修改的正确效果，请首先为应用添加 vivo 手机上的角标读写权限，具体实现为在应用 AndroidManifest.xml 文件的 manifest 标签下添加以下权限配置：
+```
+<uses-permission android:name="com.vivo.notification.permission.BADGE_ICON" />
+```
+
+- 应用在需要显示桌面角标的场景，通过广播将信息发送给 vivoLauncher：
+
+广播参数：
+
+  - action：launcher.action.CHANGE_APPLICATION_NOTIFICATION_NUM
+  - packageName：应用包名
+  - className：主类名
+  - notificationNum：未读消息数目
+
+简单示例：
+```
+Intent intent = new Intent();
+int missedCalls = 10;
+intent.setAction("launcher.action.CHANGE_APPLICATION_NOTIFICATION_NUM");
+intent.putExtra("packageName", "com.android.xxxx");
+intent.putExtra("className", "com.android.xxxx.Mainxxxx");
+intent.putExtra("notificationNum", missedCalls); 
+intent.addFlags(Intent.FLAG_RECEIVER_INCLUDE_BACKGROUND);
+sendBroadcast(intent);
+```
+
+> 注意： 在 8.0 系统上，还需要给 Intent 加上下面的 flag：`Intent.FLAG_RECEIVER_INCLUDE_BACKGROUND`
 
 ## Oppo 推送
 
