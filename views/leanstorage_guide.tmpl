@@ -132,7 +132,7 @@ todo := Todo{
   Content: "周二两点，全体成员",
 }
 
-if err := client.Class("Todo").Create(&todo); err != nil {
+if ref, err := client.Class("Todo").Create(&todo); err != nil {
   panic(err)
 }
 ```
@@ -627,12 +627,12 @@ todo := Todo {
   Priority: 2,
 }
 
-if err := client.Class("Todo").Create(&todo); err != nil {
+if ref, err := client.Class("Todo").Create(&todo); err != nil {
     panic(err)
 }
 
 // 使用 map
-if err := client.Class("Todo").Create(map[string]interface{}{
+if ref, err := client.Class("Todo").Create(map[string]interface{}{
     "title": "马拉松报名",
     "priority": 2,
 }); err != nil {
@@ -1443,7 +1443,7 @@ alarm3 := time.Parse("2006-01-02 15:04:05Z", "2018-04-30 07:30:00Z")
 
 alarms := time.Time{alarm1, alarm2, alarm3}
 
-if err := client.Class("Todo").Create(map[string]interface{}{
+if ref, err := client.Class("Todo").Create(map[string]interface{}{
     "alarms": leancloud.OpAdd(alarms),
 }); err != nil {
     panic(err)
@@ -1962,7 +1962,7 @@ post := Post{
     Content: "中午去哪吃呢？",
 }
 
-if err := client.Class("Post").Create(&post); err != nil {
+if ref, err := client.Class("Post").Create(&post); err != nil {
     panic(err)
 }
 
@@ -1971,7 +1971,7 @@ comment := Comment{
     Content: "当然是肯德基啦！",
 }
 
-if err := client.Class("Comment").Create(&comment); err != nil {
+if ref, err := client.Class("Comment").Create(&comment); err != nil {
     panic(err)
 }
 ```
@@ -4690,7 +4690,7 @@ todo := &Todo{
   Attachment: file,
 }
 
-if err := client.Class("Todo").Create(todo); err != nil {
+if ref, err := client.Class("Todo").Create(todo); err != nil {
   panic(err)
 }
 ```
