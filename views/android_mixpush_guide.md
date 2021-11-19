@@ -11,7 +11,7 @@
 3. 厂商通过手机端的系统通道下发推送消息，同时手机端系统消息接收器将推送消息展示到通知栏；
 4. 终端用户点击消息之后唤起目标应用或者页面。
 
-整个流程与苹果的 APNs 推送类似，SDK 在客户端基本不会得到调用（具体依赖于厂商的实现方案），消息的下发和展示都依赖厂商客户端的行为。所以***如果部分厂商在某些推送中夹带了其他非开发者提交的消息，或者在服务启用的时候，有额外营销性质的弹窗，这都是厂商自己的行为，与我们完全无关***，还请大家了解。另外，如果开发者碰到厂商 SDK 的问题，我们也无法深入调查，还请大家自行到厂商的论坛或技术支持渠道咨询解决。
+整个流程与苹果的 APNs 推送类似，SDK 在客户端基本不会得到调用（具体依赖于厂商的实现方案），消息的下发和展示都依赖厂商客户端的行为。所以**如果部分厂商在某些推送中夹带了其他非开发者提交的消息，或者在服务启用的时候，有额外营销性质的弹窗，这都是厂商自己的行为，与我们完全无关**，还请大家了解。另外，如果开发者碰到厂商 SDK 的问题，我们也无法深入调查，还请大家自行到厂商的论坛或技术支持渠道咨询解决。
 
 Android 混合推送功能仅对商用版应用开放，如果希望使用该功能，请进入 **云服务控制台 > 推送 > 设置 > 混合推送**，打开混合推送的开关。
 
@@ -24,8 +24,8 @@ vendor | 厂商
 `HMS` | 华为 HMS 推送
 `mi`  | 小米推送
 `mz`  | 魅族推送
-`oppo`| Oppo 推送
-`vivo`| VIVO 推送
+`oppo`| OPPO 推送
+`vivo`| vivo 推送
 `fcm` | FCM 推送（仅限国际版）
 
 注意，混合推送对接的是厂商各自的推送服务，需要单独配置，不支持混用。
@@ -41,7 +41,7 @@ vendor | 厂商
 华为 | 支持角标 | 是 | 请参考下文[华为角标适配说明](#华为角标适配说明)
 小米 | 支持角标 | 否 | 遵从系统默认逻辑，感应通知栏通知数目，按 1 自动增减
 OPPO | 支持红点 | 否 | 圆点展示需由用户在通知设置中手动开启，遵从系统默认逻辑，有通知则展示，无则不展示；数值展示只对指定应用开启，例如 QQ、微信，需向官方进行权限申请，暂无明确适配说明。
-VIVO | 支持角标 | 是 | 参考下文[vivo 手机角标适配说明](#vivo_手机角标适配说明)
+vivo | 支持角标 | 是 | 参考下文[vivo 手机角标适配说明](#vivo_手机角标适配说明)
 魅族 | 支持红点 | 否 | 遵从系统默认逻辑，仅支持红点展示，有通知则展示，无则不展示
 
 ### 通知栏消息与透传消息
@@ -53,7 +53,7 @@ VIVO | 支持角标 | 是 | 参考下文[vivo 手机角标适配说明](#vivo_�
 华为 | 是 
 小米 | 是 
 OPPO | 否  
-VIVO | 否（老版本有透传接口，新版本已不建议使用）
+vivo | 否（老版本有透传接口，新版本已不建议使用）
 魅族 | 否 
 
 ### 即时通讯的离线推送
@@ -71,7 +71,7 @@ VIVO | 否（老版本有透传接口，新版本已不建议使用）
 
 - 华为推送需要用户手机上安装 HMS Core（APK）4.0.0.300 及以上版本，最低 Android 版本为 4.1（minSdkVersion 19）。
 - 小米推送服务 SDK 支持的最低安卓版本为 2.3（minSdkVersion：9）。
-- VIVO 推送服务支持的最低 Android 版本为 6.0（minSdkVersion：23）。
+- vivo 推送服务支持的最低 Android 版本为 6.0（minSdkVersion：23）。
 - OPPO 推送只支持 Android 4.4 或以上版本的手机系统（minSdkVersion：19）。
 - FCM 推送支持 Android 4.1 或以上版本的手机系统（minSdkVersion：16）。
 - 魅族（flyme）推送只支持 Android 4.2 或以上版本的手机系统（minSdkVersion：17）。
@@ -130,7 +130,7 @@ VIVO | 否（老版本有透传接口，新版本已不建议使用）
 
 开发者从 `PushMessageReceiver` 继承自己的实现类，然后在 `onReceiveRegisterResult` 回调函数中调用如上例代码进行保存（记得将 `vendor` 换成 `mi`）。示例代码可以参考[LCMiPushMessageReceiver](https://github.com/leancloud/java-unified-sdk/blob/master/android-sdk/mixpush-xiaomi/src/main/java/cn/leancloud/LCMiPushMessageReceiver.java#L119)。
 
-- Oppo 推送
+- OPPO 推送
 
 开发者从 `ICallBackResultService` 继承自己的实现类，然后在 `onRegister` 回调函数中调用如上例代码进行保存（记得将 `vendor` 换成 `oppo`）。示例代码可以参考[LCOPPOPushAdapter](https://github.com/leancloud/java-unified-sdk/blob/master/android-sdk/mixpush-oppo/src/main/java/cn/leancloud/LCOPPOPushAdapter.java#L45)。
 
@@ -153,7 +153,7 @@ VIVO | 否（老版本有透传接口，新版本已不建议使用）
 
 ## 混合推送 library 的构成
 
-我们提供了一个 all-in-one 的混合推送模块，统一支持华为（HMS）、小米、Oppo、Vivo、魅族推送，开发者依赖如下:
+我们提供了一个 all-in-one 的混合推送模块，统一支持华为（HMS）、小米、OPPO、vivo、魅族推送，开发者依赖如下:
 'cn.leancloud:mixpush-android:8.2.0@aar'
 
 从 6.5.1 版本开始，我们额外提供了单一厂商的推送 library，以支持不希望全部集成的产品之需求，新 library 与厂商的对应关系如下：
@@ -161,10 +161,10 @@ VIVO | 否（老版本有透传接口，新版本已不建议使用）
 - 华为（HMS) 'cn.leancloud:mixpush-hms:8.2.0'
 - 小米 'cn.leancloud:mixpush-xiaomi:8.2.0'
 - 魅族 'cn.leancloud:mixpush-meizu:8.2.0'
-- Oppo 'cn.leancloud:mixpush-oppo:8.2.0'
-- Vivo 'cn.leancloud:mixpush-vivo:8.2.0'
+- OPPO 'cn.leancloud:mixpush-oppo:8.2.0'
+- vivo 'cn.leancloud:mixpush-vivo:8.2.0'
 
-两组 library 的使用方法基本相同，开发者可以根据自己的需要选取合适的 library。有一点需要注意的是，在 6.5.1 及后续版本的 library 中，由于小米、Oppo、Vivo 并没有将他们的 SDK 包发布到公开源供开发者引用，所以如果是使用这几个厂商的推送，需要开发者将厂商的 SDK 包手动加入工程中。
+两组 library 的使用方法基本相同，开发者可以根据自己的需要选取合适的 library。有一点需要注意的是，在 6.5.1 及后续版本的 library 中，由于小米、OPPO、vivo 并没有将他们的 SDK 包发布到公开源供开发者引用，所以如果是使用这几个厂商的推送，需要开发者将厂商的 SDK 包手动加入工程中。
 
 ## 华为推送-HMS 版本
 
@@ -393,7 +393,7 @@ manifest 配置示例：
 
 如果同一开发者有多个应用都使用了我们的 HMS 混合推送，或者终端用户安装了多个使用我们的 HMS 混合推送的应用，那么在同一个终端上，推送消息在通知栏被点击之后，因为多个应用都响应同样的 intent-filter，所以会出现要选择应用来打开的情况。
 这可以通过在 intent-filter 中配置不一样的 `android:host` 解决。
-在云服务控制台，增加华为 HMS 推送配置的时候，开发者可以指定自己的 Android Intent Hostname（不指定就使用默认值 `cn.leancloud.push`），然后在这里的 intent-filter 中填上***同样***的值，客户端就可以区分不同应用的通知栏消息了。
+在云服务控制台，增加华为 HMS 推送配置的时候，开发者可以指定自己的 Android Intent Hostname（不指定就使用默认值 `cn.leancloud.push`），然后在这里的 intent-filter 中填上**同样**的值，客户端就可以区分不同应用的通知栏消息了。
 
 云端在调用 HMS 推送接口的时候，会把开发者自定义的属性，使用固定的 intentUri pattern 来封装成 `intent` 数据，其中 `intentUri` 的固定格式为：
 
@@ -786,7 +786,7 @@ dependencies {
 最后在 AndroidManifest 中添加必须的 service 与 receiver（开发者要将其中的 `com.vivo.push.app_id` 和 `com.vivo.push.app_key` 替换为自己的应用的信息）：
 
 ```xml
-<!--Vivo Push需要配置的service、activity-->
+<!--vivo Push需要配置的service、activity-->
 <service
     android:name="com.vivo.push.sdk.service.CommandClientService"
     android:permission="com.push.permission.UPSTAGESERVICE"
@@ -812,7 +812,7 @@ dependencies {
     android:name="com.vivo.push.app_id"
     android:value="{your-app-id}" />
 
-<!--Vivo Push SDK的版本信息-->
+<!--vivo Push SDK的版本信息-->
 <meta-data
     android:name="sdk_version_vivo"
     android:value="483"/>
@@ -905,7 +905,7 @@ public class LCMixPushManager {
 - 手机端操作系统将消息展示在通知栏；
 - 用户点击通知栏消息。
 
-新版的 Vivo 推送已经不再通过 SDK 来响应通知栏的点击回调，而是在消息中直接指定了响应的 Activity 与附带数据，这要求我们在发送推送请求的时候就按照 Vivo 的规则组织好参数，同时客户端 AndroidManifest 里需要声明好响应 Activity 支持的 filter，例如：
+新版的 vivo 推送已经不再通过 SDK 来响应通知栏的点击回调，而是在消息中直接指定了响应的 Activity 与附带数据，这要求我们在发送推送请求的时候就按照 vivo 的规则组织好参数，同时客户端 AndroidManifest 里需要声明好响应 Activity 支持的 filter，例如：
 
 ```xml
 <activity
@@ -927,8 +927,8 @@ public class LCMixPushManager {
 
 ### vivo 手机角标适配说明
 #### 使用限制
-VIVO 的通知栏消息，并不支持角标显示，而透传消息（官方已建议不再继续使用），则可以由开发者自己处理设置逻辑。
-VIVO 桌面图标角标默认是关闭的，开发者接入完成后还需要终端用户手动开启，开启完成后收到新消息时，在已安装的应用桌面图标右上角显示「数字角标」。终端用户开启角标设置的路径是：「设置」-「通知与状态栏」-「应用通知管理」-「应用名称」-「桌面图标角标」。
+vivo 的通知栏消息，并不支持角标显示，而透传消息（官方已建议不再继续使用），则可以由开发者自己处理设置逻辑。
+vivo 桌面图标角标默认是关闭的，开发者接入完成后还需要终端用户手动开启，开启完成后收到新消息时，在已安装的应用桌面图标右上角显示「数字角标」。终端用户开启角标设置的路径是：「设置」-「通知与状态栏」-「应用通知管理」-「应用名称」-「桌面图标角标」。
 
 > 视 OS 版本差异，「桌面图标角标」名称可能为「应用图标标记」或「桌面角标」。
 
@@ -963,12 +963,12 @@ sendBroadcast(intent);
 
 > 注意： 在 8.0 系统上，还需要给 Intent 加上下面的 flag：`Intent.FLAG_RECEIVER_INCLUDE_BACKGROUND`
 
-## Oppo 推送
+## OPPO 推送
 
-混合推送 Oppo 模块基于 oppo Push SDK v3.0.0 版本，支持 Android 4.4 或以上版本的手机系统，服务支持信息如下：
+混合推送 OPPO 模块基于 OPPO Push SDK v3.0.0 版本，支持 Android 4.4 或以上版本的手机系统，服务支持信息如下：
 
 - 支持平台：ColorOS 3.1 及以上的系统的 OPPO 机型，一加 5/5t 及以上机型，realme 所有机型。
-- 通知消息类型：只支持通知栏消息的推送。消息下发到 OS 系统模块并由系统通知模块展示，在用户点击通知前，不启动应用。具体限制可参考 [oppo 官方文档](https://open.oppomobile.com/wiki/doc#id=10743)。
+- 通知消息类型：只支持通知栏消息的推送。消息下发到 OS 系统模块并由系统通知模块展示，在用户点击通知前，不启动应用。具体限制可参考 [OPPO 官方文档](https://open.oppomobile.com/wiki/doc#id=10743)。
 
 在接入时，开发者可以参考我们的 [demo](https://github.com/leancloud/mixpush-demos/tree/master/oppo)。
 
@@ -976,8 +976,8 @@ sendBroadcast(intent);
 
 在开始接入之前，有两项准备工作：
 
-- 在 [oppo 开放平台](https://open.oppomobile.com/)注册一个账号，并创建好应用。
-- 从 oppo 官网下载 aar 资源。OPPO 官方 aar 下载地址为：<https://pfs.oppomobile.com/static/document/com.heytap.msp-push-2.1.0.aar>。
+- 在 [OPPO 开放平台](https://open.oppomobile.com/)注册一个账号，并创建好应用。
+- 从 OPPO 官网下载 aar 资源。OPPO 官方 aar 下载地址为：<https://pfs.oppomobile.com/static/document/com.heytap.msp-push-2.1.0.aar>。
 
 这里假设大家已经完成上述操作，创建好了应用，并获取了 `appKey`、`appSecret`、`masterSecret`，请保存好这三个值，下一步接入的时候会用到：
 
@@ -1003,7 +1003,7 @@ dependencies {
 
 #### 配置 AndroidManifest.xml
 
-注意：oppo 推送服务SDK 3.0.0 版本支持的最低安卓版本为 Android 4.4 系统（`minSdkVersion="19"`）。
+注意：OPPO 推送服务SDK 3.0.0 版本支持的最低安卓版本为 Android 4.4 系统（`minSdkVersion="19"`）。
 
 - 增加权限列表（如果应用无透传权限，则不用配置）
 
@@ -1042,7 +1042,7 @@ dependencies {
 
 #### 初始化
 
-与其他推送的初始化方法一样，我们在 `Application#onCreate` 方法中进行 oppo 推送的初始化：
+与其他推送的初始化方法一样，我们在 `Application#onCreate` 方法中进行 OPPO 推送的初始化：
 
 ```java
 import cn.leancloud.LeanCloud;
@@ -1076,20 +1076,20 @@ public class MyApp extends Application {
 }
 ```
 
-开发者也可以在 `onCreate` 方法中调用 LCMixPushManager 的其他方法，以使用 oppo 推送的全部客户端功能，具体可以参看 LCMixPushManager 的接口文档，或参考[官方文档-详细 API 说明](https://open.oppomobile.com/wiki/doc#id=10688) 来了解具体信息。
+开发者也可以在 `onCreate` 方法中调用 LCMixPushManager 的其他方法，以使用 OPPO 推送的全部客户端功能，具体可以参看 LCMixPushManager 的接口文档，或参考[官方文档-详细 API 说明](https://open.oppomobile.com/wiki/doc#id=10688) 来了解具体信息。
 
 
-#### 添加 oppo 推送配置
+#### 添加 OPPO 推送配置
 
-在**云服务控制台 > 推送 > 设置**页面开启混合推送服务，并且在「oppo 推送配置」一节设置好准备阶段申请好的「oppo app key」和「oppo master secret」，就可以了。
+在**云服务控制台 > 推送 > 设置**页面开启混合推送服务，并且在「OPPO 推送配置」一节设置好准备阶段申请好的「app key」和「master secret」，就可以了。
 
 #### 响应通知栏消息的点击事件
 
-与其他厂商的混合推送机制一样，oppo 混合推送也是通过系统通道来下发消息，开发者调用 push API 发送消息时，其流程为：
+与其他厂商的混合推送机制一样，OPPO 混合推送也是通过系统通道来下发消息，开发者调用 push API 发送消息时，其流程为：
 
 - 用户服务器向云推送服务器发送推送请求；
-- 云推送服务器 向 oppo 服务器 转发请求；
-- oppo 服务器 通过系统长链接下发推送通知到手机端；
+- 云推送服务器 向 OPPO 服务器 转发请求；
+- OPPO 服务器 通过系统长链接下发推送通知到手机端；
 - 手机端操作系统将消息展示在通知栏；
 - 用户点击通知栏消息。此时 OS 会根据 push 参数执行不同的动作（默认值为 0）：
 
