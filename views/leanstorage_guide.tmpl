@@ -975,6 +975,9 @@ type Todo struct {
   Order *int // 可以指定一个编号，如果不指定则为空不应为 0  
 }
 ```
+由于字段变为了指针类型，如果不对字段赋值，那么该字段为指针的零值 `nil`，而不是对应非指针类型的零值，这样就不会产生二义性问题。
+
+另一种解决方案则是则是不使用自定义结构体，转而使用 `map[string]interface{}`。对于 `map[string]interface{}` 来说，如果 `key` 不存在，则 `value` 也不存在，不会产生自定义结构体字段的零值问题。
 
 #### 有条件更新对象
 
@@ -990,10 +993,6 @@ if err := client.Class("Account").ID("5745557f71cfe40068c6abe0").UpdateWithQuery
     panic(err)
 }
 ```
-
-由于字段变为了指针类型，如果不对字段赋值，那么该字段为指针的零值 `nil`，而不是对应非指针类型的零值，这样就不会产生二义性问题。
-
-另一种解决方案则是则是不使用自定义结构体，转而使用 `map[string]interface{}`。对于 `map[string]interface{}` 来说，如果 `key` 不存在，则 `value` 也不存在，不会产生自定义结构体字段的零值问题。
 {% endif %}
 
 

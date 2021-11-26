@@ -486,6 +486,7 @@ SMS::verifySmsCode('18200008888', '123456');
 ```python
 from leancloud import cloud
 cloud.verify_sms_code('18200008888', '123456')
+```
 ```dart
 try {
   await LCSMSClient.verifyMobilePhone('18200008888', '123456');
