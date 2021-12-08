@@ -32,13 +32,12 @@ LeanCloud 云端对客户端发过来的每一个请求都要进行用户身份�
 
 ## 默认 ACL
 
-每个 Class 的初始默认 ACL 为所有人可读可写：
+每个 Class 的初始默认 ACL 为所有人可读，数据创建者（Owner）可写：
 
 ```json
 {
   "*":{
-    "read":true,
-    "write":true
+    "read":true
   }
 }
 ```
