@@ -1567,7 +1567,10 @@ mary.onMembersLeft = ({
 Tom 添加 Mary | `MEMBERS_JOINED` | `MEMBERS_JOINED` | `INVITED` | /
 Tom 剔除 Mary | `MEMBERS_LEFT` | `MEMBERS_LEFT` | `KICKED` | /
 William 加入 | `MEMBERS_JOINED` | `MEMBERS_JOINED` | / | `MEMBERS_JOINED`
-Jerry 主动退出 | `MEMBERS_LEFT` | `MEMBERS_LEFT` | / | `MEMBERS_LEFT`
+Jerry 主动退出 | `MEMBERS_LEFT` | `MEMBERS_SELF_LEFT` | / | `MEMBERS_LEFT`
+
+注意，除了命名风格的不同，不同语言 SDK 在事件的实现上略有参差。
+比如「本人主动退出」，Objc SDK 下本人收到的事件是 `kickedByClientId`（主动退出视作自己剔除自己），其他 SDK 下本人收到的事件就是离开。
 
 ## 文本之外的聊天消息
 

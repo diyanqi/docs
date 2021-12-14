@@ -245,6 +245,13 @@ className-{{ name }}
     { lang: "java", value: "AVIMMessageHandler.onMemberLeft"},
     { lang: "cs", value: "AVIMClient.OnMembersLeft"}
   ])}}
+  {{ useLangSpec('MEMBERS_SELF_LEFT',[
+    { lang: "js", value: "MEMBERS_LEFT" },
+    { lang: "objc", value: "AVIMClientDelegate.kickedByClientId" },
+    { lang: "swift", value: "IMConversationEvent.membersLeft" },
+    { lang: "java", value: "AVIMMessageHandler.onMemberLeft"},
+    { lang: "cs", value: "AVIMClient.OnMembersLeft"}
+  ])}}
   {{ useLangSpec('ChatRoom',[
     { lang: "js", value: "ChatRoom" },
     { lang: "objc", value: "AVIMChatRoom" },
