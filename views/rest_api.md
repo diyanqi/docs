@@ -834,7 +834,7 @@ scan_key 也支持倒序，前面加个减号即可，例如 `-score`。
 
 **自定义的 scan_key 需要满足严格单调递增的条件，并且 scan_key 不可作为 where 查询条件存在。**
 
-scan 不支持 include 参数，**调用 scan 时传入 include 参数是为定义行为**。
+scan 不支持 include 参数，**调用 scan 时传入 include 参数是未定义行为**。
 如果遍历 Class 时需要使用 include 参数，请使用普通的查询，并通过指定 `createdAt` 或 `updatedAt` 的范围来实现翻页。
 ### 批量操作
 
