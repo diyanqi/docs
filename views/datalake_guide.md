@@ -91,12 +91,8 @@ event.saveInBackground();
     <tr>
       <td>Pointer</td>
       <td>
-        <pre>
-          <code>
-            *.className String
-            *.objectId  String
-          </code>
-        </pre>
+            `*.className String` <br/>
+            `*.objectId  String`
       </td>
       <td>会被展开为 className 和 objectId 两个字段</td>
       <td></td>
@@ -104,12 +100,8 @@ event.saveInBackground();
     <tr>
       <td>File</td>
       <td>
-        <pre>
-          <code>
-            *.className String
-            *.objectId  String
-          </code>
-        </pre>
+            `*.className String` <br/>
+            `*.objectId  String`
       </td>
       <td>会被展开为 className 和 objectId 两个字段</td>
       <td></td>
@@ -117,7 +109,7 @@ event.saveInBackground();
     <tr>
       <td>GeoPoint</td>
       <td>Point</td>
-      <td>有待支持</td>
+      <td>待支持</td>
       <td></td>
     </tr>
     <tr>
