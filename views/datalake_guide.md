@@ -11,7 +11,7 @@
 1. 基于列的存储，支持高比率的压缩，可以大幅度缩减存储成本；
 1. 基于列的遍历和向量的运算支持高效的查询效率，可以将原本需要分钟级别的复杂查询，缩短到秒级别；
 1. 直观的数据视图功能，支持存储中间结果，配合 join 查询，可支持高效率且复杂的二阶查询；
-1. 更多样的函数，支持更复杂的 SQL 查询，可参考下面的「查询语法」用例；
+1. 更多样的函数，支持更复杂的 SQL 查询，可参考下述「[常见用例](#hash-1832497836)」小节；
 1. 无缝对接日志表，可支持多样的数据源实时入库和查询，从而更灵活地集成外部数据源，为业务提供更完备的数据分析能力。
 
 数据入库
@@ -74,7 +74,7 @@ event.saveInBackground();
       <td>Boolean</td>
       <td>UInt8</td>
       <td>0 表示 false, 1 表示 true</td>
-      <td></td>
+      <td>`emailVerified = 1`</td>
     </tr>
     <tr>
       <td>Number</td>
@@ -91,8 +91,12 @@ event.saveInBackground();
     <tr>
       <td>Pointer</td>
       <td>
-        *.className String<br/>
-        *.objectId  String
+        <pre>
+          <code>
+            *.className String
+            *.objectId  String
+          </code>
+        </pre>
       </td>
       <td>会被展开为 className 和 objectId 两个字段</td>
       <td></td>
@@ -100,8 +104,12 @@ event.saveInBackground();
     <tr>
       <td>File</td>
       <td>
-        *.className String<br/>
-        *.objectId  String
+        <pre>
+          <code>
+            *.className String
+            *.objectId  String
+          </code>
+        </pre>
       </td>
       <td>会被展开为 className 和 objectId 两个字段</td>
       <td></td>
@@ -109,19 +117,19 @@ event.saveInBackground();
     <tr>
       <td>GeoPoint</td>
       <td>Point</td>
-      <td></td>
+      <td>有待支持</td>
       <td></td>
     </tr>
     <tr>
       <td>Array</td>
       <td>Array(String)</td>
-      <td>元素类型都会以字符存储，在提取元素后需要使用类型转换回原始类型</td>
+      <td>元素类型会以字符存储，在提取元素后需要使用类型转换回原始类型</td>
       <td>`toInt64(xs[1])`</td>
     </tr>
     <tr>
       <td>Object</td>
       <td>String</td>
-      <td>以 JSON 字符串的形式存储，需要用 `visitParamExtract*` 函数提取其中的字段</td>
+      <td>以 JSON 字符串的形式存储，需要用相关函数提取其中的字段</td>
       <td>`visitParamExtractInt64(object, 'id')`</td>
     </tr>
     <tr>
