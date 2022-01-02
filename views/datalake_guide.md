@@ -11,7 +11,7 @@
 1. 基于列的存储，支持高比率的压缩，可以大幅度缩减存储成本；
 1. 基于列的遍历和向量的运算支持高效的查询效率，可以将原本需要分钟级别的复杂查询，缩短到秒级别；
 1. 直观的数据视图功能，支持存储中间结果，配合 join 查询，可支持高效率且复杂的二阶查询；
-1. 更多样的函数，支持更复杂的 SQL 查询，比如 visitParamExtract 提取 JSON 字段；
+1. 更多样的函数，支持更复杂的 SQL 查询，可参考下面的「查询语法」举例；
 1. 无缝对接日志表，可支持多样的数据源实时入库和查询，从而更灵活地集成外部数据源，为业务提供更完备的数据分析能力。
 
 数据入库
@@ -50,60 +50,90 @@ event.saveInBackground();
 开启同步的 Class ，我们会在次日凌晨同步前一日更新过的数据。因此更新的对象需要在次日才可见。我们还会持续优化该流程，以期实现更实时的同步。
 
 #### 数据类型的转换
+ 
+数据仓库中的字段类型与存储有着显著的差异，在数据入库的过程中我们会进行数据转换。其中需要特别注意的是，
 
-数据存储与数据仓库中的类型是有差异的。在同步的过程中，我们做了以下类型的转换。
+1. 数据仓库不支持 `null` 类型，对于字段缺失的情况以零值存储。字符类型的零值是空字符串，数字字段的零值则是数值 0。
+1. 不支持 `Boolean` 类型，而是使用 `UInt8` 表示。0 值表示 true, 1 表示 false 。加之上述限制，默认缺失值为 0 表示 false 。
+1. 不支持嵌套的 `Object` 类型，实际会以 JSON 字符串的形式存储，使用时需要使用 JSON 函数来提取。
+1. 对于数组类型，要求元素是同一类型。在入库的过程中会转换成 `Array(String)`，使用时需要用类型转换函数转换回原类型。 
 
+具体的类型转换说明见下表，
 
-
-```html
 <table>
   <thead>
     <tr>
-      <td>类型</td>
-      <td>存储示例</td>
-      <td>数仓示例</td>
+      <td>存储类型</td>
+      <td>数据仓库类型</td>
+      <td>转换说明</td>
+      <td>使用示例</td>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Bytes</td>
-      <td>`post.auther =`</td>
-      <td>不支持</td>
+      <td>Boolean</td>
+      <td>UInt8</td>
+      <td>0 表示 false, 1 表示 true</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Number</td>
+      <td>Float64</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td>Date</td>
-      <td>``</td>
-      <td>``</td>
+      <td>DateTime</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Pointer</td>
+      <td>
+        *.className String<br/>
+        *.objectId  String
+      </td>
+      <td>会被展开为 className 和 objectId 两个字段</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>File</td>
+      <td>
+        *.className String<br/>
+        *.objectId  String
+      </td>
+      <td>会被展开为 className 和 objectId 两个字段</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>GeoPoint</td>
+      <td>Point</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Array</td>
+      <td>Array(String)</td>
+      <td>元素类型都会以字符存储，在提取元素后需要使用类型转换回原始类型</td>
+      <td>`toInt64(xs[1])`</td>
+    </tr>
+    <tr>
+      <td>Object</td>
+      <td>String</td>
+      <td>以 JSON 字符串的形式存储，需要用 `visitParamExtract*` 函数提取其中的字段</td>
+      <td>`visitParamExtractInt64(object, 'id')`</td>
+    </tr>
+    <tr>
+      <td>Bytes</td>
+      <td>N/A</td>
+      <td>不支持</td>
+      <td></td>
     </tr>
   </tbody>
 </table>
-```
 
-
-* Bytes, 不支持
-{
-  "__type": "Bytes",
-  "base64": "5b6I..."
-}
-* Date
-{
-  "__type": "Date",
-  "iso": "2015-06-21T18:02:52.249Z"
-}
-* File
-{
-  "id": "543cbaede4b07db196f50f3c",
-  "__type": "File"
-}
-
-* GeoPoint
-{
-  "__type": "GeoPoint",
-  "latitude": 39.9,
-  "longitude": 116.4
-}
-
-**Date** 类型，在存储中是以 `{__type: "Date", iso: "2021-12-20T09:24:49.566Z"}` 
+数据仓库中所支持的类型列表，可参考 [ClickHouse 数据类型](https://clickhouse.com/docs/en/sql-reference/data-types/) 文档。如何在类型之间转换，可参考 [类型转换](https://clickhouse.com/docs/en/sql-reference/functions/type-conversion-functions/) 文档。
 
 查询语法
 ---
