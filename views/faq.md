@@ -172,7 +172,7 @@ REST API 文档使用 curl 作为示范，其中 `--data-urlencode` 表示要对
 ### LeanCloud 查询支持 `Sum`、`Group By`、`Distinct` 这种函数吗？
 LeanCloud 数据存储的查询接口不支持这些函数，可以查询到客户端后，在客户端中自己写逻辑进行这些操作。
 
-如果要进行数据分析，可以使用我们的「[离线数据分析](./datalake_guide.html)」功能。
+如果要进行数据分析，可以使用我们的「[数据仓库](./datalake_guide.html)」功能。
 
 ### sessionToken 在什么情况下会失效？
 如果在控制台的存储的设置中勾选了「密码修改后，强制客户端重新登录」，则用户修改密码后， sessionToken 会变更，需要重新登录。如果没有勾选这个选项，Token 就不会改变。当新建应用时，这个选项默认是被勾上的。
