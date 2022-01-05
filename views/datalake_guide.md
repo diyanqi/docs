@@ -54,9 +54,9 @@ event.saveInBackground();
 数据仓库中的字段类型与存储有着显著的差异，在数据入库的过程中我们会进行数据转换。其中需要特别注意的是，
 
 1. 数据仓库不支持 `null` 类型，对于字段缺失的情况以零值存储。字符类型的零值是空字符串，数字字段的零值则是数值 0。
+1. `Boolean` 类型会被转换为 `UInt8` 存储。0 值表示 true, 1 表示 false 。加之上述零值特性，默认缺失值为 0 表示 false 。
 1. 不支持嵌套的 `Object` 类型，实际会以 JSON 字符串的形式存储，使用时需要使用 JSON 函数来提取。
 1. 对于数组类型，要求元素是同一类型。在入库的过程中会转换成 `Array(String)`，使用时需要用类型转换函数转换回原类型。 
-1. `Boolean` 类型会被转换为 `UInt8` 存储。0 值表示 true, 1 表示 false 。加之上述限制，默认缺失值为 0 表示 false 。
 
 具体的类型转换说明见下表，
 
@@ -71,30 +71,27 @@ event.saveInBackground();
   </thead>
   <tbody>
     <tr>
+      <td>Array</td>
+      <td>Array(String)</td>
+      <td>元素类型会以字符存储，在提取元素后需要使用类型转换回原始类型</td>
+      <td>`toInt64(xs[1])`</td>
+    </tr>
+    <tr>
       <td>Boolean</td>
       <td>UInt8</td>
       <td>0 表示 false, 1 表示 true</td>
       <td>`emailVerified = 1`</td>
     </tr>
     <tr>
-      <td>Number</td>
-      <td>Float64</td>
-      <td></td>
+      <td>Bytes</td>
+      <td>N/A</td>
+      <td>不支持</td>
       <td></td>
     </tr>
     <tr>
       <td>Date</td>
       <td>DateTime</td>
       <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Pointer</td>
-      <td>
-            `*.className String` <br/>
-            `*.objectId  String`
-      </td>
-      <td>会被展开为 className 和 objectId 两个字段</td>
       <td></td>
     </tr>
     <tr>
@@ -113,10 +110,10 @@ event.saveInBackground();
       <td></td>
     </tr>
     <tr>
-      <td>Array</td>
-      <td>Array(String)</td>
-      <td>元素类型会以字符存储，在提取元素后需要使用类型转换回原始类型</td>
-      <td>`toInt64(xs[1])`</td>
+      <td>Number</td>
+      <td>Float64</td>
+      <td></td>
+      <td></td>
     </tr>
     <tr>
       <td>Object</td>
@@ -125,9 +122,12 @@ event.saveInBackground();
       <td>`visitParamExtractInt64(object, 'id')`</td>
     </tr>
     <tr>
-      <td>Bytes</td>
-      <td>N/A</td>
-      <td>不支持</td>
+      <td>Pointer</td>
+      <td>
+            `*.className String` <br/>
+            `*.objectId  String`
+      </td>
+      <td>会被展开为 className 和 objectId 两个字段</td>
       <td></td>
     </tr>
   </tbody>
