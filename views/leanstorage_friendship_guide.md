@@ -564,6 +564,67 @@ curl -X GET \
   https://{{host}}/1.1/users/51fa6886e4b0cc0b5a3792e9/followersAndFollowees
 ```
 
+获取互相关注的用户列表
+
+```sh
+curl -X GET \
+  -H "X-LC-Id: tCoPdYYpMJlgzDnK0wo2BG5m-gzGzoHsz" \
+  -H "X-LC-Key: rz9urQGm4CfzKd4J7122gaJM" \
+  -H "X-LC-Session: <sessionToken>" \
+  -H "Content-Type: application/json" \
+  -G \
+  --data-urlencode 'include=followee' \
+  --data-urlencode 'keys=followee.nickname,followee.shortId' \
+  --data-urlencode 'limit=10' \
+  --data-urlencode 'skip=5' \
+  --data-urlencode 'where={"group": "whatever"}' \
+  https://<API_BASE_URL>/1.1/users/<uid>/mutualFollowees
+```
+
+| 参数        | 约束   | 说明                                   |
+| --------- | ---- | ---------------------------------------- |
+| include | 可选   | `_Followee` 表中的一列，如果是 followee 列，则会返回该 followee 在 `_User` 表的详细信息，例如 nickname, shortId, avatar 等。 |
+| keys | 可选   | 指定 `_Followee` 表中返回的列，如果是 Pointer 对象，支持用 `.` 来限定 Pointer 对象中的列。|
+| where | 可选   | 对 `_Followee` 表进行 where 查询限制，不允许查 user 和 followee 字段。|
+
+结果返回：
+
+```json
+{
+  "results": [
+    {
+      "group": "大佬",
+      "followee": {
+        "updatedAt": "2021-12-22T04:13:49.231Z",
+        "objectId": "61c2a5fdf6f24e75ba1bea20",
+        "username": "大熊",
+        "shortId": "nqxdibi",
+        "createdAt": "2021-12-22T04:13:49.231Z",
+        "className": "_User",
+        "__type": "Pointer"
+      },
+      "createdAt": "2021-12-22T04:13:49.738Z",
+      "updatedAt": "2021-12-22T04:13:49.738Z", 
+      "objectId": "61c2a5fdf6f24e75ba1bea28"  
+    },
+   {
+      "followee": {
+        "updatedAt": "2021-12-22T04:13:49.231Z",
+        "objectId": "61c2a5fdf6f24e75ba1bea20",
+        "username": "二熊",
+        "shortId": "nqxdibi",
+        "createdAt": "2021-12-22T04:13:49.231Z",
+        "className": "_User",
+        "__type": "Pointer"
+      },
+      "createdAt": "2021-12-22T04:13:49.738Z",
+      "updatedAt": "2021-12-22T04:13:49.738Z",
+      "objectId": "61c2a5fdf6f24e75ba1bea28"
+    }
+  ]
+}
+```
+
 
 ## 互为好友
 
