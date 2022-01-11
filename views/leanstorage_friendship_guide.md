@@ -585,7 +585,7 @@ curl -X GET \
 | --------- | ---- | ---------------------------------------- |
 | include | 可选   | `_Followee` 表中的一列，如果是 followee 列，则会返回该 followee 在 `_User` 表的详细信息，例如 nickname, shortId, avatar 等。 |
 | keys | 可选   | 指定 `_Followee` 表中返回的列，如果是 Pointer 对象，支持用 `.` 来限定 Pointer 对象中的列。|
-| where | 可选   | 对 `_Followee` 表进行 where 查询限制，不允许查 user 和 followee 字段。|
+| where | 可选   |  附加 `_Followee` 表的 where 查询条件。不支持指定针对 user 和 followee 字段的查询条件。|
 
 结果返回：
 
