@@ -448,6 +448,7 @@ LCFollowersAndFollowees followersAndFollowees = await currentUser.getFollowersAn
 curl -X POST \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
+  -H "X-LC-Session: <sessionToken>" \
   -H "Content-Type: application/json" \
   https://{{host}}/1.1/users/51fa6886e4b0cc0b5a3792e9/friendship/51e3a334e4b0b3eb44adbe1a
 ```
@@ -460,6 +461,7 @@ curl -X POST \
 curl -X DELETE \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
+  -H "X-LC-Session: <sessionToken>" \
   -H "Content-Type: application/json" \
   https://{{host}}/1.1/users/51fa6886e4b0cc0b5a3792e9/friendship/51e3a334e4b0b3eb44adbe1a
 ```
@@ -470,6 +472,7 @@ curl -X DELETE \
 curl -X POST \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
+  -H "X-LC-Session: <sessionToken>" \
   -H "Content-Type: application/json" \
   -d '{"score": 100}' \
   https://{{host}}/1.1/users/51fa6886e4b0cc0b5a3792e9/friendship/51e3a334e4b0b3eb44adbe1a
@@ -483,6 +486,7 @@ curl -X POST \
 curl -X PUT \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
+  -H "X-LC-Session: <sessionToken>" \
   -H "Content-Type: application/json" \
   -d '{"score": 200}' \
   https://{{host}}/1.1/users/51fa6886e4b0cc0b5a3792e9/friendship/51e3a334e4b0b3eb44adbe1a
@@ -496,6 +500,7 @@ curl -X PUT \
 curl -X GET \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
+  -H "X-LC-Session: <sessionToken>" \
   -H "Content-Type: application/json" \
   https://{{host}}/1.1/users/51fa6886e4b0cc0b5a3792e9/followers
 ```
@@ -506,6 +511,7 @@ curl -X GET \
 curl -X GET \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
+  -H "X-LC-Session: <sessionToken>" \
   -H "Content-Type: application/json" \
   -G \
   --data-urlencode 'include=follower' \
@@ -518,6 +524,7 @@ curl -X GET \
 curl -X GET \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
+  -H "X-LC-Session: <sessionToken>" \
   -H "Content-Type: application/json" \
   -G \
   --data-urlencode 'include=followee' \
@@ -530,6 +537,7 @@ curl -X GET \
 curl -X GET \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
+  -H "X-LC-Session: <sessionToken>" \
   -H "Content-Type: application/json" \
   -G \
   --data-urlencode 'include=followee' \
@@ -548,6 +556,7 @@ curl -X GET \
 curl -X GET \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
+  -H "X-LC-Session: <sessionToken>" \
   -H "Content-Type: application/json" \
   -G \
   --data-urlencode 'include=followee' \
