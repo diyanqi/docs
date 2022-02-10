@@ -37,7 +37,8 @@ brew install lean-cli
 
 #### Arch Linux
 
-Arch Linux 用户，可以考虑使用此 AUR 进行安装： https://aur.archlinux.org/packages/lean-cli-git/ 。
+[AUR](https://aur.archlinux.org/packages/lean-cli-git/) 上的 `lean-cli-git` 包使用了过时的构建命令，无法构建当前版本的命令行工具。
+Arch Linux 用户目前可以下载预编译好的二进制文件安装，参见上节说明。
 
 ### 通过源码安装
 
