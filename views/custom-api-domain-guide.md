@@ -169,7 +169,7 @@ AV.init({
 });
 </code></pre>
 
-<p><code>&lt;3.0.0</code> 的即时通讯 SDK 不支持自定义域名。</p>
+<p><code>&lt;3.0.0</code> 的数据存储 SDK 不支持自定义域名。</p>
 </details>
 
 
