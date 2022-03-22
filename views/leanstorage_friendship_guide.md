@@ -781,8 +781,7 @@ query.find().then((requests) => {
 // first `true` means that results will contain entire user info.
 // second `true` indicates that all requests are sent to current user.
 // you can look at the method signature for more details.
-currentUser.friendshipRequestQuery(AVFriendshipRequest.STATUS_PENDING, true, true)
-  .subscribe(new Observer<List<AVFriendshipRequest>>() {
+currentUser.friendshipRequestQuery(AVFriendshipRequest.STATUS_PENDING, true, true).findInBackground().subscribe(new Observer<List<AVFriendshipRequest>>() {
     @Override
     public void onSubscribe(@NotNull Disposable disposable) {
     }
@@ -840,8 +839,7 @@ query.find().then((requests) => {
 ```
 
 ```java
-currentUser.friendshipRequestQuery(AVFriendshipRequest.STATUS_PENDING, false, true)
-  .subscribe(new Observer<List<AVFriendshipRequest>>() {
+currentUser.friendshipRequestQuery(AVFriendshipRequest.STATUS_PENDING, false, true).findInBackground().subscribe(new Observer<List<AVFriendshipRequest>>() {
       @Override
       public void onSubscribe(@NotNull Disposable disposable) {
       }
@@ -926,8 +924,7 @@ query.find().then((requests) => {
 ```
 
 ```java
-currentUser.friendshipRequestQuery(AVFriendshipRequest.STATUS_PENDING, false, true)
-  .subscribe(new Observer<List<AVFriendshipRequest>>() {
+currentUser.friendshipRequestQuery(AVFriendshipRequest.STATUS_PENDING, false, true).findInBackground().subscribe(new Observer<List<AVFriendshipRequest>>() {
       @Override
       public void onSubscribe(@NotNull Disposable disposable) {
       }
