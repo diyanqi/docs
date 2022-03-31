@@ -431,6 +431,195 @@ meeting := Meeting{
 
 若想了解云服务是如何保护应用数据的，请阅读《数据和安全》。
 
+{% if platform_name === "Swift" %}
+
+#### 基础类型数据的构建与转换
+
+`LCObject` 无法直接支持 Swift 语言的基础数据类型，例如 `Int`、`Double`、`String`、`Bool`、`Array`、`Dictionary` 等等。相对的，SDK 提供了 `LCNumber`、`LCString`、`LCBool`、`LCArray`、`LCDictionary` 等类型，来支持 `LCObject` 与 Swift 语言的交互。
+
+##### LCNumber
+
+`LCObject` 对象中的数字均为 `LCNumber` 类型。`LCNumber` 的构建方法如下：
+
+```swift
+let intNum: LCNumber = LCNumber(1)
+let doubleNum: LCNumber = LCNumber(0.1)
+```
+
+Swift 语言的数字类型也可以与 `LCNumber` 进行相互转换：
+
+```swift
+let intNum: LCNumber = 1.lcNumber
+let int: Int? = intNum.intValue
+let doubleNum: LCNumber = 0.1.lcNumber
+let double: Double? = doubleNum.doubleValue
+```
+
+另外，`LCObject` 也支持隐式的将 Swift 语言的数字类型自动转换为 `LCNumber`：
+
+```swift
+let object = LCObject()
+// set 方法会自动将 1 以及 0.1 转换为 LCNumber
+try object.set("int", value: 1)
+try object.set("double", value: 0.1)
+```
+
+##### LCBool
+
+`LCObject` 对象中的布尔值为 `LCBool` 类型。`LCBool` 的构建方法如下：
+
+```swift
+let lcBool: LCBool = LCBool(true)
+```
+
+Swift 语言的布尔值也可以与 `LCBool` 进行相互转换：
+
+```swift
+let lcBool: LCBool = LCBool(true)
+let bool: Bool? = lcBool.boolValue
+```
+
+另外，`LCObject` 也支持隐式的将 Swift 语言的布尔值自动转换为 `LCBool`：
+
+```swift
+let object = LCObject()
+// set 方法会自动将 true 转换为 LCBool
+try object.set("bool", value: true)
+```
+
+##### LCString
+
+`LCObject` 对象中的字符串为 `LCString` 类型。`LCString` 的构建方法如下：
+
+```swift
+let lcString: LCString = LCString("string")
+```
+
+Swift 语言的字符串也可以与 `LCString` 进行相互转换：
+
+```swift
+let lcString: LCString = LCString("string")
+let string: String? = lcString.stringValue
+```
+
+另外，`LCObject` 也支持隐式的将 Swift 语言的字符串自动转换为 `LCString`：
+
+```swift
+let object = LCObject()
+// set 方法会自动将 "stringValue" 转换为 LCString
+try object.set("string", value: "stringValue")
+```
+
+##### LCArray
+
+`LCObject` 对象中的数组为 `LCArray` 类型。`LCArray` 的构建方法如下：
+
+```swift
+let lcArray: LCArray = LCArray([1, "string"])
+```
+
+Swift 语言的数组也可以与 `LCArray` 进行相互转换：
+
+```swift
+let lcArray: LCArray = LCArray([1, "string"])
+let array: Array? = lcArray.arrayValue
+```
+
+**注意**，`LCObject` 不支持隐式的将 Swift 语言的数组自动转换为 `LCArray`，所以需要显式的设置：
+
+```swift
+let object = LCObject()
+try object.set("array", value: LCArray([1, "string"]))
+```
+
+##### LCDictionary
+
+`LCObject` 对象中的字典为 `LCDictionary` 类型。`LCDictionary` 的构建方法如下：
+
+```swift
+let lcDictionary: LCDictionary = LCDictionary([
+    "key1" : 1,
+    "key2" : true,
+    "key3" : "string",
+])
+```
+
+Swift 语言的字典也可以与 `LCDictionary` 进行相互转换：
+
+```swift
+let lcDictionary: LCDictionary = LCDictionary([
+    "key1" : 1,
+    "key2" : true,
+    "key3" : "string",
+])
+let dictionary: Dictionary? = lcDictionary.dictionaryValue
+```
+
+**注意**，`LCObject` 不支持隐式的将 Swift 语言的字典自动转换为 `LCDictionary`，所以需要显式的设置：
+
+```swift
+let object = LCObject()
+try object.set("array", value: LCDictionary([
+    "key1" : 1,
+    "key2" : true,
+    "key3" : "string",
+]))
+```
+
+##### LCData
+
+`LCObject` 对象中的二进制数据为 `LCData` 类型。`LCData` 的构建方法如下：
+
+```swift
+let emptyData = Data()
+let lcData: LCData = LCData(emptyData)
+```
+
+Swift 语言的二进制数据也可以与 `LCData` 进行相互转换：
+
+```swift
+let emptyData = Data()
+let lcData: LCData = LCData(emptyData)
+let data: Data? = lcData.dataValue
+```
+
+另外，`LCObject` 也支持隐式的将 Swift 语言的二进制数据自动转换为 `LCData`：
+
+```swift
+let emptyData = Data()
+let object = LCObject()
+// set 方法会自动将 emptyData 转换为 LCData
+try object.set("data", value: emptyData)
+```
+
+##### LCDate
+
+`LCObject` 对象中的时间数据为 `LCDate` 类型。`LCDate` 的构建方法如下：
+
+```swift
+let currentDate = Date()
+let lcDate = LCDate(currentDate)
+```
+
+Swift 语言的时间数据也可以与 `LCDate` 进行相互转换：
+
+```swift
+let currentDate = Date()
+let lcDate = LCDate(currentDate)
+let date: Date? = lcDate.dateValue
+```
+
+另外，`LCObject` 也支持隐式的将 Swift 语言的时间数据自动转换为 `LCDate`：
+
+```swift
+let currentDate = Date()
+let object = LCObject()
+// set 方法会自动将 currentDate 转换为 LCDate
+try object.set("date", value: currentDate)
+```
+
+{% endif %}
+
 {% if platform_name not in ["Go", "JavaScript(next)"] %}
 
 ### 构建对象
