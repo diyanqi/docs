@@ -25,8 +25,8 @@
 
     ```json
     "dependencies": {
-    "com.leancloud.storage": "https://github.com/leancloud/csharp-sdk-upm.git#storage-0.10.5",
-    "com.leancloud.realtime": "https://github.com/leancloud/csharp-sdk-upm.git#realtime-0.10.5"
+    "com.leancloud.storage": "https://github.com/leancloud/csharp-sdk-upm.git#storage-0.10.7",
+    "com.leancloud.realtime": "https://github.com/leancloud/csharp-sdk-upm.git#realtime-0.10.7"
     }
     ```
 
