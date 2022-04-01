@@ -529,6 +529,7 @@ let array: Array? = lcArray.arrayValue
 
 ```swift
 let object = LCObject()
+// value 需显式的指定为 LCArray 类型
 try object.set("array", value: LCArray([1, "string"]))
 ```
 
@@ -559,11 +560,25 @@ let dictionary: Dictionary? = lcDictionary.dictionaryValue
 
 ```swift
 let object = LCObject()
-try object.set("array", value: LCDictionary([
+// value 需显式的指定为 LCDictionary 类型
+try object.set("dictionary", value: LCDictionary([
     "key1" : 1,
     "key2" : true,
     "key3" : "string",
 ]))
+```
+
+另外，`LCDictionary` 类型自身也支持更新操作：
+
+```swift
+let lcDictionary: LCDictionary = LCDictionary([
+    "key1" : 1,
+    "key2" : true,
+    "key3" : "string",
+])
+// value 需为 LCValue 类型
+lcDictionary.set("key1", LCNumber(2))
+lcDictionary.set("key2", false.lcBool)
 ```
 
 ##### LCData
