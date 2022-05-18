@@ -477,7 +477,7 @@ curl -X POST \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
-  -d '["60d950629be318a249000001", "60d950629be318a249000000"]'
+  -d '{"ids" : ["60d950629be318a249000001", "60d950629be318a249000000"]}' \
   https://{{host}}/1.1/leaderboard/users/statistics/<statisticName>
 ```
 
@@ -517,7 +517,7 @@ curl -X POST \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
-  -d '["60d950629be318a249000001", "60d950629be318a249000000"]'
+  -d '{"ids" : ["60d950629be318a249000001", "60d950629be318a249000000"]}' \
   https://{{host}}/1.1/leaderboard/objects/statistics/<statisticName>
 ```
 
@@ -528,7 +528,7 @@ curl -X POST \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
-  -d '["Vimur", "Fimbulthul"]'
+  -d '{"ids" : ["Vimur", "Fimbulthul"]}' \
   https://{{host}}/1.1/leaderboard/entities/statistics/<statisticName>
 ```
 
