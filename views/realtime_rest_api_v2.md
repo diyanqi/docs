@@ -351,15 +351,15 @@ curl -X PUT \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{masterkey}},master" \
   -H "Content-Type: application/json" \
-  -d '{"from_client": "", "message": "", "timestamp": 123}' \
+  -d '{"from_client": "", "timestamp": 123, "message": ""}' \
   https://{{host}}/1.2/rtm/conversations/{conv_id}/messages/{message_id}
 ```
 
 参数 | 约束 | 说明
 ---|---|---
-from_client | 必填 | 消息的发件人 client ID
-message | 必填 | 消息体
-timestamp | 必填 | 消息的时间戳
+from_client | 必填 | 原始消息的发件人 client ID
+timestamp | 必填 | 原始消息的时间戳
+message | 必填 | 新的消息体
 
 成功则返回状态码 `200 OK`。
 
@@ -934,15 +934,15 @@ curl -X PUT \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{masterkey}},master" \
   -H "Content-Type: application/json" \
-  -d '{"from_client": "", "message": "", "timestamp": 123}' \
+  -d '{"from_client": "", "timestamp": 123, "message": ""}' \
   https://{{host}}/1.2/rtm/chatrooms/{chatroom_id}/messages/{message_id}
 ```
 
 参数 | 约束 | 说明
 ---|---|---
-from_client | 必填 | 消息的发件人 client ID
-message | 必填 | 消息体
-timestamp | 必填 | 消息的时间戳
+from_client | 必填 | 原始消息的发件人 client ID
+timestamp | 必填 | 原始消息的时间戳
+message | 必填 | 新的消息体
 
 成功则返回状态码 `200 OK`。
 
@@ -1491,15 +1491,15 @@ curl -X PUT \
   -H "X-LC-Id: {{appid}}" \
   -H "X-LC-Key: {{masterkey}},master" \
   -H "Content-Type: application/json" \
-  -d '{"from_client": "", "message": "", "timestamp": 123}' \
+  -d '{"from_client": "", "timestamp": 123, "message": ""}' \
   https://{{host}}/1.2/rtm/service-conversations/{conv_id}/messages/{message_id}
 ```
 
 参数 | 约束 | 说明
 ---|---|---
-from_client | 必填 | 消息的发件人 client ID
-message | 必填 | 消息体
-timestamp | 必填 | 消息的时间戳
+from_client | 必填 | 原始消息的发件人 client ID
+timestamp | 必填 | 原始消息的时间戳
+message | 必填 | 新的消息体
 
 成功则返回状态码 `200 OK`。
 
@@ -1581,9 +1581,9 @@ curl -X PUT \
 
 参数 | 约束 | 说明
 ---|---|---
-from_client | 必填 | 消息的发件人 client ID
-message | 必填 | 消息体
-timestamp | 必填 | 消息的时间戳
+from_client | 必填 | 原始消息的发件人 client ID
+timestamp | 必填 | 原始消息的时间戳
+message | 必填 | 新的消息体
 to_clients | 必填 | 数组类型，表示接收目标消息的 client Id 列表，最多能包含 20 个 client Id
 
 成功则返回状态码 `200 OK`。
@@ -2064,9 +2064,9 @@ curl -X PUT \
 
 参数 | 约束 | 说明
 ---|---|---
-from_client | 必填 | 消息的发件人 client ID
-message | 必填 | 消息体
-timestamp | 必填 | 消息的时间戳
+from_client | 必填 | 原始消息的发件人 client ID
+timestamp | 必填 | 原始消息的时间戳
+message | 必填 | 新的消息体
 
 成功则返回状态码 `200 OK`。
 
