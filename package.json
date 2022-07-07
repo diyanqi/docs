@@ -52,7 +52,7 @@
     "jit-grunt": "^0.10.0",
     "leancloud-storage": "^4.0.0",
     "mocha": "^6.2.2",
-    "moment": "^2.10.6",
+    "moment": "^2.29.4",
     "nunjucks": "^3.2.0",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
