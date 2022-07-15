@@ -5,11 +5,11 @@
 客户端 SDK 用于 Web 平台和移动端平台（iOS、Android 等），支持无后端（backendless）应用架构。
 
 - [JavaScript SDK 安装指南](sdk_setup-js.html)
-- [Objective-C SDK 安装指南](sdk_setup-objc.html)
+- [Objective-C SDK 安装指南](https://docs.leancloud.cn/sdk/storage/guide/setup-objc/)
 - [Swift SDK 安装指南](sdk_setup-swift.html)
-- [Android/Java SDK 安装指南](sdk_setup-java.html)
+- [Android/Java SDK 安装指南](https://docs.leancloud.cn/sdk/storage/guide/setup-java/)
 - [Flutter SDK 安装指南](sdk_setup-flutter.html)
-- [.Net SDK 安装指南](sdk_setup-dotnet-standard.html)
+- [.Net SDK 安装指南](https://docs.leancloud.cn/sdk/storage/guide/setup-dotnet/)
 
 ## 服务端 SDK
 
@@ -21,8 +21,8 @@
 如果你需要在自己的服务器上使用 SDK，请参考以下文档安装配置 SDK：
 
 - [JavaScript SDK 安装指南](sdk_setup-js.html#node-js)
-- [Java SDK 安装指南](sdk_setup-java.html)
+- [Java SDK 安装指南](https://docs.leancloud.cn/sdk/storage/guide/setup-java/)
 - [Python SDK 安装指南](sdk_setup-python.html)
 - [PHP SDK 安装指南](sdk_setup-php.html)
 - [Go SDK 安装指南](sdk_setup-go.html)
-- [.Net SDK 安装指南](sdk_setup-dotnet.html)
+- [.Net SDK 安装指南](https://docs.leancloud.cn/sdk/storage/guide/setup-dotnet/)
