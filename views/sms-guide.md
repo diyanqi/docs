@@ -38,11 +38,11 @@
 开发者在 LeanCloud 应用控制台开启与短信相关的服务后（参见 [开通短信服务](#开通短信服务)），即可通过 SDK 向用户发送短信：
 
 ```objc
-AVShortMessageRequestOptions *options = [[AVShortMessageRequestOptions alloc] init];
+LCShortMessageRequestOptions *options = [[LCShortMessageRequestOptions alloc] init];
 options.templateName = @"Register_Notice"; // 控制台配置好的模板名称
 options.signatureName = @"LeanCloud";      // 控制台配置好的短信签名名称
 // 往 18200008888 这个手机号码发送短信，使用预先配置的模板和签名
-[AVSMS requestShortMessageForPhoneNumber:@"18200008888"
+[LCSMS requestShortMessageForPhoneNumber:@"18200008888"
                                 options:options
                                 callback:^(BOOL succeeded, NSError * _Nullable error) {
                                     if (succeeded) {
@@ -102,7 +102,7 @@ AV.Cloud.requestSmsCode({
 ```
 ```cs
 // 往 18200008888 这个手机号码发送短信，使用预先配置的模板（「Register_Notice」参数）和签名（「LeanCloud」参数）
-AVCloud.RequestSMSCodeAsync("18200008888","Register_Notice",null,"LeanCloud").ContinueWith(t =>
+LCCloud.RequestSMSCodeAsync("18200008888","Register_Notice",null,"LeanCloud").ContinueWith(t =>
 {
     var result = t.Result;
     // result 为 True 则表示调用成功
@@ -175,106 +175,107 @@ try {
 2. **调用接口发送验证短信**  
   注意，在这一步之前，我们假设开发者已经完成了前面章节提及的所有短信服务设置。
 
-  ```objc
-  AVShortMessageRequestOptions *options = [[AVShortMessageRequestOptions alloc] init];
-  options.TTL = 10;                     // 验证码有效时间为 10 分钟
-  options.applicationName = @"应用名称"; // 应用名称
-  options.operation = @"某种操作";       // 操作名称
-  [AVSMS requestShortMessageForPhoneNumber:@"18200008888"
-                                  options:options
-                                  callback:^(BOOL succeeded, NSError * _Nullable error) {
-                                      if (succeeded) {
-                                          /* 请求成功 */
-                                      } else {
-                                          /* 请求失败 */
-                                      }
-                                  }];
-  ```
-  ```swift
-  let variables: LCDictionary = [
-      "ttl": LCNumber(10),         // 验证码有效时间为 10 分钟
-      "name": LCString("应用名称"), // 应用名称
-      "op": LCString("某种操作")    // 操作名称
-  ]
+    ```objc
+    LCShortMessageRequestOptions *options = [[LCShortMessageRequestOptions alloc] init];
+    options.TTL = 10;                     // 验证码有效时间为 10 分钟
+    options.applicationName = @"应用名称"; // 应用名称
+    options.operation = @"某种操作";       // 操作名称
+    [LCSMS requestShortMessageForPhoneNumber:@"18200008888"
+                                    options:options
+                                    callback:^(BOOL succeeded, NSError * _Nullable error) {
+                                        if (succeeded) {
+                                            /* 请求成功 */
+                                        } else {
+                                            /* 请求失败 */
+                                        }
+                                    }];
+    ```
+    ```swift
+    let variables: LCDictionary = [
+        "ttl": LCNumber(10),         // 验证码有效时间为 10 分钟
+        "name": LCString("应用名称"), // 应用名称
+        "op": LCString("某种操作")    // 操作名称
+    ]
 
-  _ = LCSMSClient.requestShortMessage(mobilePhoneNumber: "18200008888", variables: variables) { (result) in
-      switch result {
-      case .success:
-          break
-      case .failure(error: let error):
-          print(error)
-      }
-  }
-  ```
-  ```java
-  LCSMSOption option = new LCSMSOption();
-  option.setTtl(10);
-  option.setApplicationName("应用名称");
-  option.setOperation("某种操作");
-  LCSMS.requestSMSCodeInBackground("18200008888", option).subscribe(new Observer<LCNull>() {
-      @Override
-      public void onSubscribe(Disposable disposable) {
-      }
-      @Override
-      public void onNext(LCNull avNull) {
-          Log.d("TAG","Result: Successfully sent verification code.");
-      }
-      @Override
-      public void onError(Throwable throwable) {
-          Log.d("TAG","Result: Failed to send verification code. Reason: " + throwable.getMessage());
-      }
-      @Override
-      public void onComplete() {
-      }
-  });
-  ```
-  ```javascript
-  AV.Cloud.requestSmsCode({
-      mobilePhoneNumber: '18200008888',
-      name: '应用名称',
-      op: '某种操作',
-      ttl: 10 // 验证码有效时间为 10 分钟
-  }).then(function(){
-      // 调用成功
-  }, function(err){
-      // 调用失败
-  });
-  ```
-  ```cs
-  // 下面参数中的 10 表示验证码有效时间为 10 分钟
-  AVCloud.RequestSMSCodeAsync("18200008888","应用名称","某种操作",10).ContinueWith(t =>
-  {
-      if(!t.Result)
-      {
-          // 调用成功
-      }
-  });
-  ```
-  ```php
-  $options = [
+    _ = LCSMSClient.requestShortMessage(mobilePhoneNumber: "18200008888", variables: variables) { (result) in
+        switch result {
+        case .success:
+            break
+        case .failure(error: let error):
+            print(error)
+        }
+    }
+    ```
+    ```java
+    LCSMSOption option = new LCSMSOption();
+    option.setTtl(10);
+    option.setApplicationName("应用名称");
+    option.setOperation("某种操作");
+    LCSMS.requestSMSCodeInBackground("18200008888", option).subscribe(new Observer<LCNull>() {
+        @Override
+        public void onSubscribe(Disposable disposable) {
+        }
+        @Override
+        public void onNext(LCNull avNull) {
+            Log.d("TAG","Result: Successfully sent verification code.");
+        }
+        @Override
+        public void onError(Throwable throwable) {
+            Log.d("TAG","Result: Failed to send verification code. Reason: " + throwable.getMessage());
+        }
+        @Override
+        public void onComplete() {
+        }
+    });
+    ```
+    ```javascript
+    AV.Cloud.requestSmsCode({
+        mobilePhoneNumber: '18200008888',
+        name: '应用名称',
+        op: '某种操作',
+        ttl: 10 // 验证码有效时间为 10 分钟
+    }).then(function(){
+        // 调用成功
+    }, function(err){
+        // 调用失败
+    });
+    ```
+    ```cs
+    // 下面参数中的 10 表示验证码有效时间为 10 分钟
+    LCCloud.RequestSMSCodeAsync("18200008888","应用名称","某种操作",10).ContinueWith(t =>
+    {
+        if(!t.Result)
+        {
+            // 调用成功
+        }
+    });
+    ```
+    ```php
+    $options = [
     "name" => "应用名称",
     "op" => "某种操作",
     "ttl" => 10, // 验证码有效时间为 10 分钟
-  ];
-  SMS::requestSMSCode("18200008888", $options);
-  ```
-  ```python
-  from leancloud import cloud
-  options = {
+    ];
+    SMS::requestSMSCode("18200008888", $options);
+    ```
+    ```python
+    from leancloud import cloud
+    options = {
     "op": "某种操作",
     "ttl": 10  # 验证码有效时间为 10 分钟
-  }
-  cloud.request_sms_code("18200008888", sign="应用名称", params=options)
-  ```
-```dart
-try {
-//验证码有效时间为 10 分钟
-  await LCSMSClient.requestSMSCode('18200008888',
-      variables: {'name': '应用名称', 'ttl': 10, 'op': '某种操作'});
-} on LCException catch (e) {
-  print(e.message);
-}
-```
+    }
+    cloud.request_sms_code("18200008888", sign="应用名称", params=options)
+    ```
+    ```dart
+    try {
+    //验证码有效时间为 10 分钟
+    await LCSMSClient.requestSMSCode('18200008888',
+        variables: {'name': '应用名称', 'ttl': 10, 'op': '某种操作'});
+    } on LCException catch (e) {
+    print(e.message);
+    }
+    ```
+
 3. **用户收到短信，并且输入了验证码**  
   在进行下一步之前，我们建议先进行客户端验证（对有效性进行基本验证，例如长度、特殊字符等），这样就避免了错误的验证码被服务端驳回而产生的流量，以及与服务端沟通的时间，有助于提升用户体验。
   
@@ -355,7 +356,7 @@ try {
 文本短信验证码在到达率上有一定的风险。尽管根据我们长期得到的用户反馈，到达率已接近 100%，但是有些应用对时效性的要求极高，并且需要更好的安全性，所以我们也推出了语音短信验证码的服务，调用的方式如下：
 
 ```objc
-AVShortMessageRequestOptions *options = [[AVShortMessageRequestOptions alloc] init];
+LCShortMessageRequestOptions *options = [[LCShortMessageRequestOptions alloc] init];
 options.type = AVShortMessageTypeVoice;
 [AVSMS requestShortMessageForPhoneNumber:@"18200008888"
         options:options
@@ -406,7 +407,7 @@ AV.Cloud.requestSmsCode({
 });
 ```
 ```cs
-AVCloud.RequestVoiceCodeAsync ("18200008888").ContinueWith(t =>{
+LCCloud.RequestVoiceCodeAsync ("18200008888").ContinueWith(t =>{
     // 发送成功
 });
 ```
@@ -431,7 +432,7 @@ try {
 发送成功之后，用户的手机就会收到一段语音通话，它会播报 6 位数的验证码，然后开发者需要再次调用：
 
 ```objc
-[AVOSCloud verifySmsCode:@"123456" mobilePhoneNumber:@"18200008888" callback:^(BOOL succeeded, NSError *error) {
+[LCApplication verifySmsCode:@"123456" mobilePhoneNumber:@"18200008888" callback:^(BOOL succeeded, NSError *error) {
     if(succeeded){
         // 验证成功
     }
@@ -473,7 +474,7 @@ AV.Cloud.verifySmsCode('123456', '18200008888').then(function(){
 });
 ```
 ```cs
-AVCloud.VerifySmsCodeAsync("123456","18200008888").ContinueWith(t =>{
+LCCloud.VerifySmsCodeAsync("123456","18200008888").ContinueWith(t =>{
     if(t.Result) 
     {
         // 验证成功
@@ -516,15 +517,54 @@ try {
 
 {{ docs.alert("自 2016 年 6 月起，营销类短信不允许由个人用户发送。所有营销类短信必须提供有效的公司或者企业名称，缺失名称将导致营销类短信无法发送。伪造或使用虚假名称将会被追究法律责任。") }}
 
+## 短信签名
+
+短信签名是指短信内容里用【】括起来的短信发送方名称，根据运营商的规定，**短信内容的开头**必须有签名。
+你需要在 **控制台 > 短信 > 签名与模版** 为每个应用创建合法的短信签名。
+如果一个应用拥有多个短信签名，请确保选择其一作为 **默认签名**。
+
+![「短信签名」中的「创建新短信签名」按钮。](images/sms_create_signature.png)
+
+创建签名时需要输入内部名称和签名字符串，并上传相应的证明材料，如下图所示：
+
+<img src="images/sms_signature_edit.png" width="600" class="img-responsive" alt="在「短信签名」对话框中填入「名称」和「签名」，上传相应的证明材料。">
+
+### 签名审核
+
+为了确保短信内容的合法性及投递成功率，短信签名、短信模板需要经过 **运营商人工审核** 通过后，开发者才能在接口中调用该模板。根据我们的经验，短信模板、非营销类短信签名通常需要 1 个工作日，营销类签名审核时间较长，一般需要 2 – 5 个工作日。
+**如果提交签名、模板后长时间处于「审核中」状态，请提交工单或通过邮件（{{ supportEmail() }}）联系我们处理。**
+
+应运营商的审核要求，创建签名需要提交相应的证明材料，证明具体该签名的使用权。比如：
+
+- **签名是公司的名称或简称**，需上传相同公司名称的营业执照，并提供业务网址或使用场景。
+- **签名是 APP 名称**，需上传应用商店 APP 管理后台全屏截图，业务网址处提供 APP 下载链接。另外，企业开发者需要一同提供 APP 管理后台认证的企业营业执照，个人开发者需要提供 APP 管理后台对应实名者身份证人像面照片。
+- **签名是网站名称**，需要上传网站的 ICP 备案截图，业务网址处提供网站链接，如果是企业 ICP 备案需一同提供企业营业执照，如果是个人 ICP 备案需一同提供身份证人像面照片。
+- **签名是微信公众号或小程序名称**，需要上传微信公众平台管理界面全屏截图，同时说明短信签名使用场景。并提供管理界面显示微信认证主体资料，如果主体是企业需要提供营业执照，如果主体是个人则需要提供身份证件人像面照片。
+- **签名是商标**，需上传商标注册证书或商标软著权证明，并提供业务网址或使用场景。
+- **签名是政府、机关事业单位、其他单位的全称或简称**，需上传签名自有证明（通常是组织机构代码证书、社会信用代码证书），并提供业务网址或使用场景。
+
+注意，未上架的应用，以应用名申请签名，以应用商店后台开发者管理截图作为资质文件，运营商审核人员不会通过。
+如果该应用有同名的小程序、公众号、网站，或者为应用名称注册了商标，可以提交相应的资质文件申请签名。
+否则，可以改用公司名或简称作为签名。
+
+
+{{ docs.alert("短信签名缺失、或没有默认签名、或未通过审核且无其他可用签名，都将导致短信无法发送。") }}
+
+### 签名规范
+
+- 签名必须是应用名称、公司简称、品牌名或网站名，容易被用户识别；长度控制在 2 到 20 个字符之间。例如签名【应用A】中的 `应用A` 为 3 个字符；
+- 签名支持中文、英文、数字，不允许全部为英文字符或全部为数字；
+- 不可以含有空格和特殊字符，也不可以是变量；
+- 不需要带上实心方头括号 `【】`；
+- 一个应用最多可以拥有 50 个签名（包含审核未通过的签名）。
+- 不支持以下敏感行业申请签名：
+     - 游戏：棋牌/麻将/雀神/斗地主相关游戏签名不支持申请，其他游戏需提供应用商店 APP 管理后台截屏、ICP 备案证明或商标软著权；
+     - 金融：股票、借贷、银行、基金等相关签名暂不支持申请；
+     - 其他：一元购、众筹、网赚、赌博、色情、足彩、烟酒、运营商业务等类型的签名暂不支持申请。
+
 ## 短信模板
 
 开发者可以使用短信模板来自定义短信的内容。
-为了确保短信内容的合法性及投递成功率，短信签名、短信模板需要经过 **运营商人工审核** 通过后，开发者才能在接口中调用该模板。
-根据我们的经验，短信模板、非营销类短信签名通常需要 1 个工作日，营销类签名审核时间较长，一般需要 2 – 5 个工作日。
-如果提交签名、模板后长时间处于「审核中」状态，请提交工单或通过邮件（{{ supportEmail() }}）联系我们处理。
-
-
-{{ sms.signature("### 短信签名") }}
 
 ### 创建模板
 
@@ -536,9 +576,120 @@ try {
 
 如果模板类型选择了 **通知类** 或者 **验证类**，但短信内容涉及到营销内容，则无法通过审核。要发送营销类短信请阅读 [营销短信](#营销短信)。
 
-创建验证码类型的模板还需提交验证码网址。
-通常是发送验证码的应用在应用商店的 URL，或者发送验证码的网站页面 URL（页面最好包含用户提交验证码的表单，例如需要填写短信验证码的网站注册页）。
-小程序直接填写「小程序」。
+### 模板审核
+为了确保短信内容的合法性及投递成功率，短信签名、短信模板需要经过 **运营商人工审核** 通过后，开发者才能在接口中调用该模板。根据我们的经验，短信模板、非营销类短信签名通常需要 1 个工作日，营销类签名审核时间较长，一般需要 2 – 5 个工作日。
+**如果提交签名、模板后长时间处于「审核中」状态，请提交工单或通过邮件（{{ supportEmail() }}）联系我们处理。**
+
+#### 模板规范
+
+**验证码类模板，要求如下：**
+
+* 创建验证码类型的模板还需提交验证码网址，**通常是发送验证码的应用在应用商店的 URL，或者发送验证码的网站页面 URL（页面最好包含用户提交验证码的表单，例如需要填写短信验证码的网站注册页）**，审核专员需审核页面合规性。小程序直接填写「小程序」。若是公司内部系统的网址，请输入网址后额外做文字说明。
+* 验证码短信不支持携带联系方式、链接或营销介绍成分的内容。
+* 请确保使用场景有图形验证码或行为验证，以防止短信通道被轰炸。
+* 如果使用验证码的网页还没上线，请输入域名，并备注「开发中」，服务商将在您上线后进行复审。
+* 个人资质申请的验证码类模板，仅支持携带单变量，且不得涉及公司相关内容。
+* 不支持发送验证短信的敏感行业：金融/网赚/运营商/财税/代办业务/法院/宗教/烟酒/ETC等行业均不支持申请验证码类短信。
+
+**通知类模板，要求如下：**
+
+* 模板不可携带连续多个变量，建议在每个变量前添加能让人明白意图的短信文案，以提高审核通过率。
+* 若文案包含跳转两次及以上的链接，暂不支持申请。
+* 请确保您的模板主题是明确的，主题不明确会被拒绝。
+* 个人资质申请的通知类模板，不支持携带变量，且仅支持祝福类短信。
+* 不支持敏感行业：
+     * 金融类：股票、投资、理财、支付等行业不支持申请通知类模板。
+     * 运营商类：涉及移动、联通、电信三大运营商相关业务不支持申请通知类模板。
+
+**营销类模板，要求如下：**
+
+* 模板不可携带连续多个变量，建议在每个变量前添加能让人明白意图的短信文案，以提高审核通过率。
+* 若文案包含跳转两次及以上的链接，暂不支持申请。
+* 不支持敏感行业：
+     * 会展类：会议/展会/讲座/宣讲会/培训类营销内容均不支持申请营销类模板。
+     * 教育类：画画、书法等兴趣班营销知晓拦截风险可发，应试教育、考证相关不支持申请营销类模板。
+     * 运营商类：涉及移动、联通、电信三大运营商相关业务不支持申请营销类模板。
+     * 家装类：家装、装修、建材类不支持申请营销类模板。
+     * 招聘类：招聘邀请、兼职邀请、网赚类不支持申请营销类模板。
+     * 金融类：金融投资、理财、支付等不支持申请营销类模板。
+     * 电商类：A货、微商、货到付款、众筹、公益、代理、返利、一元购类不支持申请营销类模板。
+     * 代办类：代开发票、代理注册公司、代办其他证件类不支持申请营销类模板。
+     * 法院类：涉及案件相关、政府法律、律师事务所类不支持申请营销类模板。
+   
+> * 模板中如何设置变量请阅读 [模板变量](#模板变量)。
+> * 如何处理模板中的 URL 请阅读[模板中的链接](#模板中的链接)。
+> * 如短信中含变量的，以实际发送字数为准，超过 70 字，按 67 字/条计算。
+
+
+### 模板变量
+
+模板可以使用<u>自定义变量</u>，在调用模板时以参数形式传入。模板语法遵循 [Handlebars](https://handlebarsjs.com) 规范。
+
+{{ docs.alert("自定义变量的值不允许包含实心括号 `【】`。") }}
+
+在模板中还可以使用<u>系统预留变量</u>，在短信发送时，它们会被自动填充，开发者 **无法** 对其重新赋值：
+
+{% call docs.bubbleWrap() -%}
+欢迎注册{{ docs.mustache("{name}") }}应用！请使用验证码{{ docs.mustache("{code}") }}来完成注册。该验证码将在{{ docs.mustache("{ttl}") }}分钟后失效，请尽快使用。
+{% endcall %}
+
+- `name`：应用名称
+- `code`：验证码（通知类和营销类不会包含）
+- `ttl`：过期时间（默认为 10 分钟，最长可设置 30 分钟）
+- `sign`：短信签名
+- `template`：模板名称
+
+### 模板中的链接
+
+短信中的 URL 不允许 **全部** 设置为变量，这样是为了确保安全，防止病毒以及不良信息的传播。错误范例如下：
+
+{% call docs.bubbleWrap() -%}
+尊敬的会员您好，您的订单（订单号{{ docs.mustache("{orderId}") }}）已确认支付。5周年庆新品降价！大牌奢品上演底价争霸，低至2折！BV低至888元！阿玛尼低至199元！都彭长款钱包仅售499元！杜嘉班纳休闲鞋仅售1399元！周年庆家居专场千元封顶现已开启！{{ docs.mustache("{download_link}") }} 客服电话400-881-6609 回复TD退订
+{% endcall %}
+
+{{ docs.alert("以上通知内容包含了像「打折」、「降价」、「仅售」这类营销推广的敏感词语，容易导致审批无法通过，因此请谨慎使用或改用 [营销类短信](#营销短信)。") }}
+
+但是 URL 中可以包含变量，比如：
+
+{% call docs.bubbleWrap() -%}
+亲，您的宝贝已上路，快递信息可以通过以下链接查询：http://www.sf-express.com/cn/#search/{{ docs.mustache("{bill_number}") }} 
+{% endcall %}
+
+### 模板申请范例
+
+**通知类模板**
+
+【正确范例】
+
+{% call docs.bubbleWrap() -%}
+恭喜您获得关注广州体彩微信送“排列三”的活动彩票，您的号码是第{{ docs.mustache("{phase}") }}期的：{{ docs.mustache("{num}") }}。开奖时间为{{ docs.mustache("{date}") }}，请关注公众号—开奖信息查询中奖状态。
+{% endcall %}
+
+〖错误范例〗
+
+{% call docs.bubbleWrap() -%}
+您好，本条短信来自“XX旅游”~恭喜幸运的您，在本次“北海道机票”抽奖活动中，获得二等奖——定制星巴克杯! 请您关注我们的微信公众号（XX旅游：xx_app)，回复“中奖名单”即可查看详细中奖名单及领取须知！后续还会有更多活动惊喜，期待您的参与~官方网站：xxsite.cn
+{% endcall %}
+
+错误点在于不可以在 [通知类短信](#通知短信) 模板中发送带有抽奖中奖信息等营销信息的内容。解决方案是 **在创建模板的时候选择 [营销类短信](#营销短信)**。
+
+另外，有一些行业相关的敏感词语是不允许发送的，错误范例如下：
+
+{{ docs.bubble("业主还在苦苦等待你的反馈，你认领的房源已超过1小时没有填写核实结果，请尽快登录XX客户端，在“业主--待处理”列表中进行填写。【XX网】") }}
+
+{{ docs.alert("无论是通知类还是营销类短信，凡包含「房源」、「借贷」这类敏感词的短信都被禁止发送。") }}
+
+**营销类模板**
+
+【正确范例 · 销售类】
+
+{{ docs.bubble("X牌新款春装已经上市，明星夫妻同款你值得拥有！详情请咨询当地X牌门市店，或者直接登录 www.xxxx.com 查询门市店，或者拨打 010-00000000，凭短信可享 9 折优惠。") }}
+
+【正确范例 · 推广类】
+
+{{ docs.bubble("还在找寻同桌的 TA 吗？还在烦恼过年回家联系不上老同学吗？iOS 用户在 App Store 搜索：找同学，下载最新版的找同学，让同学聚会重温往日时光！") }}
+
+注意：应用的下载链接必须是明文，不可设置为参数。
 
 ### 使用模板
 
@@ -551,7 +702,7 @@ try {
 并且模板名称为 `Order_Notice`，并且为已经拥有了一个审核通过的签名叫做「天天商城」，签名的名称叫做 `sign_BuyBuyBuy`，当模板通过审批后就可以调用如下代码发送这条通知类的短信：
 
 ```objc
-AVShortMessageRequestOptions *options = [[AVShortMessageRequestOptions alloc] init];
+LCShortMessageRequestOptions *options = [[LCShortMessageRequestOptions alloc] init];
 
 options.templateName = @"Order_Notice";
 options.signatureName = @"sign_BuyBuyBuy";
@@ -664,84 +815,6 @@ try {
 {% call docs.bubbleWrap() -%}
 【天天商城】尊敬的用户，您的订单号：7623432424540 正在派送，请保持手机畅通，我们的快递员随时可能与您联系，感谢您的订阅。
 {% endcall %}
-
-### 模板变量
-
-模板可以使用<u>自定义变量</u>，在调用模板时以参数形式传入。模板语法遵循 [Handlebars](https://handlebarsjs.com) 规范。
-
-{{ docs.alert("自定义变量的值不允许包含实心括号 `【】`。") }}
-
-在模板中还可以使用<u>系统预留变量</u>，在短信发送时，它们会被自动填充，开发者 **无法** 对其重新赋值：
-
-{% call docs.bubbleWrap() -%}
-欢迎注册{{ docs.mustache("{name}") }}应用！请使用验证码{{ docs.mustache("{code}") }}来完成注册。该验证码将在{{ docs.mustache("{ttl}") }}分钟后失效，请尽快使用。
-{% endcall %}
-
-- `name`：应用名称
-- `code`：验证码（通知类和营销类不会包含）
-- `ttl`：过期时间（默认为 10 分钟，最长可设置 30 分钟）
-- `sign`：短信签名
-- `template`：模板名称
-
-### 内容规范
-
-开发者在设置短信内容的时候，文字表述上应该做到规范、正确、简洁。鉴于开发者的应用场景各异，我们整理了以下范例来说明如何撰写规范的短信内容。需要再次强调，一切跟营销推广相关的短信模板，请在创建模板时务必选择 **营销类**，否则将无法通过审核。
-
-【正确范例】
-
-{% call docs.bubbleWrap() -%}
-XX房东您好，租客{{ docs.mustache("{guest_name}") }}（手机号码：{{ docs.mustache("{guest_phone}") }}）于{{ docs.mustache("{payment_create_time}") }}向您支付了房租。租金为{{ docs.mustache("{rent_price}") }}元，房屋地址在{{ docs.mustache("{rent_addr}") }}。请关注微信公众号：XX租房。XX租房APP下载地址：http://example.com/download.html
-{% endcall %}
-
-#### 链接
-
-短信中的 URL 不允许 **全部** 设置为变量，这样是为了确保安全，防止病毒以及不良信息的传播。错误范例如下：
-
-{% call docs.bubbleWrap() -%}
-尊敬的会员您好，您的订单（订单号{{ docs.mustache("{orderId}") }}）已确认支付。5周年庆新品降价！大牌奢品上演底价争霸，低至2折！BV低至888元！阿玛尼低至199元！都彭长款钱包仅售499元！杜嘉班纳休闲鞋仅售1399元！周年庆家居专场千元封顶现已开启！{{ docs.mustache("{download_link}") }} 客服电话400-881-6609 回复TD退订
-{% endcall %}
-
-{{ docs.alert("以上通知内容包含了像「打折」、「降价」、「仅售」这类营销推广的敏感词语，容易导致审批无法通过，因此请谨慎使用或改用 [营销类短信](#营销短信)。") }}
-
-但是 URL 中可以包含变量，比如：
-
-{% call docs.bubbleWrap() -%}
-亲，您的宝贝已上路，快递信息可以通过以下链接查询：http://www.sf-express.com/cn/#search/{{ docs.mustache("{bill_number}") }} 
-{% endcall %}
-
-#### 通知类模板
-
-【正确范例】
-
-{% call docs.bubbleWrap() -%}
-恭喜您获得关注广州体彩微信送“排列三”的活动彩票，您的号码是第{{ docs.mustache("{phase}") }}期的：{{ docs.mustache("{num}") }}。开奖时间为{{ docs.mustache("{date}") }}，请关注公众号—开奖信息查询中奖状态。
-{% endcall %}
-
-〖错误范例〗
-
-{% call docs.bubbleWrap() -%}
-您好，本条短信来自“XX旅游”~恭喜幸运的您，在本次“北海道机票”抽奖活动中，获得二等奖——定制星巴克杯! 请您关注我们的微信公众号（XX旅游：xx_app)，回复“中奖名单”即可查看详细中奖名单及领取须知！后续还会有更多活动惊喜，期待您的参与~官方网站：xxsite.cn
-{% endcall %}
-
-错误点在于不可以在 [通知类短信](#通知短信) 模板中发送带有抽奖中奖信息等营销信息的内容。解决方案是 **在创建模板的时候选择 [营销类短信](#营销短信)**。
-
-另外，有一些行业相关的敏感词语是不允许发送的，错误范例如下：
-
-{{ docs.bubble("业主还在苦苦等待你的反馈，你认领的房源已超过1小时没有填写核实结果，请尽快登录XX客户端，在“业主--待处理”列表中进行填写。【XX网】") }}
-
-{{ docs.alert("无论是通知类还是营销类短信，凡包含「房源」、「借贷」这类敏感词的短信都被禁止发送。") }}
-
-#### 营销类模板
-
-【正确范例 · 销售类】
-
-{{ docs.bubble("X牌新款春装已经上市，明星夫妻同款你值得拥有！详情请咨询当地X牌门市店，或者直接登录 www.xxxx.com 查询门市店，或者拨打 010-00000000，凭短信可享 9 折优惠。") }}
-
-【正确范例 · 推广类】
-
-{{ docs.bubble("还在找寻同桌的 TA 吗？还在烦恼过年回家联系不上老同学吗？iOS 用户在 App Store 搜索：找同学，下载最新版的找同学，让同学聚会重温往日时光！") }}
-
-注意：应用的下载链接必须是明文，不可设置为参数。
 
 ## 短信轰炸与图形验证码
 
@@ -902,12 +975,12 @@ AV.Captcha.request({ width: 80, height: 30 });
 #### 获取图形验证码
 
 ```objc
-AVCaptchaRequestOptions *options = [[AVCaptchaRequestOptions alloc] init];
+LCCaptchaRequestOptions *options = [[LCCaptchaRequestOptions alloc] init];
 
 options.width = 100;
 options.height = 50;
 
-[AVCaptcha requestCaptchaWithOptions:options
+[LCCaptcha requestCaptchaWithOptions:options
                             callback:^(AVCaptchaDigest * _Nullable captchaDigest, NSError * _Nullable error) {
                                 /* URL string of captcha image. */
                                 NSString *url = captchaDigest.URLString;
@@ -1054,12 +1127,12 @@ try {
 如果校验成功，拿到返回的 `validate_token`，继续调用发送短信的接口：
 
 ```objc
-AVShortMessageRequestOptions *options = [[AVShortMessageRequestOptions alloc] init];
+LCShortMessageRequestOptions *options = [[LCShortMessageRequestOptions alloc] init];
 options.templateName = @"New_Series"; // 模板名称
 options.signatureName = @"sign_BuyBuyBuy"; // 签名名称
 options.validationToken = <#validationToken#>;
 
-[AVSMS requestShortMessageForPhoneNumber:@"18200008888"
+[LCSMS requestShortMessageForPhoneNumber:@"18200008888"
                                  options:options
                                 callback:^(BOOL succeeded, NSError * _Nullable error) {
                                     if (succeeded) {
