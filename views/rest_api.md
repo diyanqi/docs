@@ -717,6 +717,15 @@ curl -X DELETE \
   https://{{host}}/1.1/classes/Post/<objectId>
 ```
 
+也可以一次请求删除多个对象，比如：
+
+```sh
+curl -X DELETE \
+  -H "X-LC-Id: {{appid}}" \
+  -H "X-LC-Key: {{appkey}}" \
+  https://{{host}}/1.1/classes/Post/<objectId1>,<objectId2>,<objectId3>
+```
+
 还可以使用 Delete 操作删除一个对象的一个字段（注意此时** HTTP Method 还是 PUT**）：
 
 ```sh
