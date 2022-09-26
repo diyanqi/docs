@@ -303,7 +303,7 @@ client.OnPlayerRoomLeft += leftPlayer => {
 ```cs
 try {
     // 设置房间关闭
-    await client.SetRoomOpened(false);
+    await client.SetRoomOpen(false);
     Debug.Log(client.Room.Open);
 } catch (PlayException e) {
     // 设置失败
