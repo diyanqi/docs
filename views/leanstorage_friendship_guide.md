@@ -568,8 +568,8 @@ curl -X GET \
 
 ```sh
 curl -X GET \
-  -H "X-LC-Id: tCoPdYYpMJlgzDnK0wo2BG5m-gzGzoHsz" \
-  -H "X-LC-Key: rz9urQGm4CfzKd4J7122gaJM" \
+  -H "X-LC-Id: {{appid}}" \
+  -H "X-LC-Key: {{appkey}}" \
   -H "X-LC-Session: <sessionToken>" \
   -H "Content-Type: application/json" \
   -G \
