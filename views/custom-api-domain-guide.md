@@ -704,6 +704,6 @@ API 自定义域名必须开启 HTTPS。
 
 如需了解域名解析和备案的基本知识，可以参考以下三篇文章：
 
-1. [域名背后那些事](https://nextfe.com/domain-introduction/)
-2. [域名之殇](https://nextfe.com/domain-problems/)
-3. [备案那些事儿](https://nextfe.com/icp-introduction/)
+1. [域名背后那些事](https://blog.taptap.dev/posts/domain-introduction)
+2. [域名之殇](https://blog.taptap.dev/posts/domain-problems)
+3. [备案那些事儿](https://blog.taptap.dev/posts/icp-introduction)
