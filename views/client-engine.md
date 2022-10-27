@@ -4,6 +4,33 @@
 
 **在阅读本文档之前，请先阅读[多人在线对战服务总览](multiplayer.html)及 [MasterClient](multiplayer-guide-js.html#MasterClient) ，了解多人在线对战开发的基础结构。**
 
+## Client Engine 解决了什么问题
+
+多人在线对战服务（即下图中的 Multiplayer 服务）很好的解决了「房间」抽象与房间之间玩家交换消息的问题。我们以「剪刀石头布」游戏为例，游戏的流程是这样的：
+
+其中 Multiplayer 服务扮演的是一个纯粹的消息转发角色，为了方便之后的讨论，我们可以把这个图简化一下（虚线代表消息是通过 Multiplayer 服务传递的）：
+
+![image](images/client-engine/client-engine1.png)
+
+这个流程很简单，但也存在一些问题：
+
+![image](images/client-engine/client-engine2.png)
+
+1. 所有的玩家都是一样的上帝视角，能看到所有的状态，后出拳的玩家（如图中的 B）可以根据 A 的选择对应出拳达到必胜的效果。
+2. 最后的结果是由客户端上报的，客户端可能上报一个假的结果。
+3. A 作为 MasterClient 可以操纵一些涉及随机的操作，例如洗牌、掷骰子等（「剪刀石头布」里并没有类似的机制）。
+
+不同的游戏类型对于这些问题的容忍度是不同的。在不改变上图流程的前提下，这些问题也都能找到各自改进的方案。但 Client Engine 方案试图用一个釜底抽薪的方法解决这些问题：把 MasterClient 运行到服务端。在 Client Engine 方案里，游戏的流程是这样的：
+
+![image](images/client-engine/client-engine3.png)
+
+在这个流程中，在服务端运行的 MasterClient 是唯一拥有上帝视角的裁判。所有玩家都只与 MasterClient 交换信息，MasterClient 只会给客户端同步部分信息（比如只告诉 B「A 出拳了」，但出了什么未知）。游戏逻辑的运算（包括随机、胜负判定）以及最终结果的上报都在服务端进行。
+
+**Multiplayer 服务是基础。玩家客户端并不与 MasterClient 直接通信，图中的虚线表示消息仍然是通过 Multiplayer 服务转发的。**
+
+## Client Engine 介绍
+
+
 Client Engine 是 LeanCloud Play 提供的多人在线游戏 Client 托管方案。[多人在线对战服务](multiplayer.html)提供了 MasterClient 机制来控制游戏逻辑：MasterClient 是一个特殊的 Client，它接收和处理游戏内的所有事件与消息，进行实时处理之后将结果下发给其他游戏客户端，用以控制游戏向下执行。开发者可以基于多人在线对战的 SDK 开发出一套完整的 MasterClient 逻辑，继而将这样的「客户端」托管到 Client Engine，省去程序部署、运维的负担。如图所示：
 
 ![image](images/client-engine-structure.png)
