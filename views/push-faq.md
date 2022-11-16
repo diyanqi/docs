@@ -110,6 +110,40 @@ if (dataLength > 0) {
 iOS 系统重装、从备份恢复应用、在新设备上安装应用都会导致 device token 变化，因此 Apple 推荐 在应用每次启动时都去请求 APNs 的 device token，获取 token 后进行设置并保存 token。 除此以外，LeanCloud 后端会统计 installation 的更新时间（updatedAt），据此清理长期未更新的 installation 数据。 所以我们建议开发者遵循 Apple 的推荐方式开发应用，以免有效 installation 数据被意外清理，以及因为 device token 过期无效而推送失败。
 示例代码可以参考：[iOS 消息推送开发指南](ios_push_guide.html#保存 Token)。
 
+### iOS 推送，APP 在前台时收不到推送如何处理？
+
+在推送记录中显示推送已经成功送达，但是手机端没有收到推送。这是因为 iOS 推送应用在前台时，推送默认不会显示在通知栏。如果应用在前端仍需要显示推送，需要使用 UNUserNotificationCenterDelegate 的代理方法 `userNotificationCenter:willPresentNotification:withCompletionHandler:` 来处理如何显示推送。
+
+可选的推送展示方式有： 
+* UNNotificationPresentationOptionBadge：应用图标上增加 badge 的值。
+* UNNotificationPresentationOptionBanner：横幅展示推送。
+* UNNotificationPresentationOptionList：在通知中心展示推送。
+* UNNotificationPresentationOptionSound：播放推送的声音。
+
+横幅展示推送的示例代码如下：
+
+```objc
+#import "AppDelegate.h"
+#import <LeanCloudObjc/Foundation.h>
+#import <UserNotifications/UserNotifications.h>
+
+@interface AppDelegate ()<UNUserNotificationCenterDelegate>
+@end
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    //此处省略 SDK 的初始化
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    //设置代理对象
+    center.delegate = self;
+    return YES;
+}
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
+    completionHandler(UNNotificationPresentationOptionBanner);
+}
+```
+
 ### 离线推送通知服务里，_Installation 是如何与 _User 里的用户 id 关联的？
 
 用户登录即时通信系统以后，服务器会将用户的 `clientId` 保存在登录设备的 `_Installation` 表的 `channels` 字段里，从而完成关联。当用户离线，有离线消息需要推送时，服务端会去 `_Installation` 表内找到 `channels` 字段包含目标 `clientId` 的设备来完成推送。
