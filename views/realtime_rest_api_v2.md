@@ -420,48 +420,6 @@ timestamp | 必填 | 消息的时间戳
 {}
 ```
 
-### 增加临时性禁言用户
-
-该接口要求使用 master key。
-
-```sh
-curl -X POST \
-  -H "X-LC-Id: {{appid}}" \
-  -H "X-LC-Key: {{masterkey}},master" \
-  -H "Content-Type: application/json" \
-  -d '{"client_id": "some-client-id", "ttl": 50}' \
-  https://{{host}}/1.2/rtm/conversations/{conv_id}/temporary-silenceds
-```
-
-参数 | 说明
---- | ---
-client_id | 要禁言的 Client ID，字符串
-ttl | 禁言的时间，秒数，最长 24 小时
-
-返回
-
-```json
-{}
-```
-
-### 移除临时性禁言用户
-
-该接口要求使用 master key。
-
-```sh
-curl -X DELETE \
-  -H "X-LC-Id: {{appid}}" \
-  -H "X-LC-Key: {{masterkey}},master" \
-  -G \
-  --data-urlencode 'client_id=some-client-id' \
-  https://{{host}}/1.2/rtm/conversations/{conv_id}/temporary-silenceds
-```
-
-返回
-
-```json
-{}
-```
 
 ### 对话权限
 
@@ -538,7 +496,6 @@ info-id | 该记录对应的 objectId
 {"updatedAt":"2018-01-16T03:40:37.683Z", "objectId":"5a5d7433c3422b31ed845e76"}
 ```
 
-
 #### 查询权限
 
 该接口要求使用 master key。
@@ -565,6 +522,52 @@ role | 本次查询只希望包含该角色
 {"results": [{"clientId":"client1", "objectId":"5a5d7433c3422b31ed845e76", "role": "Manager"}]}
 ```
 
+### 临时禁言和永久禁言
+
+该功能介绍可参考  [即时通讯开发指南](realtime-guide-senior.html) 第三篇的 [权限管理与黑名单](realtime-guide-senior.html#权限管理与黑名单) 一节。
+
+#### 增加临时性禁言用户
+
+该接口要求使用 master key。
+
+```sh
+curl -X POST \
+  -H "X-LC-Id: {{appid}}" \
+  -H "X-LC-Key: {{masterkey}},master" \
+  -H "Content-Type: application/json" \
+  -d '{"client_id": "some-client-id", "ttl": 50}' \
+  https://{{host}}/1.2/rtm/conversations/{conv_id}/temporary-silenceds
+```
+
+参数 | 说明
+--- | ---
+client_id | 要禁言的 Client ID，字符串
+ttl | 禁言的时间，秒数，最长 24 小时
+
+返回
+
+```json
+{}
+```
+
+#### 移除临时性禁言用户
+
+该接口要求使用 master key。
+
+```sh
+curl -X DELETE \
+  -H "X-LC-Id: {{appid}}" \
+  -H "X-LC-Key: {{masterkey}},master" \
+  -G \
+  --data-urlencode 'client_id=some-client-id' \
+  https://{{host}}/1.2/rtm/conversations/{conv_id}/temporary-silenceds
+```
+
+返回
+
+```json
+{}
+```
 
 #### 增加永久性禁言用户
 
@@ -1003,49 +1006,6 @@ timestamp | 必填 | 消息的时间戳
 {}
 ```
 
-### 增加临时性禁言用户
-
-该接口要求使用 master key。
-
-```sh
-curl -X POST \
-  -H "X-LC-Id: {{appid}}" \
-  -H "X-LC-Key: {{masterkey}},master" \
-  -H "Content-Type: application/json" \
-  -d '{"client_id": "some-client-id", "ttl": 50}' \
-  https://{{host}}/1.2/rtm/chatrooms/{chatroom_id}/temporary-silenceds
-```
-
-参数 | 说明
---- | ---
-client_id | 要禁言的 id，字符串
-ttl | 禁言的时间，秒数，最长 24 小时
-
-返回
-
-```json
-{}
-```
-
-### 移除临时性禁言用户
-
-该接口要求使用 master key。
-
-```sh
-curl -X DELETE \
-  -H "X-LC-Id: {{appid}}" \
-  -H "X-LC-Key: {{masterkey}},master" \
-  -G \
-  --data-urlencode 'client_id=some-client-id' \
-  https://{{host}}/1.2/rtm/chatrooms/{chatroom_id}/temporary-silenceds
-```
-
-返回
-
-```json
-{}
-```
-
 ### 对话权限
 
 该功能介绍可参考 [即时通讯开发指南](realtime-guide-senior.html) 第三篇的 [权限管理与黑名单](realtime-guide-senior.html#权限管理与黑名单) 一节。
@@ -1121,7 +1081,6 @@ info-id | 该记录对应的 objectId
 {"updatedAt":"2018-01-16T03:40:37.683Z", "objectId":"5a5d7433c3422b31ed845e76"}
 ```
 
-
 #### 查询权限
 
 该接口要求使用 master key。
@@ -1148,6 +1107,52 @@ role | 本次查询只希望包含该角色
 {"results": [{"clientId":"client1", "objectId":"5a5d7433c3422b31ed845e76", "role": "Manager"}]}
 ```
 
+### 临时禁言和永久禁言
+
+该功能介绍可参考 [即时通讯开发指南](realtime-guide-senior.html) 第三篇的 [权限管理与黑名单](realtime-guide-senior.html#权限管理与黑名单) 一节。
+
+#### 增加临时性禁言用户
+
+该接口要求使用 master key。
+
+```sh
+curl -X POST \
+  -H "X-LC-Id: {{appid}}" \
+  -H "X-LC-Key: {{masterkey}},master" \
+  -H "Content-Type: application/json" \
+  -d '{"client_id": "some-client-id", "ttl": 50}' \
+  https://{{host}}/1.2/rtm/chatrooms/{chatroom_id}/temporary-silenceds
+```
+
+参数 | 说明
+--- | ---
+client_id | 要禁言的 id，字符串
+ttl | 禁言的时间，秒数，最长 24 小时
+
+返回
+
+```json
+{}
+```
+
+#### 移除临时性禁言用户
+
+该接口要求使用 master key。
+
+```sh
+curl -X DELETE \
+  -H "X-LC-Id: {{appid}}" \
+  -H "X-LC-Key: {{masterkey}},master" \
+  -G \
+  --data-urlencode 'client_id=some-client-id' \
+  https://{{host}}/1.2/rtm/chatrooms/{chatroom_id}/temporary-silenceds
+```
+
+返回
+
+```json
+{}
+```
 
 #### 增加永久性禁言用户
 
@@ -1214,7 +1219,6 @@ next | 可选 | 第一次查询时返回，后面的查询带着这个参数，�
 ```json
 {"client_ids": ["client1", "client2"]}
 ```
-
 
 ### 黑名单
 
